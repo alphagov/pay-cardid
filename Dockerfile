@@ -13,6 +13,5 @@ WORKDIR /app
 ADD target/*.yaml /app/
 ADD target/pay-*-allinone.jar /app/
 ADD docker-startup.sh /app/docker-startup.sh
-ADD newrelic/* /app/newrelic/
 
 CMD bash ./docker-startup.sh
