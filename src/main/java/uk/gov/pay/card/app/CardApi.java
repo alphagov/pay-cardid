@@ -35,9 +35,7 @@ public class CardApi extends Application<CardConfiguration> {
     public void run(CardConfiguration configuration, Environment environment) throws Exception {
         environment.healthChecks().register("ping", new Ping());
 
-        String path = "/sample-data/worldpay-bin-ranges.csv";
-        URL url = this.getClass().getResource(path);
-        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
+        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(configuration.getWorldpayDataLocation());
         InfinispanCardInformationStore store = new InfinispanCardInformationStore(worldpayBinRangeLoader);
         environment.lifecycle().manage(new CardInformationStoreManaged(store));
 

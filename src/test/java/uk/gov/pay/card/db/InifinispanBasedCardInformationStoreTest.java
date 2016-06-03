@@ -34,7 +34,7 @@ public class InifinispanBasedCardInformationStoreTest {
 
     @Test
     public void shouldFindCardInformationForCardIdPrefix() throws Exception {
-        URL url = this.getClass().getResource("/worldpay-bin-ranges.csv");
+        URL url = this.getClass().getResource("/worldpay/");
         WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
         CardInformationStore cardInformationStore = new InfinispanCardInformationStore(worldpayBinRangeLoader);
         cardInformationStore.initialiseCardInformation();
