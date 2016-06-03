@@ -14,3 +14,6 @@ logging:
         timeZone: UTC
         target: stdout
         logFormat: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %highlight(%-5level) %cyan(%logger{15}) - %msg %n"
+
+worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-/app/data/worldpay}
+discoverDataLocation: ${DISCOVER_DATA_LOCATION:-/app/data/discover}

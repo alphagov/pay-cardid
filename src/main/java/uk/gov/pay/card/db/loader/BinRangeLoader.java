@@ -11,6 +11,10 @@ public interface BinRangeLoader {
         DataLoaderException(String message, Throwable throwable) {
             super(message, throwable);
         }
+
+        DataLoaderException(String message) {
+            super(message);
+        }
     }
 
 }

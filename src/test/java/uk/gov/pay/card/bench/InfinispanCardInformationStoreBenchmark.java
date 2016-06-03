@@ -29,7 +29,7 @@ public class InfinispanCardInformationStoreBenchmark {
 
     @Setup(Level.Trial)
     public void setup() throws Exception {
-        URL url = this.getClass().getResource("/worldpay-bin-ranges.csv");
+        URL url = this.getClass().getResource("/worldpay/");
         WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
         cardInformationStore = new InfinispanCardInformationStore(worldpayBinRangeLoader);
         cardInformationStore.initialiseCardInformation();
