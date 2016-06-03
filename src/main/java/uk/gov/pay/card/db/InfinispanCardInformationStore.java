@@ -38,6 +38,7 @@ public class InfinispanCardInformationStore implements CardInformationStore {
     @Override
     public void put(CardInformation cardInformation) {
         String key = cardInformation.getMin() + "-" + cardInformation.getMax();
+        cardInformation.updateRangeLength(9);
         cardIdStore.putIfAbsent(key, cardInformation);
     }
 
