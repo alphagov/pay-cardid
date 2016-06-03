@@ -1,25 +1,74 @@
 package uk.gov.pay.card.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CardInformation {
 
-    @JsonProperty("scheme")
-    private String cardScheme;
+    private String brand;
+    private String type;
+    private String label;
+    private Long min;
+    private Long max;
 
-    @JsonProperty("type")
-    private String cardType;
-
-    public CardInformation(String cardScheme, String cardType) {
-        this.cardScheme = cardScheme;
-        this.cardType = cardType;
+    public CardInformation(String brand, String type, String label, Long min, Long max) {
+        this.brand = brand;
+        this.type = type;
+        this.label = label;
+        this.min = min;
+        this.max = max;
     }
 
-    public String getCardScheme() {
-        return cardScheme;
+    public String getBrand() {
+        return brand;
     }
 
-    public String getCardType() {
-        return cardType;
+    public String getType() {
+        return type;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public Long getMax() {
+        return max;
+    }
+
+    public Long getMin() {
+        return min;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CardInformation that = (CardInformation) o;
+
+        if (brand != null ? !brand.equals(that.brand) : that.brand != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (label != null ? !label.equals(that.label) : that.label != null) return false;
+        if (min != null ? !min.equals(that.min) : that.min != null) return false;
+        return max != null ? max.equals(that.max) : that.max == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = brand != null ? brand.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (label != null ? label.hashCode() : 0);
+        result = 31 * result + (min != null ? min.hashCode() : 0);
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CardInformation{" +
+                "brand='" + brand + '\'' +
+                ", type='" + type + '\'' +
+                ", label='" + label + '\'' +
+                ", min=" + min +
+                ", max=" + max +
+                '}';
     }
 }

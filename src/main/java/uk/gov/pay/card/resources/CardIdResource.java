@@ -1,6 +1,6 @@
 package uk.gov.pay.card.resources;
 
-import uk.gov.pay.card.model.CardInformation;
+import uk.gov.pay.card.model.CardInformationResponse;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -17,6 +17,6 @@ public class CardIdResource {
     @Path("/v1/api/card/{card_number}")
     @Produces(APPLICATION_JSON)
     public Response cardInformation(@PathParam("card_number") String cardNumber) {
-        return Response.ok(new CardInformation("visa", "debit")).build();
+        return Response.ok(new CardInformationResponse("visa", "debit", "visa")).build();
     }
 }
