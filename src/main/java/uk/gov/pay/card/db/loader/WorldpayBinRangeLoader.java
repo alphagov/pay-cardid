@@ -23,9 +23,7 @@ public class WorldpayBinRangeLoader implements BinRangeLoader {
     public void loadDataTo(CardInformationStore store) throws DataLoaderException {
         logger.info("Setting up card information store");
 
-        BufferedReader bufferedReader = getFileReader(fileWithBINRanges);
-
-        try {
+        try ( BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(fileWithBINRanges))))) {
             bufferedReader
                     .lines()
                     .forEach(line -> {
@@ -37,24 +35,12 @@ public class WorldpayBinRangeLoader implements BinRangeLoader {
                         }
 
                     });
-        } finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                throw new DataLoaderException("Exception when closing file reader:", e);
-            }
+
+        } catch (Exception e) {
+            throw new DataLoaderException("Exception loading file at:"+ fileWithBINRanges, e);
         }
 
         logger.info("Finished initialising the card information store - {}", store);
 
     }
-
-    private BufferedReader getFileReader(String filePath) throws DataLoaderException {
-        try {
-            return new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath))));
-        } catch (Exception e) {
-            throw new DataLoaderException("Error loading file: "+ filePath, e);
-        }
-    }
-
 }
