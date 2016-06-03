@@ -10,8 +10,9 @@ import java.net.URL;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
+import static uk.gov.pay.card.db.loader.BinRangeDataLoader.*;
 
-public class WorldpayBinRangeLoaderTest {
+public class BinRangeDataLoaderTest {
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -21,7 +22,8 @@ public class WorldpayBinRangeLoaderTest {
     public void shouldLoadWorldpayBinRangesFromFile() throws Exception {
 
         URL url = this.getClass().getResource("/worldpay/");
-        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
+        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
+                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
 
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
@@ -30,13 +32,27 @@ public class WorldpayBinRangeLoaderTest {
     }
 
     @Test
+    public void shouldLoadDiscoverBinRangesFromFile() throws Exception {
+
+        URL url = this.getClass().getResource("/discover/");
+        BinRangeDataLoader discoverBinRangeLoader = new BinRangeDataLoader(url.getFile(),
+                DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
+
+        CardInformationStore cardInformationStore = mock(CardInformationStore.class);
+        discoverBinRangeLoader.loadDataTo(cardInformationStore);
+
+        verify(cardInformationStore, times(3)).put(any(CardInformation.class));
+    }
+
+    @Test
     public void shouldThrowExceptionWhenNoFileIsFound() throws Exception {
 
         URL url = this.getClass().getResource("/empty/");
-        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
+        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
+                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
 
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
-        exception.expect(BinRangeLoader.DataLoaderException.class);
+        exception.expect(BinRangeDataLoader.DataLoaderException.class);
 
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
@@ -47,10 +63,11 @@ public class WorldpayBinRangeLoaderTest {
     public void shouldThrowExceptionWhenMoreThanOneFileIsFound() throws Exception {
 
         URL url = this.getClass().getResource("/multiple-files/");
-        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
+        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
+                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
 
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
-        exception.expect(BinRangeLoader.DataLoaderException.class);
+        exception.expect(BinRangeDataLoader.DataLoaderException.class);
 
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
@@ -61,7 +78,8 @@ public class WorldpayBinRangeLoaderTest {
     @Test
     public void shouldLoadBinRangeDataAsCardInformation() throws Exception {
         URL url = this.getClass().getResource("/worldpay-single/");
-        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
+        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
+                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
 
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
