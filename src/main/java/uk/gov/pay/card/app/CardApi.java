@@ -8,6 +8,7 @@ import io.dropwizard.setup.Environment;
 import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.resources.CardIdResource;
+import uk.gov.pay.card.resources.HealthCheckResource;
 
 public class CardApi extends Application<CardConfiguration> {
 
@@ -29,6 +30,7 @@ public class CardApi extends Application<CardConfiguration> {
     public void run(CardConfiguration configuration, Environment environment) throws Exception {
         environment.healthChecks().register("ping", new Ping());
 
+        environment.jersey().register(new HealthCheckResource(environment));
         environment.jersey().register(new CardIdResource());
     }
 }
