@@ -33,14 +33,9 @@ public class InfinispanCardInformationStore implements CardInformationStore {
     }
 
     @Override
-    public int getStoreSize() {
-        return cardIdStore.size();
-    }
-
-    @Override
     public void put(CardInformation cardInformation) {
         String key = cardInformation.getMin() + "-" + cardInformation.getMax();
-        cardInformation.updateRangeLength(9);
+        cardInformation.updateRangeLength(CARD_RANGE_LENGTH);
         cardIdStore.putIfAbsent(key, cardInformation);
     }
 

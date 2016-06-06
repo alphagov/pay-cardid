@@ -13,10 +13,10 @@ public class CardInformationResponse {
     @JsonProperty("label")
     private String label;
 
-    public CardInformationResponse(String brand, String type, String label) {
-        this.brand = brand;
-        this.type = type;
-        this.label = label;
+    public CardInformationResponse(CardInformation cardData) {
+        this.brand = cardData.getBrand();
+        this.label = cardData.getLabel();
+        this.type = cardData.getType();
     }
 
     public String getBrand() {

@@ -6,15 +6,14 @@ import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import uk.gov.pay.card.app.config.CardConfiguration;
+import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.InfinispanCardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
-import uk.gov.pay.card.model.CardInformation;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
-
-import java.util.function.Function;
+import uk.gov.pay.card.service.CardService;
 
 import static java.util.Arrays.asList;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.*;
@@ -39,20 +38,19 @@ public class CardApi extends Application<CardConfiguration> {
     public void run(CardConfiguration configuration, Environment environment) throws Exception {
         environment.healthChecks().register("ping", new Ping());
 
-        initialiseBinRangeLoaders(environment, configuration);
+        CardInformationStore store = initialiseCardInformationStore(configuration);
 
+        environment.lifecycle().manage(new CardInformationStoreManaged(store));
         environment.jersey().register(new HealthCheckResource(environment));
-        environment.jersey().register(new CardIdResource());
+        environment.jersey().register(new CardIdResource(new CardService(store)));
     }
 
-    private void initialiseBinRangeLoaders(Environment environment, CardConfiguration configuration) {
+    private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {
 
         BinRangeDataLoader worldPayBinRangeDataLoader = BinRangeDataLoaderFactory.worldpay(configuration.getWorldpayDataLocation());
 
-        BinRangeDataLoader discoverBinRangeDataLoader = BinRangeDataLoaderFactory.discover(configuration.getWorldpayDataLocation());
+        BinRangeDataLoader discoverBinRangeDataLoader = BinRangeDataLoaderFactory.discover(configuration.getDiscoverDataLocation());
 
-        InfinispanCardInformationStore store = new InfinispanCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader));
-
-        environment.lifecycle().manage(new CardInformationStoreManaged(store));
+        return new InfinispanCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader));
     }
 }
