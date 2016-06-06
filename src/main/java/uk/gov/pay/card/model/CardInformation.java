@@ -36,6 +36,11 @@ public class CardInformation {
         return min;
     }
 
+    public void updateRangeLength(int numLength) {
+        min = Long.valueOf(String.format("%-" + numLength +"d", min).replace(" ", "0"));
+        max = Long.valueOf(String.format("%-" + numLength + "d", max).replace(" ", "0"));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
