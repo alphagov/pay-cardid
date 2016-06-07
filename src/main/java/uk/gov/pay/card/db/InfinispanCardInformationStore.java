@@ -6,7 +6,7 @@ import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.query.Search;
 import org.infinispan.query.dsl.Query;
 import org.infinispan.query.dsl.QueryFactory;
-import uk.gov.pay.card.db.loader.BinRangeLoader;
+import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.util.List;
@@ -15,19 +15,21 @@ import java.util.Optional;
 
 public class InfinispanCardInformationStore implements CardInformationStore {
 
-    private final BinRangeLoader binRangeLoader;
+    private final List<BinRangeDataLoader> binRangeLoaders;
     Cache<String, CardInformation> cardIdStore;
     DefaultCacheManager cacheManager;
 
-    public InfinispanCardInformationStore(BinRangeLoader binRangeLoader) {
-        this.binRangeLoader = binRangeLoader;
+    public InfinispanCardInformationStore(List<BinRangeDataLoader> binRangeLoaders) {
+        this.binRangeLoaders = binRangeLoaders;
         cacheManager = new DefaultCacheManager();
         this.cardIdStore = cacheManager.getCache();
     }
 
     @Override
     public void initialiseCardInformation() throws Exception {
-        binRangeLoader.loadDataTo(this);
+        for (BinRangeDataLoader loader : binRangeLoaders) {
+            loader.loadDataTo(this);
+        }
     }
 
     @Override

@@ -8,12 +8,15 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.InfinispanCardInformationStore;
-import uk.gov.pay.card.db.loader.WorldpayBinRangeLoader;
+import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.Arrays.asList;
+import static uk.gov.pay.card.db.loader.BinRangeDataLoader.*;
 
 /***
  * To run this Benchmark against the whole of worldpay BIN range data set;
@@ -30,8 +33,8 @@ public class InfinispanCardInformationStoreBenchmark {
     @Setup(Level.Trial)
     public void setup() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
-        WorldpayBinRangeLoader worldpayBinRangeLoader = new WorldpayBinRangeLoader(url.getFile());
-        cardInformationStore = new InfinispanCardInformationStore(worldpayBinRangeLoader);
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
+        cardInformationStore = new InfinispanCardInformationStore(asList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
     }
 
