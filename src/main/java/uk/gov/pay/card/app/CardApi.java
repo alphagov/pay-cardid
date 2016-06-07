@@ -47,15 +47,9 @@ public class CardApi extends Application<CardConfiguration> {
 
     private void initialiseBinRangeLoaders(Environment environment, CardConfiguration configuration) {
 
-        BinRangeDataLoader worldPayBinRangeDataLoader = new BinRangeDataLoader(configuration.getWorldpayDataLocation(),
-                WORLDPAY_DELIMITER,
-                WORLDPAY_ROW_IDENTIFIER,
-                WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+        BinRangeDataLoader worldPayBinRangeDataLoader = BinRangeDataLoaderFactory.worldpay(configuration.getWorldpayDataLocation());
 
-        BinRangeDataLoader discoverBinRangeDataLoader = new BinRangeDataLoader(configuration.getWorldpayDataLocation(),
-                DISCOVER_DELIMITER,
-                DISCOVER_ROW_IDENTIFIER,
-                DISCOVER_CARD_INFORMATION_EXTRACTOR);
+        BinRangeDataLoader discoverBinRangeDataLoader = BinRangeDataLoaderFactory.discover(configuration.getWorldpayDataLocation());
 
         InfinispanCardInformationStore store = new InfinispanCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader));
 

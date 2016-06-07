@@ -19,19 +19,30 @@ public class BinRangeDataLoader {
     private String dataRowIdentifier;
     private Function<String[], CardInformation> cardInformationExtractor;
 
-    public static final String WORLDPAY_DELIMITER = "!";
-    public static final String DISCOVER_DELIMITER = ",";
-    public static final String WORLDPAY_ROW_IDENTIFIER = "05";
-    public static final String DISCOVER_ROW_IDENTIFIER = "02";
+    private static final String WORLDPAY_DELIMITER = "!";
+    private static final String DISCOVER_DELIMITER = ",";
+    private static final String WORLDPAY_ROW_IDENTIFIER = "05";
+    private static final String DISCOVER_ROW_IDENTIFIER = "02";
 
-    public static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
+    private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
 
-    public static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
+    private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
 
 
-    public BinRangeDataLoader(String filePath, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
+    public static class BinRangeDataLoaderFactory {
+
+        public static BinRangeDataLoader worldpay(String filePath) {
+           return new BinRangeDataLoader(filePath, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+        }
+
+        public static BinRangeDataLoader discover(String filePath) {
+            return new BinRangeDataLoader(filePath, DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
+        }
+    }
+
+    private BinRangeDataLoader(String filePath, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
 
         this.filePath = filePath;
         this.delimeter = delimeter;

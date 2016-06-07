@@ -41,8 +41,7 @@ public class InifinispanBasedCardInformationStoreTest {
     @Test
     public void shouldFindCardInformationForCardIdPrefix() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
-        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
-                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
         cardInformationStore = new InfinispanCardInformationStore(asList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
@@ -56,8 +55,7 @@ public class InifinispanBasedCardInformationStoreTest {
     @Test
     public void shouldFindCardInformationWithRangeLengthLessThan9digits() throws Exception {
         URL url = this.getClass().getResource("/worldpay-6-digits/");
-        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
-                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
         cardInformationStore = new InfinispanCardInformationStore(asList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 

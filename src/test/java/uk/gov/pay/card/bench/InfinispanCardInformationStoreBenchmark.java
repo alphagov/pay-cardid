@@ -33,8 +33,7 @@ public class InfinispanCardInformationStoreBenchmark {
     @Setup(Level.Trial)
     public void setup() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
-        BinRangeDataLoader worldpayBinRangeLoader = new BinRangeDataLoader(url.getFile(),
-                WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
         cardInformationStore = new InfinispanCardInformationStore(asList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
     }
