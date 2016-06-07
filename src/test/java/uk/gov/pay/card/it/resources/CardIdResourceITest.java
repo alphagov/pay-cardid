@@ -23,7 +23,8 @@ public class CardIdResourceITest {
             CardApi.class
             , resourceFilePath("config/config.yaml")
             , config("worldpayDataLocation", "data/sources/worldpay/")
-            , config("discoverDataLocation", "data/sources/discover/"));
+            , config("discoverDataLocation", "data/sources/discover/")
+            , config("testCardDataLocation", "data/sources/test-cards/"));
 
     @Test
     public void shouldFindDiscoverCardInformation() throws IOException {
@@ -34,6 +35,18 @@ public class CardIdResourceITest {
                 .body("brand", is("UNIONPAY"))
                 .body("label", is("UNIONPAY"))
                 .body("type", is("CD"));
+
+    }
+
+    @Test
+    public void shouldFindTestCardInformation() throws IOException {
+
+        getCardInformation("4242424242424242")
+                .statusCode(200)
+                .contentType(JSON)
+                .body("brand", is("VISA"))
+                .body("label", is("VISA"))
+                .body("type", is("C"));
 
     }
 
