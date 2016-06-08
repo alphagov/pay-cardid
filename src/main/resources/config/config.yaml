@@ -17,3 +17,4 @@ logging:
 
 worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-/app/data/worldpay}
 discoverDataLocation: ${DISCOVER_DATA_LOCATION:-/app/data/discover}
+testCardDataLocation: ${TEST_CARD_DATA_LOCATION:-/app/data/test-cards}

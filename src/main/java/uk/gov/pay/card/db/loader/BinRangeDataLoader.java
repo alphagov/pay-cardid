@@ -21,8 +21,10 @@ public class BinRangeDataLoader {
 
     private static final String WORLDPAY_DELIMITER = "!";
     private static final String DISCOVER_DELIMITER = ",";
+    private static final String TEST_CARD_DATA_DELIMITER = ",";
     private static final String WORLDPAY_ROW_IDENTIFIER = "05";
     private static final String DISCOVER_ROW_IDENTIFIER = "02";
+    private static final String TEST_CARD_DATA_ROW_IDENTIFIER = "02";
 
     private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
@@ -30,6 +32,8 @@ public class BinRangeDataLoader {
     private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
 
+    private static final Function<String[], CardInformation> TEST_CARD_DATA_INFORMATION_EXTRACTOR = entry -> new CardInformation(
+            entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
 
     public static class BinRangeDataLoaderFactory {
 
@@ -39,6 +43,10 @@ public class BinRangeDataLoader {
 
         public static BinRangeDataLoader discover(String filePath) {
             return new BinRangeDataLoader(filePath, DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
+        }
+
+        public static BinRangeDataLoader testCards(String filePath) {
+            return new BinRangeDataLoader(filePath, TEST_CARD_DATA_DELIMITER, TEST_CARD_DATA_ROW_IDENTIFIER, TEST_CARD_DATA_INFORMATION_EXTRACTOR);
         }
     }
 

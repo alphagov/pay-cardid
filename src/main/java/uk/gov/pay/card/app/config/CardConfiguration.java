@@ -12,11 +12,18 @@ public class CardConfiguration extends Configuration {
     @NotNull
     private String discoverDataLocation;
 
+    @NotNull
+    private String testCardDataLocation;
+
     public String getDiscoverDataLocation() {
         return discoverDataLocation;
     }
 
     public String getWorldpayDataLocation() {
         return worldpayDataLocation;
+    }
+
+    public String getTestCardDataLocation() {
+        return testCardDataLocation;
     }
 }
