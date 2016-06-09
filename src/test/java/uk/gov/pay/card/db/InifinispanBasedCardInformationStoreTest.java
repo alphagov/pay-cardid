@@ -47,7 +47,7 @@ public class InifinispanBasedCardInformationStoreTest {
 
         Optional<CardInformation> cardInformation = cardInformationStore.find("511948121");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("ELECTRON"));
+        assertThat(cardInformation.get().getBrand(), is("electron"));
         assertThat(cardInformation.get().getType(), is("D"));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
     }
@@ -61,7 +61,7 @@ public class InifinispanBasedCardInformationStoreTest {
 
         Optional<CardInformation> cardInformation = cardInformationStore.find("511226764");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("ELECTRON"));
+        assertThat(cardInformation.get().getBrand(), is("electron"));
         assertThat(cardInformation.get().getType(), is("D"));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
     }
@@ -75,5 +75,20 @@ public class InifinispanBasedCardInformationStoreTest {
         cardInformationStore.put(cardInformation);
 
         verify(cardInformation).updateRangeLength(9);
+    }
+
+    @Test
+    public void shouldTransformMastercardBrand() throws Exception {
+        URL url = this.getClass().getResource("/worldpay/");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
+
+        cardInformationStore = new InfinispanCardInformationStore(asList(worldpayBinRangeLoader));
+        worldpayBinRangeLoader.loadDataTo(cardInformationStore);
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("511226111");
+
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("master-card"));
+
     }
 }
