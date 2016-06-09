@@ -63,6 +63,18 @@ public class CardIdResourceITest {
     }
 
     @Test
+    public void shouldFindAmexCardInformation() throws IOException {
+
+        getCardInformation("371449635398431")
+                .statusCode(200)
+                .contentType(JSON)
+                .body("brand", is("american-express"))
+                .body("label", is("AMERICAN EXPRESS"))
+                .body("type", is("C"));
+
+    }
+
+    @Test
     public void shouldReturn404WhenCardInformationNotFoud() {
         getCardInformation("8282382383829393")
                 .statusCode(404);
