@@ -32,7 +32,7 @@ public class CardIdResourceITest {
         getCardInformation("6221267457963485")
                 .statusCode(200)
                 .contentType(JSON)
-                .body("brand", is("UNIONPAY"))
+                .body("brand", is("unionpay"))
                 .body("label", is("UNIONPAY"))
                 .body("type", is("CD"));
 
@@ -44,8 +44,8 @@ public class CardIdResourceITest {
         getCardInformation("4242424242424242")
                 .statusCode(200)
                 .contentType(JSON)
-                .body("brand", is("VISA"))
-                .body("label", is("VISA"))
+                .body("brand", is("visa"))
+                .body("label", is("VISA CREDIT"))
                 .body("type", is("C"));
 
     }
@@ -56,7 +56,7 @@ public class CardIdResourceITest {
         getCardInformation("4000020004598361")
                 .statusCode(200)
                 .contentType(JSON)
-                .body("brand", is("VISA CREDIT"))
+                .body("brand", is("visa"))
                 .body("label", is("VISA CREDIT"))
                 .body("type", is("C"));
 
