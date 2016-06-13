@@ -1,5 +1,6 @@
 package uk.gov.pay.card.it.resources;
 
+import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.ValidatableResponse;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.Rule;
@@ -82,7 +83,10 @@ public class CardIdResourceITest {
 
     private ValidatableResponse getCardInformation(String cardNumber) {
         return given().port(app.getLocalPort())
-                .get(String.format("/v1/api/card/%s", cardNumber))
+                .contentType(ContentType.JSON)
+                .body(String.format("{\"cardNumber\":%s}", cardNumber))
+                .when()
+                .post("/v1/api/card")
                 .then();
     }
 }
