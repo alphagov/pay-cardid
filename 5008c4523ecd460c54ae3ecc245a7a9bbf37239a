@@ -7,3 +7,5 @@ stage.tag=alpha_test_staging-1
 stage.alpha_test_staging-1.date=2016-06-20:16:05:53
 
 stage.alpha_test_staging-1.status=failed
+
+production.tag=alpha_test_production-1
