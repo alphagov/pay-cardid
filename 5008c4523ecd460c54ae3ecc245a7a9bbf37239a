@@ -1,15 +1,1 @@
-release.tag=alpha_test_release-1
-
-release.alpha_test_release-1.date=2016-06-20:16:00:50
-
-stage.tag=alpha_test_staging-1
-
-stage.alpha_test_staging-1.date=2016-06-20:16:05:53
-
-stage.alpha_test_staging-1.status=failed
-
-production.tag=alpha_test_production-1
-
-production.alpha_test_production-1.date=2016-06-20:16:08:27
-
-production.alpha_test_production-1.status=failed
+release.tag=alpha_release-1
