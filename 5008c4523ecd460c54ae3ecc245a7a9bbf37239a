@@ -5,3 +5,5 @@ release.alpha_release-2.date=2016-06-21:12:19:59
 stage.tag=alpha_staging-2
 
 stage.alpha_staging-2.date=2016-06-21:14:46:14
+
+stage.alpha_staging-2.status=failed
