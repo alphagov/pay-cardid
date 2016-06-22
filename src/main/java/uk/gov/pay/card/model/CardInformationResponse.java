@@ -51,4 +51,13 @@ public class CardInformationResponse {
         result = 31 * result + (label != null ? label.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "CardInformationResponse{" +
+                "brand='" + brand + '\'' +
+                ", type='" + type + '\'' +
+                ", label='" + label + '\'' +
+                '}';
+    }
 }
