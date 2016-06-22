@@ -9,11 +9,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 public class BinRangeDataLoader {
+    private final long LOG_COUNT_EVERY_MS = 5000;
 
     private static final Logger logger = LoggerFactory.getLogger(BinRangeDataLoader.class);
+    private String name;
     private String filePath;
     private String delimeter;
     private String dataRowIdentifier;
@@ -38,20 +41,20 @@ public class BinRangeDataLoader {
     public static class BinRangeDataLoaderFactory {
 
         public static BinRangeDataLoader worldpay(String filePath) {
-           return new BinRangeDataLoader(filePath, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+           return new BinRangeDataLoader("Worldpay", filePath, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
         }
 
         public static BinRangeDataLoader discover(String filePath) {
-            return new BinRangeDataLoader(filePath, DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
+            return new BinRangeDataLoader("Discover", filePath, DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
         }
 
         public static BinRangeDataLoader testCards(String filePath) {
-            return new BinRangeDataLoader(filePath, TEST_CARD_DATA_DELIMITER, TEST_CARD_DATA_ROW_IDENTIFIER, TEST_CARD_DATA_INFORMATION_EXTRACTOR);
+            return new BinRangeDataLoader("Test Cards", filePath, TEST_CARD_DATA_DELIMITER, TEST_CARD_DATA_ROW_IDENTIFIER, TEST_CARD_DATA_INFORMATION_EXTRACTOR);
         }
     }
 
-    private BinRangeDataLoader(String filePath, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
-
+    private BinRangeDataLoader(String name, String filePath, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
+        this.name = name;
         this.filePath = filePath;
         this.delimeter = delimeter;
         this.dataRowIdentifier = dataRowIdentifier;
@@ -59,7 +62,9 @@ public class BinRangeDataLoader {
     }
 
     public void loadDataTo(CardInformationStore cardInformationStore) throws DataLoaderException {
-        logger.info("Setting up card information store");
+        logger.info("Loading " + name + " data in to card information store");
+        final AtomicLong lastPrintedCount = new AtomicLong(System.currentTimeMillis());
+        final AtomicLong count = new AtomicLong(0);
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(getBinRangeFile())))) {
             bufferedReader
@@ -71,7 +76,14 @@ public class BinRangeDataLoader {
                             cardInformationStore.put(cardInformation);
                         }
 
+                        long records = count.incrementAndGet();
+                        if ((System.currentTimeMillis() - lastPrintedCount.get()) > LOG_COUNT_EVERY_MS) {
+                            logger.info(records + " records loaded...");
+                            lastPrintedCount.set(System.currentTimeMillis());
+                        }
                     });
+
+            logger.info(count + " records loaded... DONE");
 
         } catch (Exception e) {
             throw new DataLoaderException("Exception loading file at:" + filePath, e);
