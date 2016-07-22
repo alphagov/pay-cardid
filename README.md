@@ -82,7 +82,10 @@ Returns information for a given card number.
 #### Request example
 
 ```
-GET /v1/api/card/1234567812345678
+POST /v1/api/card
+{
+    "cardNumber": "1234567812345678"
+}
 ```
 
 #### Payment response
