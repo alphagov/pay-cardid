@@ -7,17 +7,14 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import uk.gov.pay.card.db.CardInformationStore;
-import uk.gov.pay.card.db.InfinispanCardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 
