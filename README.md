@@ -75,7 +75,7 @@ Format: csv
    
 ## API
 
-### GET /v1/api/card/{card_number}
+### POST /v1/api/card
 
 Returns information for a given card number.
 
