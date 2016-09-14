@@ -13,6 +13,8 @@ public class CardInformation {
 
     private final Map<String, String> brandMapping = new HashMap<String, String>(){{
         put("MC", "master-card");
+        put("MCI DEBIT", "master-card");
+        put("MCI CREDIT", "master-card");
         put("AMERICAN EXPRESS", "american-express");
         put("DINERS CLUB", "diners-club");
         put("VISA CREDIT", "visa");

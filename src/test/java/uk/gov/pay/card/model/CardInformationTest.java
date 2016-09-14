@@ -67,6 +67,20 @@ public class CardInformationTest {
     }
 
     @Test
+    public void shouldTransformMCIDebitMastercardBrand() {
+        CardInformation cardInformation = new CardInformation("MCI DEBIT", "D", "MCI DEBIT", 123456L, 123457L);
+        cardInformation.transformBrand();
+        assertThat(cardInformation.getBrand(), is("master-card"));
+    }
+
+    @Test
+    public void shouldTransformMCICreditMastercardBrand() {
+        CardInformation cardInformation = new CardInformation("MCI CREDIT", "C", "MCI CREDIT", 123456L, 123457L);
+        cardInformation.transformBrand();
+        assertThat(cardInformation.getBrand(), is("master-card"));
+    }
+
+    @Test
     public void shouldTransformVisaCreditBrand() {
         CardInformation cardInformation = new CardInformation("VISA CREDIT", "C", "VISA CREDIT", 123456L, 123457L);
         cardInformation.transformBrand();
