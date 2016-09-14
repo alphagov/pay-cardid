@@ -13,6 +13,8 @@ public class CardInformation {
 
     private final Map<String, String> brandMapping = new HashMap<String, String>(){{
         put("MC", "master-card");
+        put("MCI DEBIT", "master-card");
+        put("MCI CREDIT", "master-card");
         put("AMERICAN EXPRESS", "american-express");
         put("DINERS CLUB", "diners-club");
         put("VISA CREDIT", "visa");
@@ -49,7 +51,7 @@ public class CardInformation {
 
     public void updateRangeLength(int numLength) {
         min = Long.valueOf(String.format("%-" + numLength +"d", min).replace(" ", "0"));
-        max = Long.valueOf(String.format("%-" + numLength + "d", max).replace(" ", "0"));
+        max = Long.valueOf(String.format("%-" + numLength + "d", max).replace(" ", "9"));
     }
 
     public void transformBrand() {

@@ -68,6 +68,20 @@ public class RangeSetCardInformationStoreTest {
     }
 
     @Test
+    public void shouldFindCardInformationWithRangeLengthLessThan9digitsWhenRangeMinAndMaxAreTheSame() throws Exception {
+        URL url = this.getClass().getResource("/worldpay-6-digits/");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
+        cardInformationStore = new RangeSetCardInformationStore(asList(worldpayBinRangeLoader));
+        cardInformationStore.initialiseCardInformation();
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("533336999");
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("electron"));
+        assertThat(cardInformation.get().getType(), is("D"));
+        assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
+    }
+
+    @Test
     public void put_shouldUpdateRangeLengthTo9Digits() {
         BinRangeDataLoader mockBinRangeLoader = mock(BinRangeDataLoader.class);
         CardInformation cardInformation = mock(CardInformation.class);
