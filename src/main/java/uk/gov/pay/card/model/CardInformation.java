@@ -49,7 +49,7 @@ public class CardInformation {
 
     public void updateRangeLength(int numLength) {
         min = Long.valueOf(String.format("%-" + numLength +"d", min).replace(" ", "0"));
-        max = Long.valueOf(String.format("%-" + numLength + "d", max).replace(" ", "0"));
+        max = Long.valueOf(String.format("%-" + numLength + "d", max).replace(" ", "9"));
     }
 
     public void transformBrand() {

@@ -13,7 +13,7 @@ public class CardInformationTest {
         CardInformation cardInformation = new CardInformation("visa", "D", "visa", 123456L, 123457L);
         cardInformation.updateRangeLength(9);
         assertThat(cardInformation.getMin(), is(123456000L));
-        assertThat(cardInformation.getMax(), is(123457000L));
+        assertThat(cardInformation.getMax(), is(123457999L));
 
     }
 
