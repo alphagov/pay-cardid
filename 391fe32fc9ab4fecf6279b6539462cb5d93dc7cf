@@ -27,3 +27,5 @@ staging-1.tag=alpha_staging-1-22
 staging-1.alpha_staging-1-22.date=2016-09-15:16:32:10
 
 staging-1.alpha_staging-1-22.status=success
+
+production-1.tag=FAILED-22
