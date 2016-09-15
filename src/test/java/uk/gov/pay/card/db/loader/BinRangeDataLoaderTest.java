@@ -27,7 +27,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        verify(cardInformationStore, times(3)).put(any(CardInformation.class));
+        verify(cardInformationStore, times(4)).put(any(CardInformation.class));
     }
 
     @Test

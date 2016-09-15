@@ -11,9 +11,9 @@ public class CardInformationTest {
     public void shouldAdjustRangesLegnth() {
 
         CardInformation cardInformation = new CardInformation("visa", "D", "visa", 123456L, 123457L);
-        cardInformation.updateRangeLength(9);
-        assertThat(cardInformation.getMin(), is(123456000L));
-        assertThat(cardInformation.getMax(), is(123457999L));
+        cardInformation.updateRangeLength(11);
+        assertThat(cardInformation.getMin(), is(12345600000L));
+        assertThat(cardInformation.getMax(), is(12345799999L));
 
     }
 

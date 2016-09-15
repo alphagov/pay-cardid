@@ -6,7 +6,8 @@ import uk.gov.pay.card.model.CardInformation;
 import java.util.Optional;
 
 public interface CardInformationStore {
-    int CARD_RANGE_LENGTH = 9;
+
+    int CARD_RANGE_LENGTH = 11;
 
     void initialiseCardInformation() throws Exception;
 

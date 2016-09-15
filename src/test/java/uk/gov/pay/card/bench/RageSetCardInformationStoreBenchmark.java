@@ -20,7 +20,7 @@ import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFac
 
 /***
  * To run this Benchmark against the whole of worldpay BIN range data set;
- * - Make a copy of the worldpay data into the test/rsoureces/ folder.
+ * - Make a copy of the worldpay data into the test/resources/ folder.
  * - Change the name of the file to load in this benchmark (in the setup()) method.
  * - You would have to replace the existing test card prefixes with some new prefixes.
  * - And then run the benchmark.
@@ -39,8 +39,8 @@ public class RageSetCardInformationStoreBenchmark {
     }
 
     @Param({
-            "511226112", "511226113", "511226114", "511226115", "511226116", "511226117", "511226118", "511226119", "511226120",
-            "511226122", "511226123", "511226124", "511226125", "511226126", "511226127", "511226128", "511226129", "511226130",
+            "51122666112", "51122666113", "51122666114", "51122666115", "51122666116", "51122666117", "51122666118", "51122666119", "51122666120",
+            "51122666122", "51122666123", "51122666124", "51122666125", "51122666126", "51122666127", "51122666128", "51122666129", "51122666130",
             "511948111", "511948112", "511948113", "511948114", "511948115", "511948116", "511948117", "511948118", "511948119"
     })
     public String cardIdPrefix;
@@ -70,5 +70,4 @@ public class RageSetCardInformationStoreBenchmark {
     public void tearDown() {
         cardInformationStore.destroy();
     }
-
 }

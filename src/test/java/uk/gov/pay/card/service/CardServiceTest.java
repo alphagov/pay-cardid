@@ -25,14 +25,14 @@ public class CardServiceTest {
     }
 
     @Test
-    public void shouldStripTheCardNumberTo9DigitsForBingRangeLookup() {
+    public void shouldStripTheCardNumberTo11DigitsForBingRangeLookup() {
+
         CardInformation expectedCardInformation = new CardInformation("visa", "D", "visa", 11000L, 13000L);
-        when(cardInformationStore.find("123456789")).thenReturn(Optional.of(expectedCardInformation));
+        when(cardInformationStore.find("12345678901")).thenReturn(Optional.of(expectedCardInformation));
 
         Optional<CardInformation> cardInformation = cardService.getCardInformation("1234567890123456");
 
         assertThat(expectedCardInformation, is(cardInformation.get()));
-        verify(cardInformationStore).find("123456789");
+        verify(cardInformationStore).find("12345678901");
     }
-
 }
