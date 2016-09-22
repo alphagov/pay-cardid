@@ -18,8 +18,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/")
 public class CardIdResource {
-
+    public static final String CARD_INFORMATION_PATH = "/v1/api/card";
     private static final Logger logger = LoggerFactory.getLogger(CardIdResource.class);
+
     CardService cardService;
 
     public CardIdResource(CardService cardService) {
@@ -27,11 +28,11 @@ public class CardIdResource {
     }
 
     @POST
-    @Path("/v1/api/card")
+    @Path(CARD_INFORMATION_PATH)
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response cardInformation(CardInformationRequest cardInformationRequest) {
-        logger.info("Card Information Reqest - {}", cardInformationRequest);
+        logger.info("Card Information Request - {}", cardInformationRequest);
 
         Optional<CardInformation> cardInformation = cardService.getCardInformation(cardInformationRequest.getCardNumber());
 

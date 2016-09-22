@@ -9,6 +9,7 @@ import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
+import uk.gov.pay.card.filters.LoggingFilter;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
@@ -16,7 +17,10 @@ import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
 
 import static java.util.Arrays.asList;
+import static java.util.EnumSet.of;
+import static javax.servlet.DispatcherType.REQUEST;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
+import static uk.gov.pay.card.resources.CardIdResource.*;
 
 public class CardApi extends Application<CardConfiguration> {
 
@@ -43,6 +47,9 @@ public class CardApi extends Application<CardConfiguration> {
         environment.lifecycle().manage(new CardInformationStoreManaged(store));
         environment.jersey().register(new HealthCheckResource(environment));
         environment.jersey().register(new CardIdResource(new CardService(store)));
+
+        environment.servlets().addFilter("LoggingFilter", new LoggingFilter())
+                .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {
