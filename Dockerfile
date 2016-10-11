@@ -1,5 +1,8 @@
 FROM openjdk:8-jre-alpine
 
+RUN apk update
+RUN apk upgrade
+
 ENV JAVA_HOME /usr/lib/jvm/java-8-*/
 ENV PORT 8080
 ENV ADMIN_PORT 8081
