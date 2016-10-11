@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM openjdk:8-jre-alpine
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-*/
 ENV PORT 8080
