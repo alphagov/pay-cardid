@@ -1,5 +1,8 @@
 package uk.gov.pay.card.filters;
 
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.SharedMetricRegistries;
 import com.google.common.base.Stopwatch;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,9 +21,11 @@ public class LoggingFilter implements Filter {
 
     public static final String HEADER_REQUEST_ID = "X-Request-Id";
     private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
+    private Histogram histogram;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        histogram = SharedMetricRegistries.getOrCreate("cardid").histogram("request-times");
     }
 
     @Override
@@ -39,9 +44,11 @@ public class LoggingFilter implements Filter {
         } catch (Throwable throwable) {
             logger.error("Exception - cardid request - " + requestURL + " - exception - " + throwable.getMessage(), throwable);
         } finally {
+            long elapsed = stopwatch.elapsed(TimeUnit.MILLISECONDS);
             logger.info(format("[%s] - %s to %s ended - total time %dms", requestId, requestMethod, requestURL,
-                    stopwatch.elapsed(TimeUnit.MILLISECONDS)));
+                    elapsed));
             stopwatch.stop();
+            histogram.update(elapsed);
         }
     }
 

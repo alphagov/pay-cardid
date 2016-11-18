@@ -12,6 +12,7 @@ import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.filters.LoggingFilter;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
+import uk.gov.pay.card.metrics.MetricsResource;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
@@ -47,7 +48,7 @@ public class CardApi extends Application<CardConfiguration> {
         environment.lifecycle().manage(new CardInformationStoreManaged(store));
         environment.jersey().register(new HealthCheckResource(environment));
         environment.jersey().register(new CardIdResource(new CardService(store)));
-
+        environment.jersey().register(new MetricsResource(environment));
         environment.servlets().addFilter("LoggingFilter", new LoggingFilter())
                 .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
     }
