@@ -1,5 +1,7 @@
 package uk.gov.pay.card.resources;
 
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.SharedMetricRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.pay.card.model.CardInformation;
@@ -20,6 +22,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class CardIdResource {
     public static final String CARD_INFORMATION_PATH = "/v1/api/card";
     private static final Logger logger = LoggerFactory.getLogger(CardIdResource.class);
+
 
     CardService cardService;
 

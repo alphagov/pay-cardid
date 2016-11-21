@@ -1,10 +1,11 @@
 package uk.gov.pay.card.metrics;
 
-import com.codahale.metrics.MetricFilter;
-import com.codahale.metrics.SharedMetricRegistries;
+import com.codahale.metrics.*;
 import com.codahale.metrics.json.MetricsModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.collect.Maps;
 import io.dropwizard.setup.Environment;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -22,6 +24,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class MetricsResource {
     private ObjectMapper mapper;
     private Environment environment;
+    private MetricRegistry reportingRegistry;
 
     public MetricsResource(Environment environment) {
 
@@ -30,14 +33,62 @@ public class MetricsResource {
                 true,
                 MetricFilter.ALL));
         this.environment = environment;
+        this.reportingRegistry = new MetricRegistry();
     }
 
     @GET
     @Path("metrics")
     @Produces(APPLICATION_JSON)
     public Response metrics() throws IOException {
-        // Merge cardid registry
-        return Response.ok().entity(mapper.writeValueAsString(environment.metrics())).build();
+        MetricSet metricsSet = new MetricSet() {
+            @Override
+            public Map<String, Metric> getMetrics() {
+                Map<String, Metric> dropwizardMetrics = environment.metrics().getMetrics();
+                Map<String, Metric> applicationMetrics = SharedMetricRegistries.getOrCreate("cardid").getMetrics();
+                Map<String, Metric> metrics = Maps.newHashMap();
+                metrics.putAll(dropwizardMetrics);
+                metrics.putAll(applicationMetrics);
+                return metrics;
+            }
+        };
+
+        String json = "{\n" +
+                "  \"request-times\": {\n" +
+                "    \"count\": 0,\n" +
+                "    \"snapshot\": {\n" +
+                "      \"values\": [],\n" +
+                "      \"max\": 0,\n" +
+                "      \"min\": 0,\n" +
+                "      \"mean\": 0,\n" +
+                "      \"stdDev\": 0,\n" +
+                "      \"median\": 0,\n" +
+                "      \"75thPercentile\": 0,\n" +
+                "      \"95thPercentile\": 0,\n" +
+                "      \"98thPercentile\": 0,\n" +
+                "      \"99thPercentile\": 0,\n" +
+                "      \"999thPercentile\": 0\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"response-times\": {\n" +
+                "    \"count\": 0,\n" +
+                "    \"snapshot\": {\n" +
+                "      \"values\": [],\n" +
+                "      \"max\": 0,\n" +
+                "      \"min\": 0,\n" +
+                "      \"mean\": 0,\n" +
+                "      \"stdDev\": 0,\n" +
+                "      \"median\": 0,\n" +
+                "      \"75thPercentile\": 0,\n" +
+                "      \"95thPercentile\": 0,\n" +
+                "      \"98thPercentile\": 0,\n" +
+                "      \"99thPercentile\": 0,\n" +
+                "      \"999thPercentile\": 0\n" +
+                "    }\n" +
+                "  }\n" +
+                "}";
+        return Response.ok().entity(json).build();
     }
+
+
 
 }
