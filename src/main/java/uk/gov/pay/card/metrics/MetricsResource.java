@@ -37,7 +37,7 @@ public class MetricsResource {
     }
 
     @GET
-    @Path("metrics")
+    @Path("metrics-app")
     @Produces(APPLICATION_JSON)
     public Response metrics() throws IOException {
         MetricSet metricsSet = new MetricSet() {
@@ -54,6 +54,7 @@ public class MetricsResource {
 
         String json = "{\n" +
                 "  \"request-times\": {\n" +
+                "    \"metric-name\": \"request-times\",\n" +
                 "    \"count\": 0,\n" +
                 "    \"snapshot\": {\n" +
                 "      \"values\": [],\n" +
@@ -70,6 +71,7 @@ public class MetricsResource {
                 "    }\n" +
                 "  },\n" +
                 "  \"response-times\": {\n" +
+                "    \"metric-name\": \"request-times\",\n" +
                 "    \"count\": 0,\n" +
                 "    \"snapshot\": {\n" +
                 "      \"values\": [],\n" +

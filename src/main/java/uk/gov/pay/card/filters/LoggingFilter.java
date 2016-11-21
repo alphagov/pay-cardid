@@ -5,6 +5,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.SharedMetricRegistries;
 import com.google.common.base.Stopwatch;
 import org.apache.commons.lang3.StringUtils;
+import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +24,12 @@ public class LoggingFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
     private Histogram histogram;
 
+    public LoggingFilter(Environment environment) {
+        histogram = environment.metrics().histogram("cardid.request-times.val");
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        histogram = SharedMetricRegistries.getOrCreate("cardid").histogram("request-times");
     }
 
     @Override

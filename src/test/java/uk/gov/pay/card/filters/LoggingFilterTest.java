@@ -6,6 +6,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
+import io.dropwizard.setup.Environment;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.Before;
@@ -53,7 +54,7 @@ public class LoggingFilterTest {
 
     @Before
     public void setup() {
-        loggingFilter = new LoggingFilter();
+        loggingFilter = new LoggingFilter(mock(Environment.class));
         Logger root = (Logger) LoggerFactory.getLogger(LoggingFilter.class);
         mockAppender = mockAppender();
         root.addAppender(mockAppender);

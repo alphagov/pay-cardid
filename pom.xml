@@ -5,6 +5,13 @@
     <version>0.1-SNAPSHOT</version>
     <artifactId>pay-cardid</artifactId>
 
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+
     <properties>
         <dropwizard.version>0.8.1</dropwizard.version>
         <jersey2.version>2.17</jersey2.version>
@@ -102,6 +109,11 @@
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-json</artifactId>
             <version>3.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.readytalk</groupId>
+            <artifactId>metrics3-statsd</artifactId>
+            <version>4.1.2</version>
         </dependency>
     </dependencies>
 

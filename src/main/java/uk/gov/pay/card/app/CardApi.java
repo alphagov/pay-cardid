@@ -1,5 +1,6 @@
 package uk.gov.pay.card.app;
 
+import com.readytalk.metrics.StatsDReporter;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -16,6 +17,8 @@ import uk.gov.pay.card.metrics.MetricsResource;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
+
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
@@ -49,8 +52,12 @@ public class CardApi extends Application<CardConfiguration> {
         environment.jersey().register(new HealthCheckResource(environment));
         environment.jersey().register(new CardIdResource(new CardService(store)));
         environment.jersey().register(new MetricsResource(environment));
-        environment.servlets().addFilter("LoggingFilter", new LoggingFilter())
+        environment.servlets().addFilter("LoggingFilter", new LoggingFilter(environment))
                 .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
+
+        StatsDReporter.forRegistry(environment.metrics())
+                .build("localhost", 8125)
+                .start(10, TimeUnit.SECONDS);
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {
