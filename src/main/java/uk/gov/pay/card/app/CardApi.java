@@ -1,6 +1,8 @@
 package uk.gov.pay.card.app;
 
-import com.readytalk.metrics.StatsDReporter;
+import com.codahale.metrics.graphite.GraphiteReporter;
+import com.codahale.metrics.graphite.GraphiteSender;
+import com.codahale.metrics.graphite.GraphiteUDP;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -55,8 +57,10 @@ public class CardApi extends Application<CardConfiguration> {
         environment.servlets().addFilter("LoggingFilter", new LoggingFilter(environment))
                 .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
 
-        StatsDReporter.forRegistry(environment.metrics())
-                .build("localhost", 8125)
+        GraphiteSender graphiteUDP = new GraphiteUDP("localhost", 8092);
+        GraphiteReporter.forRegistry(environment.metrics())
+                .prefixedWith("cardid-graphite-2")
+                .build(graphiteUDP)
                 .start(10, TimeUnit.SECONDS);
     }
 

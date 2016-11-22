@@ -25,7 +25,7 @@ public class LoggingFilter implements Filter {
     private Histogram histogram;
 
     public LoggingFilter(Environment environment) {
-        histogram = environment.metrics().histogram("cardid.request-times.val");
+        histogram = environment.metrics().histogram("request-times");
     }
 
     @Override
