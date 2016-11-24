@@ -1,5 +1,8 @@
 package uk.gov.pay.card.app;
 
+import com.codahale.metrics.graphite.GraphiteReporter;
+import com.codahale.metrics.graphite.GraphiteSender;
+import com.codahale.metrics.graphite.GraphiteUDP;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -16,6 +19,8 @@ import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
 
+import java.util.concurrent.TimeUnit;
+
 import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
 import static javax.servlet.DispatcherType.REQUEST;
@@ -23,6 +28,9 @@ import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFac
 import static uk.gov.pay.card.resources.CardIdResource.*;
 
 public class CardApi extends Application<CardConfiguration> {
+
+    private static final String SERVICE_METRICS_NODE = "cardid";
+    private static final int GRAPHITE_SENDING_PERIOD_SECONDS = 10;
 
     public static void main(String[] args) throws Exception {
         new CardApi().run(args);
@@ -43,6 +51,7 @@ public class CardApi extends Application<CardConfiguration> {
         environment.healthChecks().register("ping", new Ping());
 
         CardInformationStore store = initialiseCardInformationStore(configuration);
+        initialiseMetrics(configuration, environment);
 
         environment.lifecycle().manage(new CardInformationStoreManaged(store));
         environment.jersey().register(new HealthCheckResource(environment));
@@ -50,6 +59,15 @@ public class CardApi extends Application<CardConfiguration> {
 
         environment.servlets().addFilter("LoggingFilter", new LoggingFilter())
                 .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
+    }
+
+    private void initialiseMetrics(CardConfiguration configuration, Environment environment) {
+        GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), Integer.valueOf(configuration.getGraphitePort()));
+        GraphiteReporter.forRegistry(environment.metrics())
+                .prefixedWith(SERVICE_METRICS_NODE)
+                .build(graphiteUDP)
+                .start(GRAPHITE_SENDING_PERIOD_SECONDS, TimeUnit.SECONDS);
+
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {

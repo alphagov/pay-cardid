@@ -15,6 +15,12 @@ public class CardConfiguration extends Configuration {
     @NotNull
     private String testCardDataLocation;
 
+    @NotNull
+    private String graphiteHost;
+
+    @NotNull
+    private String graphitePort;
+
     public String getDiscoverDataLocation() {
         return discoverDataLocation;
     }
@@ -25,5 +31,13 @@ public class CardConfiguration extends Configuration {
 
     public String getTestCardDataLocation() {
         return testCardDataLocation;
+    }
+
+    public String getGraphiteHost() {
+        return graphiteHost;
+    }
+
+    public String getGraphitePort() {
+        return graphitePort;
     }
 }
