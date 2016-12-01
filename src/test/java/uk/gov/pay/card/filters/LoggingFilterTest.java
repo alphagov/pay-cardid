@@ -6,6 +6,8 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.MetricRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.junit.Before;
@@ -18,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -46,6 +49,9 @@ public class LoggingFilterTest {
     @Mock
     FilterChain mockFilterChain;
 
+    @Mock
+    MetricRegistry mockMetricRegistry;
+
     private Appender<ILoggingEvent> mockAppender;
 
     @Captor
@@ -53,7 +59,7 @@ public class LoggingFilterTest {
 
     @Before
     public void setup() {
-        loggingFilter = new LoggingFilter();
+        loggingFilter = new LoggingFilter(mockMetricRegistry);
         Logger root = (Logger) LoggerFactory.getLogger(LoggingFilter.class);
         mockAppender = mockAppender();
         root.addAppender(mockAppender);
@@ -64,7 +70,7 @@ public class LoggingFilterTest {
 
         String requestId = UUID.randomUUID().toString();
         String requestUrl = "/cardid-request";
-        String requestMethod = "GET";
+        String requestMethod = "POST";
 
         when(mockRequest.getRequestURI()).thenReturn(requestUrl);
         when(mockRequest.getMethod()).thenReturn(requestMethod);
@@ -87,7 +93,7 @@ public class LoggingFilterTest {
     public void shouldLogEntryAndExitPointsEvenIfRequestIdDoesNotExist() throws Exception {
 
         String requestUrl = "/cardid-request";
-        String requestMethod = "GET";
+        String requestMethod = "POST";
 
         when(mockRequest.getRequestURI()).thenReturn(requestUrl);
         when(mockRequest.getMethod()).thenReturn(requestMethod);
@@ -106,7 +112,7 @@ public class LoggingFilterTest {
     @Test
     public void shouldLogEntryAndExitPointsEvenWhenFilterChainingThrowsException() throws Exception {
         String requestUrl = "/cardid-url-with-exception";
-        String requestMethod = "GET";
+        String requestMethod = "POST";
         String requestId = UUID.randomUUID().toString();
 
         when(mockRequest.getRequestURI()).thenReturn(requestUrl);
@@ -129,6 +135,19 @@ public class LoggingFilterTest {
         assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
         assertTrue(NumberUtils.isNumber(timeTaken[0]));
+    }
+
+    @Test
+    public void shouldLogRequestTimesAsMetrics() throws IOException, ServletException {
+        String requestUrl = "/cardid-request";
+        String requestMethod = "POST";
+
+        when(mockRequest.getRequestURI()).thenReturn(requestUrl);
+        when(mockRequest.getMethod()).thenReturn(requestMethod);
+
+        loggingFilter.doFilter(mockRequest, mockResponse, mockFilterChain);
+
+        verify(mockMetricRegistry).register(eq(requestUrl), isA(Gauge.class));
     }
 
     @SuppressWarnings("unchecked")
