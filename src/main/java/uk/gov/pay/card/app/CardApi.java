@@ -57,7 +57,7 @@ public class CardApi extends Application<CardConfiguration> {
         environment.jersey().register(new HealthCheckResource(environment));
         environment.jersey().register(new CardIdResource(new CardService(store)));
 
-        environment.servlets().addFilter("LoggingFilter", new LoggingFilter())
+        environment.servlets().addFilter("LoggingFilter", new LoggingFilter(environment.metrics()))
                 .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
     }
 
