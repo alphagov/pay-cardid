@@ -7,6 +7,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import com.codahale.metrics.Gauge;
+import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -52,10 +53,15 @@ public class LoggingFilterTest {
     @Mock
     MetricRegistry mockMetricRegistry;
 
+    @Mock
+    private Histogram mockHistogram;
+
     private Appender<ILoggingEvent> mockAppender;
 
     @Captor
     ArgumentCaptor<LoggingEvent> loggingEventArgumentCaptor;
+
+
 
     @Before
     public void setup() {
@@ -63,6 +69,8 @@ public class LoggingFilterTest {
         Logger root = (Logger) LoggerFactory.getLogger(LoggingFilter.class);
         mockAppender = mockAppender();
         root.addAppender(mockAppender);
+
+        when(mockMetricRegistry.histogram(anyString())).thenReturn(mockHistogram);
     }
 
     @Test
@@ -147,7 +155,7 @@ public class LoggingFilterTest {
 
         loggingFilter.doFilter(mockRequest, mockResponse, mockFilterChain);
 
-        verify(mockMetricRegistry).register(eq(requestUrl), isA(Gauge.class));
+        verify(mockHistogram).update(anyLong());
     }
 
     @SuppressWarnings("unchecked")

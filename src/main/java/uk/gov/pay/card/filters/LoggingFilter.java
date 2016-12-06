@@ -49,7 +49,7 @@ public class LoggingFilter implements Filter {
             logger.info(format("[%s] - %s to %s ended - total time %dms", requestId, requestMethod, requestURL,
                     elapsed));
             stopwatch.stop();
-            metricsRegistry.register(requestURL, (Gauge<Long>) () -> elapsed);
+            metricsRegistry.histogram("response-times").update(elapsed);
         }
     }
 
