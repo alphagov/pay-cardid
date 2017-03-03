@@ -82,6 +82,7 @@ public class CardIdResourceITest {
     }
 
     private ValidatableResponse getCardInformation(String cardNumber) {
+        System.out.println("-------------------------->" + app.getLocalPort());
         return given().port(app.getLocalPort())
                 .contentType(ContentType.JSON)
                 .body(String.format("{\"cardNumber\":%s}", cardNumber))
