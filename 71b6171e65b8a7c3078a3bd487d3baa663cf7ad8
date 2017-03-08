@@ -17,3 +17,5 @@ alpha_release-33.approve-date=2017-03-08:11:58:18
 staging-1.tag=FAILED-34
 
 staging-1.FAILED-34.date=
+
+staging-1.FAILED-34.status=failed
