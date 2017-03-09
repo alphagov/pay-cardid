@@ -1,0 +1,9 @@
+#!/bin/bash -ex
+
+DOCKER_FLAGS=""
+
+if [ "${DISABLE_DOCKER_CACHE}" == "true" ] ; then
+  DOCKER_FLAGS+="--no-cache --pull "
+fi
+
+docker build ${DOCKER_FLAGS} -t govukpay/pay-cardid:${REQ_COMMIT_ID}-${BUILD_NUMBER} .

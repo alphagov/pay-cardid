@@ -1,0 +1,40 @@
+#!groovy
+
+pipeline {
+    agent any
+    options {
+        ansiColor('xterm')
+        timestamps()
+    }
+    stages {
+       stage('Maven Clean') {
+            steps {
+                echo '\033[1;36m Building Maven... \033[0m'
+                sh 'mvn clean package'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                echo '\033[1;36m Building Container... \033[0m'
+                sh './jenkins/docker_build'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo '\033[1;36m Run end-to-end tests... \033[0m'
+                build job: 'run-end-to-end-tests',
+                  parameters:[
+                    string(name: 'MODULE_NAME', value: 'cardid'),
+                    string(name: 'MODULE_TAG', value: '${env.GIT_COMMIT}-${env.BUILD_NUMBER}'),
+                    booleanParam(name: 'RUN_ZAP_TESTS', value: true),
+                    booleanParam(name: 'RUN_TESTS', value: true)]
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo '\033[1;36m Deploying... \033[0m'
+            }
+        }
+    }
+}
+
