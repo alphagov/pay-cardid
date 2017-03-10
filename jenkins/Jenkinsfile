@@ -25,7 +25,7 @@ pipeline {
                 build job: 'run-end-to-end-tests',
                   parameters:[
                     string(name: 'MODULE_NAME', value: 'cardid'),
-                    string(name: 'MODULE_TAG', value: "${env.GIT_COMMIT}-${env.BUILD_NUMBER}"),
+                    string(name: 'MODULE_TAG', value: "${env.REQ_COMMIT_ID}-${env.BUILD_NUMBER}"),
                     booleanParam(name: 'RUN_ZAP_TESTS', value: true),
                     booleanParam(name: 'RUN_TESTS', value: true)]
             }
