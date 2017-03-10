@@ -1,7 +1,5 @@
 #!/bin/bash -ex
 
-echo $DOCKER_HOST
-
 DOCKER_FLAGS=""
 
 if [ "${DISABLE_DOCKER_CACHE}" == "true" ] ; then
