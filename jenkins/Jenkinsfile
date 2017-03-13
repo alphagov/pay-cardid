@@ -1,4 +1,4 @@
-#!groovy
+#!/usr/bin/env groovy
 
 pipeline {
     agent any
@@ -9,19 +9,23 @@ pipeline {
     stages {
        stage('Maven Clean') {
             steps {
-                echo '\033[1;36m Building Maven... \033[0m'
+                echo 'Building Maven...'
                 sh 'mvn clean package'
             }
         }
         stage('Docker Build') {
             steps {
-                echo '\033[1;36m Building Container... \033[0m'
-                sh './jenkins/docker_build'
+                echo 'Building Container...'
+                script {
+                    buildApp{
+                        app = 'cardid'
+                    }
+                }
             }
         }
         stage('Test') {
             steps {
-                echo '\033[1;36m Run end-to-end tests... \033[0m'
+                echo 'Run end-to-end tests...'
                 build job: 'run-end-to-end-tests',
                   parameters:[
                     string(name: 'MODULE_NAME', value: 'cardid'),
@@ -32,9 +36,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo '\033[1;36m Deploying... \033[0m'
+                echo 'Deploying...'
             }
         }
     }
 }
-
