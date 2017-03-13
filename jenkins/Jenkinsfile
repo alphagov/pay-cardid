@@ -6,6 +6,9 @@ pipeline {
         ansiColor('xterm')
         timestamps()
     }
+    environment { 
+        DOCKER_HOST = "unix:///var/run/docker.sock"
+    }
     stages {
        stage('Maven Clean') {
             steps {
