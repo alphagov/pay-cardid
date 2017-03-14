@@ -10,7 +10,7 @@ pipeline {
         DOCKER_HOST = "unix:///var/run/docker.sock"
     }
     stages {
-       stage('Maven Clean') {
+       stage('Maven Build') {
             steps {
                 echo 'Building Maven...'
                 sh 'mvn clean package'
