@@ -29,7 +29,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
-                echo 'hi'
+                echo 'this is a hook test'
             }
         }
     }
