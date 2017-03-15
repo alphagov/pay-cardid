@@ -6,19 +6,14 @@ pipeline {
         ansiColor('xterm')
         timestamps()
     }
-    environment { 
-        DOCKER_HOST = "unix:///var/run/docker.sock"
-    }
     stages {
        stage('Maven Build') {
             steps {
-                echo 'Building Maven...'
                 sh 'mvn clean package'
             }
         }
         stage('Docker Build') {
             steps {
-                echo 'Building Container...'
                 script {
                     buildApp{
                         app = 'cardid'
@@ -28,18 +23,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Run end-to-end tests...'
-                build job: 'run-end-to-end-tests',
-                  parameters:[
-                    string(name: 'MODULE_NAME', value: 'cardid'),
-                    string(name: 'MODULE_TAG', value: "${env.REQ_COMMIT_ID}-${env.BUILD_NUMBER}"),
-                    booleanParam(name: 'RUN_ZAP_TESTS', value: true),
-                    booleanParam(name: 'RUN_TESTS', value: true)]
+                runEndToEnd("cardid", "${env.REQ_COMMIT_ID}-${env.BUILD_NUMBER}")
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
+                echo 'hi'
             }
         }
     }
