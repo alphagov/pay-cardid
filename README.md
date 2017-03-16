@@ -74,7 +74,7 @@ Format: csv
      * `02` - data record
      * `09` - EOF
    
-## API
+## API Specification
 
 ### POST /v1/api/card
 
