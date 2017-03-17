@@ -6,9 +6,6 @@ pipeline {
         ansiColor('xterm')
         timestamps()
     }
-    parameters {
-        booleanParam(name: 'RUN_ZAP_TESTS', defaultValue: true, description: '')
-    }
     stages {
        stage('Git Submodule Update') {
             steps {
