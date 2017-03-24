@@ -1,4 +1,4 @@
-TEST
+FOOBAR
 # pay-cardid
 
 GOV.UK Pay Card information service
