@@ -16,15 +16,14 @@ import static io.dropwizard.testing.ConfigOverride.config;
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 import static org.hamcrest.core.Is.is;
 
-
 public class CardIdResourceITest {
 
     @Rule
     public DropwizardAppRule<CardConfiguration> app = new DropwizardAppRule<>(
             CardApi.class
             , resourceFilePath("config/config.yaml")
-            , config("server.applicationConnectors[0].port", "9800")
-            , config("server.adminConnectors[0].port", "9801")
+            , config("server.applicationConnectors[0].port", "0")
+            , config("server.adminConnectors[0].port", "0")
             , config("worldpayDataLocation", "data/sources/worldpay/")
             , config("discoverDataLocation", "data/sources/discover/")
             , config("testCardDataLocation", "data/sources/test-cards/"));
