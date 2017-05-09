@@ -1,5 +1,6 @@
 package uk.gov.pay.card.app;
 
+import com.codahale.metrics.Metric;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteSender;
 import com.codahale.metrics.graphite.GraphiteUDP;
@@ -25,7 +26,7 @@ import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
 import static javax.servlet.DispatcherType.REQUEST;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
-import static uk.gov.pay.card.resources.CardIdResource.*;
+import static uk.gov.pay.card.resources.CardIdResource.CARD_INFORMATION_PATH;
 
 public class CardApi extends Application<CardConfiguration> {
 
@@ -65,9 +66,14 @@ public class CardApi extends Application<CardConfiguration> {
         GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), Integer.valueOf(configuration.getGraphitePort()));
         GraphiteReporter.forRegistry(environment.metrics())
                 .prefixedWith(SERVICE_METRICS_NODE)
+                .filter(this::ignoringUnwantedMetrics)
                 .build(graphiteUDP)
                 .start(GRAPHITE_SENDING_PERIOD_SECONDS, TimeUnit.SECONDS);
 
+    }
+
+    private boolean ignoringUnwantedMetrics(String name, Metric metric) {
+        return !name.contains("ch.qos.logback");
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {
