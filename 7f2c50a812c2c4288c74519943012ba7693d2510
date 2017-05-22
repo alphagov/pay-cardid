@@ -41,3 +41,5 @@ release.tag=alpha_release-42
 release.alpha_release-42.date=2017-05-19:15:37:36
 
 production-2.tag=FAILED-41
+
+production-2.FAILED-41.date=
