@@ -15,10 +15,12 @@ public class CardInformation {
         put("MC", "master-card");
         put("MCI DEBIT", "master-card");
         put("MCI CREDIT", "master-card");
+        put("MAESTRO", "maestro");
         put("AMERICAN EXPRESS", "american-express");
         put("DINERS CLUB", "diners-club");
         put("VISA CREDIT", "visa");
         put("VISA DEBIT", "visa");
+        put("ELECTRON", "visa");
     }};
 
     public CardInformation(String brand, String type, String label, Long min, Long max) {

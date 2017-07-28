@@ -49,7 +49,7 @@ public class RangeSetCardInformationStoreTest {
 
         Optional<CardInformation> cardInformation = cardInformationStore.find("51194812198");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("electron"));
+        assertThat(cardInformation.get().getBrand(), is("visa"));
         assertThat(cardInformation.get().getType(), is("D"));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
     }
@@ -78,7 +78,7 @@ public class RangeSetCardInformationStoreTest {
 
         Optional<CardInformation> cardInformation = cardInformationStore.find("51122676499");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("electron"));
+        assertThat(cardInformation.get().getBrand(), is("visa"));
         assertThat(cardInformation.get().getType(), is("D"));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
     }
@@ -92,7 +92,7 @@ public class RangeSetCardInformationStoreTest {
 
         Optional<CardInformation> cardInformation = cardInformationStore.find("53333699999");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("electron"));
+        assertThat(cardInformation.get().getBrand(), is("visa"));
         assertThat(cardInformation.get().getType(), is("D"));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
     }
@@ -107,7 +107,7 @@ public class RangeSetCardInformationStoreTest {
 
         Optional<CardInformation> cardInformation = cardInformationStore.find("53333333699");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("electron"));
+        assertThat(cardInformation.get().getBrand(), is("visa"));
         assertThat(cardInformation.get().getType(), is("D"));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
     }
