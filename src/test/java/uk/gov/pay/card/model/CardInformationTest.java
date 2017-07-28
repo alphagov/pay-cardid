@@ -33,7 +33,7 @@ public class CardInformationTest {
 
     @Test
     public void shouldTransformMaestroBrand() {
-        CardInformation cardInformation = new CardInformation("MAESTRO", "C", "MAESTRO", 123456L, 123457L);
+        CardInformation cardInformation = new CardInformation("MAESTRO", "D", "MAESTRO", 123456L, 123457L);
         cardInformation.transformBrand();
         assertThat(cardInformation.getBrand(), is("maestro"));
     }
@@ -89,7 +89,14 @@ public class CardInformationTest {
 
     @Test
     public void shouldTransformVisaDebitBrand() {
-        CardInformation cardInformation = new CardInformation("VISA DEBIT", "C", "VISA DEBIT", 123456L, 123457L);
+        CardInformation cardInformation = new CardInformation("VISA DEBIT", "D", "VISA DEBIT", 123456L, 123457L);
+        cardInformation.transformBrand();
+        assertThat(cardInformation.getBrand(), is("visa"));
+    }
+
+    @Test
+    public void shouldTransformVisaElectronBrand() {
+        CardInformation cardInformation = new CardInformation("ELECTRON", "D", "ELECTRON", 123456L, 123457L);
         cardInformation.transformBrand();
         assertThat(cardInformation.getBrand(), is("visa"));
     }
