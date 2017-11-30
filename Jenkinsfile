@@ -27,36 +27,5 @@ pipeline {
         sh 'mvn clean package'
       }
     }
-    stage('Docker Build') {
-      steps {
-        script {
-          buildApp{
-            app = "cardid"
-          }
-        }
-      }
-    }
-    stage('Test') {
-      steps {
-        runEndToEnd("cardid")
-      }
-    }
-    stage('Docker Tag') {
-      steps {
-        script {
-          dockerTag {
-            app = "cardid"
-          }
-        }
-      }
-    }
-    stage('Deploy') {
-      when {
-        branch 'master'
-      }
-      steps {
-        deploy("cardid", "test", null, true)
-      }
-    }
   }
 }
