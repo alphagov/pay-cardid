@@ -5,6 +5,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ public class LoggingFilter implements Filter {
         String requestMethod = ((HttpServletRequest) servletRequest).getMethod();
         String requestId = defaultString(((HttpServletRequest) servletRequest).getHeader(HEADER_REQUEST_ID));
 
+        MDC.put(HEADER_REQUEST_ID, requestId);
 
         logger.info(format("[%s] - %s to %s began", requestId, requestMethod, requestURL));
         try {
