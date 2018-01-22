@@ -55,8 +55,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        deploy("cardid", "test", null, false, false)
-        deployEcs("cardid", "test", null, true, true)
+        deploy("cardid", "test", null, true, true)
       }
     }
   }
