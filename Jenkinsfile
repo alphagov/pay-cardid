@@ -55,8 +55,8 @@ pipeline {
         branch 'master'
       }
       steps {
-        deploy("cardid", "test", null, false, false)
-        deployEcs("cardid", "test", null, true, true)
+        deploy("cardid", "test", null, false, false, "uk.gov.pay.endtoend.categories.SmokeCardPayments")
+        deployEcs("cardid", "test", null, true, true, "uk.gov.pay.endtoend.categories.SmokeCardPayments")
       }
     }
   }
