@@ -14,6 +14,8 @@ pipeline {
 
   environment {
     DOCKER_HOST = "unix:///var/run/docker.sock"
+    HOSTED_GRAPHITE_ACCOUNT_ID = credentials('graphite_account_id')
+    HOSTED_GRAPHITE_API_KEY = credentials('graphite_api_key')
   }
 
   stages {
@@ -26,13 +28,26 @@ pipeline {
       steps {
         sh 'mvn clean package'
       }
+      post {
+        failure {
+          postMetric("cardid.maven-build.failure", 1, "new")
+        }
+        success {
+          postSuccessfulMetrics("cardid.maven-build")
+        }
+      }
     }
     stage('Docker Build') {
       steps {
         script {
-          buildApp{
+          buildAppWithMetrics{
             app = "cardid"
           }
+        }
+      }
+      post {
+        failure {
+          postMetric("cardid.docker-build.failure", 1, "new")
         }
       }
     }
@@ -44,9 +59,14 @@ pipeline {
     stage('Docker Tag') {
       steps {
         script {
-          dockerTag {
+          dockerTagWithMetrics {
             app = "cardid"
           }
+        }
+      }
+      post {
+        failure {
+          postMetric("cardid.docker-tag.failure", 1, "new")
         }
       }
     }
@@ -55,9 +75,16 @@ pipeline {
         branch 'master'
       }
       steps {
-        deploy("cardid", "test", null, false, false)
         deployEcs("cardid", "test", null, true, true)
       }
+    }
+  }
+  post {
+    failure {
+      postMetric("cardid.failure", 1, "new")
+    }
+    success {
+      postSuccessfulMetrics("cardid")
     }
   }
 }
