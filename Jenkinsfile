@@ -14,8 +14,6 @@ pipeline {
 
   environment {
     DOCKER_HOST = "unix:///var/run/docker.sock"
-    HOSTED_GRAPHITE_ACCOUNT_ID = credentials('graphite_account_id')
-    HOSTED_GRAPHITE_API_KEY = credentials('graphite_api_key')
   }
 
   stages {
@@ -26,14 +24,16 @@ pipeline {
     }
     stage('Maven Build') {
       steps {
-        sh 'mvn clean package'
+        script {
+          def long stepBuildTime = System.currentTimeMillis()
+ 
+          sh 'mvn clean package'
+          postSuccessfulMetrics("cardid.maven-build", stepBuildTime)
+        }
       }
       post {
         failure {
           postMetric("cardid.maven-build.failure", 1, "new")
-        }
-        success {
-          postSuccessfulMetrics("cardid.maven-build")
         }
       }
     }
