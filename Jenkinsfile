@@ -33,7 +33,7 @@ pipeline {
       }
       post {
         failure {
-          postMetric("cardid.maven-build.failure", 1, "new")
+          postMetric("cardid.maven-build.failure", 1)
         }
       }
     }
@@ -47,7 +47,7 @@ pipeline {
       }
       post {
         failure {
-          postMetric("cardid.docker-build.failure", 1, "new")
+          postMetric("cardid.docker-build.failure", 1)
         }
       }
     }
@@ -66,7 +66,7 @@ pipeline {
       }
       post {
         failure {
-          postMetric("cardid.docker-tag.failure", 1, "new")
+          postMetric("cardid.docker-tag.failure", 1)
         }
       }
     }
@@ -81,10 +81,10 @@ pipeline {
   }
   post {
     failure {
-      postMetric("cardid.failure", 1, "new")
+      postMetric(appendBranchSuffix("cardid") + ".failure", 1)
     }
     success {
-      postSuccessfulMetrics("cardid")
+      postSuccessfulMetrics(appendBranchSuffix("cardid"))
     }
   }
 }
