@@ -117,7 +117,41 @@ pipeline {
         branch 'master'
       }
       steps {
-        deployEcs("cardid", "test", null, true, true)
+        deployEcs("cardid", "test", null, false, false)
+      }
+    }
+    stage('Smoke Tests') {
+      failFast true
+      parallel {
+        stage('Card Payment Smoke Test') {
+          when { branch 'master' }
+          steps { runCardSmokeTest() }
+        }
+        stage('Product Smoke Test') {
+          when { branch 'master' }
+          steps { runProductsSmokeTest() }
+        }
+      }
+    }
+    stage('Complete') {
+      failFast true
+      parallel {
+        stage('Tag Build') {
+          when {
+            branch 'master'
+          }
+          steps {
+            tagDeployment("cardid")
+          }
+        }
+        stage('Trigger Deploy Notification') {
+          when {
+            branch 'master'
+          }
+          steps {
+            triggerGraphiteDeployEvent("cardid")
+          }
+        }
       }
     }
   }
