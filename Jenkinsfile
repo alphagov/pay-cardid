@@ -117,7 +117,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        deployEcs("cardid", "test", null, false, false)
+        deployEcs("cardid")
       }
     }
     stage('Smoke Tests') {
