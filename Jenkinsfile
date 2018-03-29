@@ -7,6 +7,7 @@ pipeline {
     booleanParam(defaultValue: true, description: '', name: 'runEndToEndTestsOnPR')
     booleanParam(defaultValue: true, description: '', name: 'runAcceptTestsOnPR')
     booleanParam(defaultValue: false, description: '', name: 'runZapTestsOnPR')
+    string(defaultValue: '', description: '', name: 'targetEnv')
   }
 
   options {
@@ -23,6 +24,7 @@ pipeline {
     RUN_END_TO_END_ON_PR = "${params.runEndToEndTestsOnPR}"
     RUN_ACCEPT_ON_PR = "${params.runAcceptTestsOnPR}"
     RUN_ZAP_ON_PR = "${params.runZapTestsOnPR}"
+    TARGET_ENV = "${params.targetEnv}"
   }
 
   stages {
@@ -32,10 +34,10 @@ pipeline {
       }
     }
     stage('Maven Build') {
+      when { environment name: 'TARGET_ENV', value: 'test' }
       steps {
         script {
           def long stepBuildTime = System.currentTimeMillis()
- 
           sh 'mvn clean package'
           postSuccessfulMetrics("cardid.maven-build", stepBuildTime)
         }
@@ -47,6 +49,8 @@ pipeline {
       }
     }
     stage('Docker Build') {
+        when { environment name: 'TARGET_ENV', value: 'test' }
+
       steps {
         script {
           buildAppWithMetrics{
@@ -61,6 +65,7 @@ pipeline {
       }
     }
     stage('Tests') {
+      when { environment name: 'TARGET_ENV', value: 'test' }
       failFast true
       parallel {
         stage('Card Payment End-to-End Tests') {
@@ -86,6 +91,7 @@ pipeline {
             }
         }
          stage('ZAP Tests') {
+
             when {
                 anyOf {
                   branch 'master'
@@ -99,6 +105,7 @@ pipeline {
       }
     }
     stage('Docker Tag') {
+      when { environment name: 'TARGET_ENV', value: 'test' }
       steps {
         script {
           dockerTagWithMetrics {
@@ -113,14 +120,19 @@ pipeline {
       }
     }
     stage('Deploy') {
+
       when {
-        branch 'master'
+        anyOf {
+          environment name: 'TARGET_ENV', value: 'test'
+          branch 'master'
+        }
       }
       steps {
         deployEcs("cardid")
       }
     }
     stage('Smoke Tests') {
+      when { environment name: 'TARGET_ENV', value: 'test' }
       failFast true
       parallel {
         stage('Card Payment Smoke Test') {
@@ -134,6 +146,7 @@ pipeline {
       }
     }
     stage('Complete') {
+      when { environment name: 'TARGET_ENV', value: 'test' }
       failFast true
       parallel {
         stage('Tag Build') {
@@ -154,13 +167,11 @@ pipeline {
         }
       }
     }
-  }
-  post {
-    failure {
-      postMetric(appendBranchSuffix("cardid") + ".failure", 1)
-    }
-    success {
-      postSuccessfulMetrics(appendBranchSuffix("cardid"))
+    stage('Staging step') {
+      when { environment name: 'TARGET_ENV', value: 'staging' }
+      steps {
+        script {'echo hello'}
+      }
     }
   }
 }
