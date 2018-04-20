@@ -15,7 +15,7 @@ pipeline {
   }
 
   libraries {
-    lib("pay-jenkins-library@master")
+    lib("pay-jenkins-library@PP-3641-disable-accept-tests")
   }
 
   environment {
