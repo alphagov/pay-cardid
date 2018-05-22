@@ -3,7 +3,7 @@ package uk.gov.pay.card.app;
 import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorderBuilder;
 import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import com.amazonaws.xray.plugins.EC2Plugin;
+import com.amazonaws.xray.plugins.ECSPlugin;
 import com.amazonaws.xray.strategy.sampling.LocalizedSamplingStrategy;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteSender;
@@ -83,7 +83,7 @@ public class CardApi extends Application<CardConfiguration> {
      * @see <a href="http://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-configuration.html">Configuring the X-Ray SDK for Java</a>
      */
     private void initialiseXRay() {
-        AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard().withPlugin(new EC2Plugin());
+        AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard().withPlugin(new ECSPlugin());
         URL ruleFile = CardApi.class.getResource("/aws-xray-sampling-rules.json");
         builder.withSamplingStrategy(new LocalizedSamplingStrategy(ruleFile));
         AWSXRay.setGlobalRecorder(builder.build());
