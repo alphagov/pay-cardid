@@ -1,2 +1,6 @@
 #!/bin/bash
-mvn -DskipTests clean package && docker build -t govukpay/cardid:local .
+
+set -e
+
+mvn -DskipTests clean package
+docker build -t govukpay/cardid:local .
