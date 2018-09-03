@@ -3,7 +3,7 @@ FROM govukpay/openjdk:alpine-3.8-jre-8.171.11
 RUN apk update
 RUN apk upgrade
 
-RUN apk add bash
+RUN apk add --no-cache bash netcat-openbsd 
 
 ENV PORT 8080
 ENV ADMIN_PORT 8081

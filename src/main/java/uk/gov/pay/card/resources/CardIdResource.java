@@ -18,8 +18,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/")
 public class CardIdResource {
-    public static final String API_VERSION = "v1";
-    public static final String CARD_INFORMATION_PATH = "/"+ API_VERSION +"/api/card";
+    public static final String API_VERSION_PATH = "/v1";
+    public static final String CARD_INFORMATION_PATH = API_VERSION_PATH + "/api/card";
     private static final Logger logger = LoggerFactory.getLogger(CardIdResource.class);
 
     CardService cardService;
