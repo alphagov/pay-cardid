@@ -2,6 +2,8 @@ package uk.gov.pay.card.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 public class CardInformationResponse {
 
     @JsonProperty("brand")
@@ -13,43 +15,30 @@ public class CardInformationResponse {
     @JsonProperty("label")
     private String label;
 
+    @JsonProperty("corporate")
+    private boolean corporate;
+
     public CardInformationResponse(CardInformation cardData) {
         this.brand = cardData.getBrand();
         this.label = cardData.getLabel();
         this.type = cardData.getType();
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getLabel() {
-        return label;
+        this.corporate = cardData.isCorporate();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CardInformationResponse that = (CardInformationResponse) o;
-
-        if (brand != null ? !brand.equals(that.brand) : that.brand != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        return label != null ? label.equals(that.label) : that.label == null;
-
+        return corporate == that.corporate &&
+                Objects.equals(brand, that.brand) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(label, that.label);
     }
 
     @Override
     public int hashCode() {
-        int result = brand != null ? brand.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (label != null ? label.hashCode() : 0);
-        return result;
+        return Objects.hash(brand, type, label, corporate);
     }
 
     @Override
@@ -58,6 +47,7 @@ public class CardInformationResponse {
                 "brand='" + brand + '\'' +
                 ", type='" + type + '\'' +
                 ", label='" + label + '\'' +
+                ", corporate=" + corporate +
                 '}';
     }
 }

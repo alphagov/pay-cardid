@@ -6,7 +6,6 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
-import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.FilterChain;
@@ -62,7 +61,6 @@ public class LoggingFilterTest {
     ArgumentCaptor<LoggingEvent> loggingEventArgumentCaptor;
 
 
-
     @Before
     public void setup() {
         loggingFilter = new LoggingFilter(mockMetricRegistry);
@@ -93,7 +91,7 @@ public class LoggingFilterTest {
         String endLogMessage = loggingEvents.get(1).getFormattedMessage();
         assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
-        assertTrue(NumberUtils.isNumber(timeTaken[0]));
+        assertTrue(NumberUtils.isCreatable(timeTaken[0]));
         verify(mockFilterChain).doFilter(mockRequest, mockResponse);
     }
 
@@ -142,7 +140,7 @@ public class LoggingFilterTest {
         String endLogMessage = loggingEvents.get(2).getFormattedMessage();
         assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
-        assertTrue(NumberUtils.isNumber(timeTaken[0]));
+        assertTrue(NumberUtils.isCreatable(timeTaken[0]));
     }
 
     @Test

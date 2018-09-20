@@ -4,13 +4,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import uk.gov.pay.card.db.CardInformationStore;
+import uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.net.URL;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-import static uk.gov.pay.card.db.loader.BinRangeDataLoader.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class BinRangeDataLoaderTest {
 
@@ -27,7 +30,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        verify(cardInformationStore, times(4)).put(any(CardInformation.class));
+        verify(cardInformationStore, times(5)).put(any(CardInformation.class));
     }
 
     @Test
@@ -70,7 +73,6 @@ public class BinRangeDataLoaderTest {
         verifyZeroInteractions(cardInformationStore);
     }
 
-
     @Test
     public void shouldLoadBinRangeDataAsCardInformation() throws Exception {
         URL url = this.getClass().getResource("/worldpay-single/");
@@ -79,8 +81,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        CardInformation expectedCardInformation = new CardInformation("ELECTRON","D","ELECTRON",511226111L, 511226200L);
+        CardInformation expectedCardInformation = new CardInformation("ELECTRON", "D", "ELECTRON", 511226111L, 511226200L);
         verify(cardInformationStore).put(expectedCardInformation);
-
     }
 }
