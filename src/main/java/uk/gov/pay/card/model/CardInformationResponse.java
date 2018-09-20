@@ -21,7 +21,7 @@ public class CardInformationResponse {
     public CardInformationResponse(CardInformation cardData) {
         this.brand = cardData.getBrand();
         this.label = cardData.getLabel();
-        this.type = cardData.getType();
+        this.type = cardData.getCardType().getGovUkPayRepresentation();
         this.corporate = cardData.isCorporate();
     }
 

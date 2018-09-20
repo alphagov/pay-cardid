@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
+import uk.gov.pay.card.model.CardType;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.net.URL;
@@ -50,7 +51,7 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("51194812198");
         assertTrue(cardInformation.isPresent());
         assertThat(cardInformation.get().getBrand(), is("visa"));
-        assertThat(cardInformation.get().getType(), is("D"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
         assertThat(cardInformation.get().isCorporate(), is(false));
     }
@@ -66,7 +67,7 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("51194912333");
         assertTrue(cardInformation.isPresent());
         assertThat(cardInformation.get().getBrand(), is("discover"));
-        assertThat(cardInformation.get().getType(), is("D"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
         assertThat(cardInformation.get().getLabel(), is("DISCOVER"));
         assertThat(cardInformation.get().isCorporate(), is(false));
     }
@@ -81,7 +82,7 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("51122676499");
         assertTrue(cardInformation.isPresent());
         assertThat(cardInformation.get().getBrand(), is("visa"));
-        assertThat(cardInformation.get().getType(), is("D"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
         assertThat(cardInformation.get().isCorporate(), is(false));
     }
@@ -96,7 +97,7 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("53333699999");
         assertTrue(cardInformation.isPresent());
         assertThat(cardInformation.get().getBrand(), is("visa"));
-        assertThat(cardInformation.get().getType(), is("D"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
         assertThat(cardInformation.get().isCorporate(), is(false));
     }
@@ -112,7 +113,7 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("53333333699");
         assertTrue(cardInformation.isPresent());
         assertThat(cardInformation.get().getBrand(), is("visa"));
-        assertThat(cardInformation.get().getType(), is("D"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
         assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
         assertThat(cardInformation.get().isCorporate(), is(false));
     }
@@ -148,7 +149,7 @@ public class RangeSetCardInformationStoreTest {
     }
 
     @Test
-    public void shouldTransformConsumerCorporateCardType() throws Exception {
+    public void shouldFindCorporateCreditCardType() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
         BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
 
@@ -158,6 +159,9 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("5101180000000007");
 
         assertThat(cardInformation.isPresent(), is(true));
+        assertThat(cardInformation.get().getBrand(), is("master-card"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.get().getLabel(), is("MCI CREDIT"));
         assertThat(cardInformation.get().isCorporate(), is(true));
     }
 

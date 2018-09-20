@@ -10,7 +10,7 @@ import static java.lang.String.format;
 public class CardInformation {
 
     private String brand;
-    private String type;
+    private CardType cardType;
     private String label;
     private Long min;
     private Long max;
@@ -34,7 +34,7 @@ public class CardInformation {
 
     public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate) {
         this.brand = brand;
-        this.type = type;
+        this.cardType = CardType.of(type);
         this.label = label;
         this.min = min;
         this.max = max;
@@ -49,8 +49,8 @@ public class CardInformation {
         return brand;
     }
 
-    public String getType() {
-        return type;
+    public CardType getCardType() {
+        return cardType;
     }
 
     public String getLabel() {
@@ -88,7 +88,7 @@ public class CardInformation {
         CardInformation that = (CardInformation) o;
         return corporate == that.corporate &&
                 Objects.equals(brand, that.brand) &&
-                Objects.equals(type, that.type) &&
+                cardType == that.cardType &&
                 Objects.equals(label, that.label) &&
                 Objects.equals(min, that.min) &&
                 Objects.equals(max, that.max);
@@ -96,14 +96,14 @@ public class CardInformation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(brand, type, label, min, max, corporate);
+        return Objects.hash(brand, cardType, label, min, max, corporate);
     }
 
     @Override
     public String toString() {
         return "CardInformation{" +
                 "brand='" + brand + '\'' +
-                ", type='" + type + '\'' +
+                ", cardType=" + cardType +
                 ", label='" + label + '\'' +
                 ", min=" + min +
                 ", max=" + max +
