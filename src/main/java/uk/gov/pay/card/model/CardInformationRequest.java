@@ -7,14 +7,8 @@ public class CardInformationRequest {
     @JsonProperty("cardNumber")
     private String cardNumber;
 
-    public CardInformationRequest() {}
-
     public String getCardNumber() {
         return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
     }
 
     @Override
