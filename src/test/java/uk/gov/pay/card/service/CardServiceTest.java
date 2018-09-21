@@ -32,6 +32,7 @@ public class CardServiceTest {
 
         Optional<CardInformation> cardInformation = cardService.getCardInformation("1234567890123456");
 
+        assertThat(cardInformation.isPresent(), is(true));
         assertThat(expectedCardInformation, is(cardInformation.get()));
         verify(cardInformationStore).find("12345678901");
     }

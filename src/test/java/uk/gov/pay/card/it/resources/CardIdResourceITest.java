@@ -8,8 +8,6 @@ import org.junit.Test;
 import uk.gov.pay.card.app.CardApi;
 import uk.gov.pay.card.app.config.CardConfiguration;
 
-import java.io.IOException;
-
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
 import static io.dropwizard.testing.ConfigOverride.config;
@@ -29,49 +27,62 @@ public class CardIdResourceITest {
             , config("testCardDataLocation", "data/sources/test-cards/"));
 
     @Test
-    public void shouldFindDiscoverCardInformation() throws IOException {
+    public void shouldFindDiscoverCardInformation() {
         getCardInformation("6221267457963485")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("unionpay"))
                 .body("label", is("UNIONPAY"))
-                .body("type", is("CD"));
+                .body("type", is("CD"))
+                .body("corporate", is(false));
     }
 
     @Test
-    public void shouldFindTestCardInformation() throws IOException {
+    public void shouldFindTestCardInformation() {
         getCardInformation("4242424242424242")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("visa"))
                 .body("label", is("VISA CREDIT"))
-                .body("type", is("C"));
+                .body("type", is("C"))
+                .body("corporate", is(false));
     }
 
     @Test
-    public void shouldFindWorldpayCardInformation() throws IOException {
+    public void shouldFindWorldpayCardInformation() {
         getCardInformation("4000020004598361")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("visa"))
                 .body("label", is("VISA CREDIT"))
-                .body("type", is("C"));
-
+                .body("type", is("C"))
+                .body("corporate", is(false));
     }
 
     @Test
-    public void shouldFindAmexCardInformation() throws IOException {
+    public void shouldFindAmexCardInformation() {
         getCardInformation("371449635398431")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("american-express"))
                 .body("label", is("AMERICAN EXPRESS"))
-                .body("type", is("C"));
-
+                .body("type", is("C"))
+                .body("corporate", is(false));
     }
 
     @Test
-    public void shouldReturn404WhenCardInformationNotFoud() {
+    public void shouldFindMastercardCreditCorporateCardInformation() {
+        getCardInformation("5101180000000007")
+                .statusCode(200)
+                .contentType(JSON)
+                .body("brand", is("master-card"))
+                .body("label", is("MCI CREDIT"))
+                .body("type", is("C"))
+                .body("corporate", is(true));
+    }
+
+    @Test
+    public void shouldReturn404WhenCardInformationNotFound() {
         getCardInformation("8282382383829393")
                 .statusCode(404);
     }

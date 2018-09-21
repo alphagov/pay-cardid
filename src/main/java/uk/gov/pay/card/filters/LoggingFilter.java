@@ -1,23 +1,24 @@
 package uk.gov.pay.card.filters;
 
-import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 public class LoggingFilter implements Filter {
 
-    public static final String HEADER_REQUEST_ID = "X-Request-Id";
+    static final String HEADER_REQUEST_ID = "X-Request-Id";
     private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
     private final MetricRegistry metricsRegistry;
 
@@ -27,11 +28,11 @@ public class LoggingFilter implements Filter {
 
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
@@ -41,15 +42,14 @@ public class LoggingFilter implements Filter {
 
         MDC.put(HEADER_REQUEST_ID, requestId);
 
-        logger.info(format("[%s] - %s to %s began", requestId, requestMethod, requestURL));
+        logger.info("[{}] - {} to {} began", requestId, requestMethod, requestURL);
         try {
             filterChain.doFilter(servletRequest, servletResponse);
-        } catch (Throwable throwable) {
-            logger.error("Exception - cardid request - " + requestURL + " - exception - " + throwable.getMessage(), throwable);
+        } catch (Exception e) {
+            logger.error("Exception - cardid request - " + requestURL + " - exception - " + e.getMessage(), e);
         } finally {
             long elapsed = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-            logger.info(format("[%s] - %s to %s ended - total time %dms", requestId, requestMethod, requestURL,
-                    elapsed));
+            logger.info("[{}] - {} to {} ended - total time {}ms", requestId, requestMethod, requestURL, elapsed);
             stopwatch.stop();
             metricsRegistry.histogram("response-times").update(elapsed);
         }

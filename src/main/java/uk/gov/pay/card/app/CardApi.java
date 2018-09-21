@@ -25,7 +25,6 @@ import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
 import static javax.servlet.DispatcherType.REQUEST;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
-import static uk.gov.pay.card.resources.CardIdResource.*;
 
 public class CardApi extends Application<CardConfiguration> {
 
@@ -58,7 +57,7 @@ public class CardApi extends Application<CardConfiguration> {
         environment.jersey().register(new CardIdResource(new CardService(store)));
 
         environment.servlets().addFilter("LoggingFilter", new LoggingFilter(environment.metrics()))
-                .addMappingForUrlPatterns(of(REQUEST), true, CARD_INFORMATION_PATH);
+                .addMappingForUrlPatterns(of(REQUEST), true, "/v1/api/card");
     }
 
     private void initialiseMetrics(CardConfiguration configuration, Environment environment) {

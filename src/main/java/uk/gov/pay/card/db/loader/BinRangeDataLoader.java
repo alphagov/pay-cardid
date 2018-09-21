@@ -12,8 +12,10 @@ import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
+import static java.lang.String.format;
+
 public class BinRangeDataLoader {
-    private final long LOG_COUNT_EVERY_MS = 5000;
+    private static final long LOG_COUNT_EVERY_MS = 5000;
 
     private static final Logger logger = LoggerFactory.getLogger(BinRangeDataLoader.class);
     private String name;
@@ -28,9 +30,10 @@ public class BinRangeDataLoader {
     private static final String WORLDPAY_ROW_IDENTIFIER = "05";
     private static final String DISCOVER_ROW_IDENTIFIER = "02";
     private static final String TEST_CARD_DATA_ROW_IDENTIFIER = "02";
+    private static final String WORLDPAY_CORPORATE_CARD_MARKER = "CP";
 
     private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
-            entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
+            entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]), WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]));
 
     private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
@@ -41,7 +44,7 @@ public class BinRangeDataLoader {
     public static class BinRangeDataLoaderFactory {
 
         public static BinRangeDataLoader worldpay(String filePath) {
-           return new BinRangeDataLoader("Worldpay", filePath, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+            return new BinRangeDataLoader("Worldpay", filePath, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
         }
 
         public static BinRangeDataLoader discover(String filePath) {
@@ -62,7 +65,7 @@ public class BinRangeDataLoader {
     }
 
     public void loadDataTo(CardInformationStore cardInformationStore) throws DataLoaderException {
-        logger.info("Loading " + name + " data in to card information store");
+        logger.info("Loading {} data in to card information store", name);
         final AtomicLong lastPrintedCount = new AtomicLong(System.currentTimeMillis());
         final AtomicLong count = new AtomicLong(0);
 
@@ -78,12 +81,12 @@ public class BinRangeDataLoader {
 
                         long records = count.incrementAndGet();
                         if ((System.currentTimeMillis() - lastPrintedCount.get()) > LOG_COUNT_EVERY_MS) {
-                            logger.info(records + " records loaded...");
+                            logger.info("{} records loaded...", records);
                             lastPrintedCount.set(System.currentTimeMillis());
                         }
                     });
 
-            logger.info(count + " records loaded... DONE");
+            logger.info("{} records loaded... DONE", count);
 
         } catch (Exception e) {
             throw new DataLoaderException("Exception loading file at:" + filePath, e);
@@ -95,26 +98,30 @@ public class BinRangeDataLoader {
 
     private File getBinRangeFile() throws DataLoaderException {
         File folder = new File(filePath);
-        File[] matchingFiles = folder.listFiles((dir, name) -> {
-            return name.toLowerCase().endsWith("csv");
-        });
+        File[] matchingFiles = folder.listFiles((dir, fileName) -> fileName.toLowerCase().endsWith("csv"));
 
-        validateFiles(matchingFiles);
-
-        return matchingFiles[0];
+        return validateDirectorysAndGetFile(matchingFiles);
     }
 
-    private void validateFiles(File[] matchingFiles) throws DataLoaderException {
-        if (matchingFiles.length != 1) {
-            String message = null;
+    private File validateDirectorysAndGetFile(File[] matchingFiles) throws DataLoaderException {
+        if (matchingFiles != null) {
+            if (matchingFiles.length != 1) {
+                String message = null;
 
-            if (matchingFiles.length == 0) message = "No CSV found at " + filePath;
-            if (matchingFiles.length > 1)  message = "More than one CSV found at " + filePath;
+                if (matchingFiles.length == 0) message = "No CSV found at " + filePath;
+                if (matchingFiles.length > 1) message = "More than one CSV found at " + filePath;
 
+                logger.error(message);
+                throw new DataLoaderException(message);
+            } else {
+                logger.info("Found one file to load [{}]", filePath);
+                return matchingFiles[0];
+            }
+        } else {
+            final String message = format("No directory exists at [%s]", filePath);
             logger.error(message);
             throw new DataLoaderException(message);
         }
-
     }
 
     class DataLoaderException extends Exception {

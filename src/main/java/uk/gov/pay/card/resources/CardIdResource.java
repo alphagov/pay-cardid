@@ -18,18 +18,16 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/")
 public class CardIdResource {
-    public static final String API_VERSION = "v1";
-    public static final String CARD_INFORMATION_PATH = "/"+ API_VERSION +"/api/card";
     private static final Logger logger = LoggerFactory.getLogger(CardIdResource.class);
 
-    CardService cardService;
+    private CardService cardService;
 
     public CardIdResource(CardService cardService) {
         this.cardService = cardService;
     }
 
     @POST
-    @Path(CARD_INFORMATION_PATH)
+    @Path("/v1/api/card")
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response cardInformation(CardInformationRequest cardInformationRequest) {
