@@ -34,6 +34,7 @@ public class CardIdResourceITest {
                 .body("brand", is("unionpay"))
                 .body("label", is("UNIONPAY"))
                 .body("type", is("CD"))
+                .body("prepaid", is("UNKNOWN"))
                 .body("corporate", is(false));
     }
 
@@ -45,6 +46,7 @@ public class CardIdResourceITest {
                 .body("brand", is("visa"))
                 .body("label", is("VISA CREDIT"))
                 .body("type", is("C"))
+                .body("prepaid", is("NOT_PREPAID"))
                 .body("corporate", is(false));
     }
 
@@ -56,6 +58,7 @@ public class CardIdResourceITest {
                 .body("brand", is("visa"))
                 .body("label", is("VISA CREDIT"))
                 .body("type", is("C"))
+                .body("prepaid", is("NOT_PREPAID"))
                 .body("corporate", is(false));
     }
 
@@ -67,6 +70,7 @@ public class CardIdResourceITest {
                 .body("brand", is("american-express"))
                 .body("label", is("AMERICAN EXPRESS"))
                 .body("type", is("C"))
+                .body("prepaid", is("UNKNOWN"))
                 .body("corporate", is(false));
     }
 
@@ -78,7 +82,20 @@ public class CardIdResourceITest {
                 .body("brand", is("master-card"))
                 .body("label", is("MCI CREDIT"))
                 .body("type", is("C"))
+                .body("prepaid", is("UNKNOWN"))
                 .body("corporate", is(true));
+    }
+
+    @Test
+    public void shouldFindPrepaidCard() {
+        getCardInformation("4860880000000001")
+                .statusCode(200)
+                .contentType(JSON)
+                .body("brand", is("visa"))
+                .body("label", is("VISA DEBIT"))
+                .body("type", is("D"))
+                .body("prepaid", is("PREPAID"))
+                .body("corporate", is(false));
     }
 
     @Test

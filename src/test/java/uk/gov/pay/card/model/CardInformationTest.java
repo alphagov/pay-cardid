@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class CardInformationTest {
 
     @Test
-    public void shouldAdjustRangesLegnth() {
+    public void shouldAdjustRangesLength() {
 
         CardInformation cardInformation = new CardInformation("visa", "D", "visa", 123456L, 123457L);
         cardInformation.updateRangeLength(11);

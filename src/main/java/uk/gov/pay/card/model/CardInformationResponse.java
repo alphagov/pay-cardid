@@ -18,11 +18,15 @@ public class CardInformationResponse {
     @JsonProperty("corporate")
     private boolean corporate;
 
+    @JsonProperty("prepaid")
+    private PrepaidStatus prepaidStatus;
+
     public CardInformationResponse(CardInformation cardData) {
         this.brand = cardData.getBrand();
         this.label = cardData.getLabel();
         this.type = cardData.getCardType().getGovUkPayRepresentation();
         this.corporate = cardData.isCorporate();
+        this.prepaidStatus = cardData.getPrepaidStatus();
     }
 
     @Override
@@ -33,12 +37,13 @@ public class CardInformationResponse {
         return corporate == that.corporate &&
                 Objects.equals(brand, that.brand) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(label, that.label);
+                Objects.equals(label, that.label) &&
+                Objects.equals(prepaidStatus, that.prepaidStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(brand, type, label, corporate);
+        return Objects.hash(brand, type, label, corporate, prepaidStatus);
     }
 
     @Override
@@ -47,7 +52,8 @@ public class CardInformationResponse {
                 "brand='" + brand + '\'' +
                 ", type='" + type + '\'' +
                 ", label='" + label + '\'' +
-                ", corporate=" + corporate +
+                ", corporate=" + corporate + '\'' +
+                ", prepaidStatus=" + prepaidStatus +
                 '}';
     }
 }
