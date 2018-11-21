@@ -33,7 +33,8 @@ public class BinRangeDataLoader {
     private static final String WORLDPAY_CORPORATE_CARD_MARKER = "CP";
 
     private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
-            entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]), WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]));
+            entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]),
+            WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]), WorldpayPrepaidParser.parse(entry[11]));
 
     private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));

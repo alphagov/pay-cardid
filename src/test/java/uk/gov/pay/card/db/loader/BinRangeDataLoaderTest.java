@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 import uk.gov.pay.card.model.CardInformation;
+import uk.gov.pay.card.model.PrepaidStatus;
 
 import java.net.URL;
 
@@ -81,7 +82,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        CardInformation expectedCardInformation = new CardInformation("ELECTRON", "D", "ELECTRON", 511226111L, 511226200L);
+        CardInformation expectedCardInformation = new CardInformation("ELECTRON", "D", "ELECTRON", 511226111L, 511226200L, false, PrepaidStatus.PREPAID);
         verify(cardInformationStore).put(expectedCardInformation);
     }
 }

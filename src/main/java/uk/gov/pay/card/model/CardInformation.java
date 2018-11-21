@@ -15,6 +15,7 @@ public class CardInformation {
     private Long min;
     private Long max;
     private boolean corporate;
+    private PrepaidStatus prepaidStatus;
 
     private static Map<String, String> brandMapping;
 
@@ -32,17 +33,18 @@ public class CardInformation {
         brandMapping = Collections.unmodifiableMap(brands);
     }
 
-    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate) {
+    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
         this.brand = brand;
         this.cardType = CardType.of(type);
         this.label = label;
         this.min = min;
         this.max = max;
         this.corporate = corporate;
+        this.prepaidStatus = prepaidStatus;
     }
 
     public CardInformation(String brand, String type, String label, Long min, Long max) {
-        this(brand, type, label, min, max, false);
+        this(brand, type, label, min, max, false, PrepaidStatus.UNKNOWN);
     }
 
     public String getBrand() {
@@ -69,6 +71,10 @@ public class CardInformation {
         return corporate;
     }
 
+    public PrepaidStatus getPrepaidStatus() {
+        return prepaidStatus;
+    }
+
     public void updateRangeLength(int numLength) {
         min = Long.valueOf(format("%-" + numLength + "d", min).replace(" ", "0"));
         max = Long.valueOf(format("%-" + numLength + "d", max).replace(" ", "9"));
@@ -91,7 +97,8 @@ public class CardInformation {
                 cardType == that.cardType &&
                 Objects.equals(label, that.label) &&
                 Objects.equals(min, that.min) &&
-                Objects.equals(max, that.max);
+                Objects.equals(max, that.max) &&
+                Objects.equals(prepaidStatus, that.prepaidStatus);
     }
 
     @Override
@@ -105,6 +112,7 @@ public class CardInformation {
                 "brand='" + brand + '\'' +
                 ", cardType=" + cardType +
                 ", label='" + label + '\'' +
+                ", prepaidStatus='" + prepaidStatus + '\'' +
                 ", min=" + min +
                 ", max=" + max +
                 ", corporate=" + corporate +
