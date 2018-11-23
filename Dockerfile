@@ -14,7 +14,7 @@ WORKDIR /app
 
 ADD target/*.yaml /app/
 ADD target/pay-*-allinone.jar /app/
-COPY data/* /app/data/
+COPY data/sources/ /app/data/
 RUN ls -a /app/data/*
 ADD docker-startup.sh /app/docker-startup.sh
 
