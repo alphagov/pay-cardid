@@ -7,3 +7,5 @@ staging-2.tag=FAILED-80
 staging-2.FAILED-80.date=
 
 staging-2.FAILED-80.status=failed
+
+staging-2.tag=alpha_staging-2-80
