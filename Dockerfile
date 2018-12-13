@@ -12,10 +12,9 @@ EXPOSE 8081
 
 WORKDIR /app
 
+ADD docker-startup.sh /app/docker-startup.sh
+COPY data/sources/ /app/data/
 ADD target/*.yaml /app/
 ADD target/pay-*-allinone.jar /app/
-COPY data/sources/ /app/data/
-RUN ls -a /app/data/*
-ADD docker-startup.sh /app/docker-startup.sh
 
 CMD bash ./docker-startup.sh
