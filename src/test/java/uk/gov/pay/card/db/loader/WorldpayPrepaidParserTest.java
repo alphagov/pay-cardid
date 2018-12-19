@@ -15,37 +15,37 @@ public class WorldpayPrepaidParserTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void shouldReturnPrepaidForY() throws Exception {
+    public void shouldReturnPrepaidForY() {
         assertThat(WorldpayPrepaidParser.parse("Y"), equalTo(PrepaidStatus.PREPAID));
     }
 
     @Test
-    public void shouldReturnPrepaidForN() throws Exception {
+    public void shouldReturnPrepaidForN() {
         assertThat(WorldpayPrepaidParser.parse("N"), equalTo(PrepaidStatus.NOT_PREPAID));
     }
 
     @Test
-    public void shouldReturnUnknownForU() throws Exception {
+    public void shouldReturnUnknownForU() {
         assertThat(WorldpayPrepaidParser.parse("U"), equalTo(PrepaidStatus.UNKNOWN));
     }
 
     @Test
-    public void shouldReturnUnknownForNull() throws Exception {
+    public void shouldReturnUnknownForNull() {
         assertThat(WorldpayPrepaidParser.parse(null), equalTo(PrepaidStatus.UNKNOWN));
     }
 
     @Test
-    public void shouldReturnUnknownForEmptyString() throws Exception {
+    public void shouldReturnUnknownForEmptyString() {
         assertThat(WorldpayPrepaidParser.parse(""), equalTo(PrepaidStatus.UNKNOWN));
     }
 
     @Test
-    public void shouldReturnUnknownForYES() throws Exception {
+    public void shouldReturnUnknownForYES() {
         assertThat(WorldpayPrepaidParser.parse("YES"), equalTo(PrepaidStatus.UNKNOWN));
     }
 
     @Test
-    public void shouldReturnUnknownForNO() throws Exception {
+    public void shouldReturnUnknownForNO() {
         assertThat(WorldpayPrepaidParser.parse("NO"), equalTo(PrepaidStatus.UNKNOWN));
     }
 }

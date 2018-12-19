@@ -17,7 +17,7 @@ public class CardInformationStoreManaged implements Managed {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         cardInformationStore.destroy();
     }
 }

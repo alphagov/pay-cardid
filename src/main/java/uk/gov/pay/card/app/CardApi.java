@@ -46,7 +46,7 @@ public class CardApi extends Application<CardConfiguration> {
     }
 
     @Override
-    public void run(CardConfiguration configuration, Environment environment) throws Exception {
+    public void run(CardConfiguration configuration, Environment environment) {
         environment.healthChecks().register("ping", new Ping());
 
         CardInformationStore store = initialiseCardInformationStore(configuration);
