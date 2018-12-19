@@ -26,7 +26,7 @@ import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFac
  * - And then run the benchmark.
  */
 @State(Scope.Benchmark)
-public class RageSetCardInformationStoreBenchmark {
+public class RangeSetCardInformationStoreBenchmark {
 
     private CardInformationStore cardInformationStore;
 
@@ -58,7 +58,7 @@ public class RageSetCardInformationStoreBenchmark {
                 .measurementIterations(20)
                 .forks(1)
                 .threads(5)
-                .include(RageSetCardInformationStoreBenchmark.class.getSimpleName())
+                .include(RangeSetCardInformationStoreBenchmark.class.getSimpleName())
                 .timeUnit(TimeUnit.MICROSECONDS)
                 .mode(Mode.AverageTime)
                 .build();
