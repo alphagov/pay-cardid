@@ -17,7 +17,7 @@ public class CardInformation {
     private boolean corporate;
     private PrepaidStatus prepaidStatus;
 
-    private static Map<String, String> brandMapping;
+    private static final Map<String, String> brandMapping;
 
     static {
         Map<String, String> brands = new HashMap<>();

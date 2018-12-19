@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class CardServiceTest {
 
-    private CardInformationStore cardInformationStore = mock(CardInformationStore.class);
+    private final CardInformationStore cardInformationStore = mock(CardInformationStore.class);
 
     private CardService cardService;
 

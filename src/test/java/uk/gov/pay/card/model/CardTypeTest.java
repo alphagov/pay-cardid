@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.is;
 public class CardTypeTest {
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void shouldFindCardClass() {

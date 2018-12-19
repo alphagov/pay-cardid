@@ -17,7 +17,7 @@ import static org.hamcrest.core.Is.is;
 public class CardIdResourceITest {
 
     @Rule
-    public DropwizardAppRule<CardConfiguration> app = new DropwizardAppRule<>(
+    public final DropwizardAppRule<CardConfiguration> app = new DropwizardAppRule<>(
             CardApi.class
             , resourceFilePath("config/config.yaml")
             , config("server.applicationConnectors[0].port", "0")

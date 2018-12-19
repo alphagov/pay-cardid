@@ -18,11 +18,11 @@ public class BinRangeDataLoader {
     private static final long LOG_COUNT_EVERY_MS = 5000;
 
     private static final Logger logger = LoggerFactory.getLogger(BinRangeDataLoader.class);
-    private String name;
-    private String filePath;
-    private String delimeter;
-    private String dataRowIdentifier;
-    private Function<String[], CardInformation> cardInformationExtractor;
+    private final String name;
+    private final String filePath;
+    private final String delimeter;
+    private final String dataRowIdentifier;
+    private final Function<String[], CardInformation> cardInformationExtractor;
 
     private static final String WORLDPAY_DELIMITER = "!";
     private static final String DISCOVER_DELIMITER = ",";
