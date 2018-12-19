@@ -43,7 +43,7 @@ public class RageSetCardInformationStoreBenchmark {
             "51122666122", "51122666123", "51122666124", "51122666125", "51122666126", "51122666127", "51122666128", "51122666129", "51122666130",
             "511948111", "511948112", "511948113", "511948114", "511948115", "511948116", "511948117", "511948118", "511948119"
     })
-    public String cardIdPrefix;
+    private String cardIdPrefix;
 
     @Benchmark
     public void runBenchmark(Blackhole blackhole) {

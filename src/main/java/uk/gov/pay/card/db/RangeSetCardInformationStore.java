@@ -15,8 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RangeSetCardInformationStore implements CardInformationStore {
 
     private final List<BinRangeDataLoader> binRangeLoaders;
-    RangeSet<Long> rangeSet;
-    ConcurrentHashMap<Range, CardInformation> store;
+    private RangeSet<Long> rangeSet;
+    private ConcurrentHashMap<Range, CardInformation> store;
 
     public RangeSetCardInformationStore(List<BinRangeDataLoader> binRangeLoaders) {
         this.binRangeLoaders = binRangeLoaders;
