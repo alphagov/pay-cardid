@@ -125,7 +125,7 @@ public class BinRangeDataLoader {
         }
     }
 
-    class DataLoaderException extends Exception {
+    public class DataLoaderException extends Exception {
 
         DataLoaderException(String message, Throwable throwable) {
             super(message, throwable);
