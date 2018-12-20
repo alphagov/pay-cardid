@@ -21,7 +21,7 @@ public class HealthCheckResource {
     private static final String HEALTHCHECK = "healthcheck";
     private static final String HEALTHY = "healthy";
 
-    private Environment environment;
+    private final Environment environment;
 
     public HealthCheckResource(Environment environment) {
         this.environment = environment;

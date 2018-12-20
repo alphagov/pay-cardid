@@ -20,7 +20,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 public class CardIdResource {
     private static final Logger logger = LoggerFactory.getLogger(CardIdResource.class);
 
-    private CardService cardService;
+    private final CardService cardService;
 
     public CardIdResource(CardService cardService) {
         this.cardService = cardService;

@@ -15,9 +15,9 @@ public enum CardType {
     CREDIT_DEBIT("CD", "CD", "Both Credit and Debit"),
     DEBIT_II("F", "D", "Debit II");
 
-    private String paymentGatewayRepresentation;
-    private String govUkPayRepresentation;
-    private String description;
+    private final String paymentGatewayRepresentation;
+    private final String govUkPayRepresentation;
+    private final String description;
 
     CardType(String paymentGatewayRepresentation, String govUkPayRepresentation, String description) {
         this.paymentGatewayRepresentation = paymentGatewayRepresentation;

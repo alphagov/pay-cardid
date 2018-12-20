@@ -7,19 +7,19 @@ import java.util.Objects;
 public class CardInformationResponse {
 
     @JsonProperty("brand")
-    private String brand;
+    private final String brand;
 
     @JsonProperty("type")
-    private String type;
+    private final String type;
 
     @JsonProperty("label")
-    private String label;
+    private final String label;
 
     @JsonProperty("corporate")
-    private boolean corporate;
+    private final boolean corporate;
 
     @JsonProperty("prepaid")
-    private PrepaidStatus prepaidStatus;
+    private final PrepaidStatus prepaidStatus;
 
     public CardInformationResponse(CardInformation cardData) {
         this.brand = cardData.getBrand();

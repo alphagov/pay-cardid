@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.is;
 public class CardTypeTest {
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void shouldFindCardClass() {
@@ -22,13 +22,13 @@ public class CardTypeTest {
     public void shouldThrowNullPointerException_WhenNullValuePassed_forCardClass() {
         thrown.expect(java.lang.NullPointerException.class);
         thrown.expectMessage("Value cannot be null for paymentGatewayRepresentation");
-        CardInformation cardInformation = new CardInformation("A", null, "A", 1L, 2L);
+        new CardInformation("A", null, "A", 1L, 2L);
     }
 
     @Test
     public void shouldThrowIllegalArgumentException_WhenInvalidValuePassed_forCardClass() {
         thrown.expect(java.lang.IllegalArgumentException.class);
         thrown.expectMessage("No enum found for value [I do not exist]");
-        CardInformation cardInformation = new CardInformation("A", "I do not exist", "A", 1L, 2L);
+        new CardInformation("A", "I do not exist", "A", 1L, 2L);
     }
 }

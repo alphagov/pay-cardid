@@ -144,7 +144,7 @@ public class LoggingFilterTest {
     }
 
     @Test
-    public void shouldLogRequestTimesAsMetrics() throws IOException, ServletException {
+    public void shouldLogRequestTimesAsMetrics() {
         String requestUrl = "/cardid-request";
         String requestMethod = "POST";
 
