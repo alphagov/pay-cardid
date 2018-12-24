@@ -14,6 +14,6 @@ public class CardService {
     }
 
     public Optional<CardInformation> getCardInformation(String cardNumber) {
-        return cardInformationStore.find(cardNumber.substring(0, CardInformationStore.CARD_RANGE_LENGTH));
+        return cardInformationStore.find(cardNumber);
     }
 }

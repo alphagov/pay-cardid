@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface CardInformationStore {
 
-    int CARD_RANGE_LENGTH = 11;
-
     void initialiseCardInformation() throws Exception;
 
     void put(CardInformation cardInformation);

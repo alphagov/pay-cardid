@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static java.lang.String.format;
-
 public class CardInformation {
 
     private String brand;
@@ -76,11 +74,6 @@ public class CardInformation {
 
     public PrepaidStatus getPrepaidStatus() {
         return prepaidStatus;
-    }
-
-    public void updateRangeLength(int numLength) {
-        min = Long.valueOf(format("%-" + numLength + "d", min).replace(" ", "0"));
-        max = Long.valueOf(format("%-" + numLength + "d", max).replace(" ", "9"));
     }
 
     @Override

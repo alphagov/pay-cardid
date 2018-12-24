@@ -7,16 +7,6 @@ import static org.junit.Assert.assertEquals;
 public class CardInformationTest {
 
     @Test
-    public void shouldAdjustRangesLength() {
-
-        CardInformation cardInformation = new CardInformation("visa", "D", "visa", 123456L, 123457L);
-        cardInformation.updateRangeLength(11);
-        assertEquals(12345600000L, cardInformation.getMin().longValue());
-        assertEquals(12345799999L, cardInformation.getMax().longValue());
-
-    }
-
-    @Test
     public void shouldTransformJcbBrand() {
         CardInformation cardInformation = new CardInformation("JCB", "C", "JCB", 123456L, 123457L);
         assertEquals("jcb", cardInformation.getBrand());
