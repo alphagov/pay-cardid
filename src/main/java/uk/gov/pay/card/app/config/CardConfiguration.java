@@ -4,6 +4,7 @@ import io.dropwizard.Configuration;
 
 import javax.validation.constraints.NotNull;
 
+@SuppressWarnings("unused")
 public class CardConfiguration extends Configuration {
 
     @NotNull
