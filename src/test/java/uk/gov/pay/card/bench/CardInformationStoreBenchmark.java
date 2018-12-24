@@ -59,7 +59,6 @@ public abstract class CardInformationStoreBenchmark {
                 .measurementIterations(20)
                 .forks(1)
                 .threads(5)
-                .include(RangeSetCardInformationStoreBenchmark.class.getSimpleName())
                 .include(TreeMapCardInformationStoreBenchmark.class.getSimpleName())
                 .timeUnit(TimeUnit.MICROSECONDS)
                 .mode(Mode.AverageTime)

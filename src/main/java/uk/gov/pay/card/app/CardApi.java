@@ -10,7 +10,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
-import uk.gov.pay.card.db.RangeSetCardInformationStore;
+import uk.gov.pay.card.db.TreeMapCardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
@@ -77,6 +77,6 @@ public class CardApi extends Application<CardConfiguration> {
 
         BinRangeDataLoader testCardsBinRangeDataLoader = BinRangeDataLoaderFactory.testCards(configuration.getTestCardDataLocation());
 
-        return new RangeSetCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader, testCardsBinRangeDataLoader));
+        return new TreeMapCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader, testCardsBinRangeDataLoader));
     }
 }

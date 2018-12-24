@@ -45,7 +45,7 @@ public class CardIdResourceITest {
                 .body("brand", is("visa"))
                 .body("label", is("VISA CREDIT"))
                 .body("type", is("C"))
-                .body("prepaid", is("NOT_PREPAID"))
+                .body("prepaid", is("UNKNOWN"))
                 .body("corporate", is(false));
     }
 
