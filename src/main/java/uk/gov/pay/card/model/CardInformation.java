@@ -81,10 +81,9 @@ public class CardInformation {
     }
 
     public void transformBrand() {
-        if (brandMapping.containsKey(brand)) {
-            this.brand = brandMapping.get(brand);
+        if (this.brand != null) {
+            this.brand = brandMapping.getOrDefault(brand, brand.toLowerCase());
         }
-        this.brand = this.getBrand().toLowerCase();
     }
 
     @Override
