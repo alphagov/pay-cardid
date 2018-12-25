@@ -134,21 +134,6 @@ public class RangeSetCardInformationStoreTest {
     }
 
     @Test
-    public void shouldTransformMastercardBrand() throws Exception {
-        URL url = this.getClass().getResource("/worldpay/");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
-
-        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
-        worldpayBinRangeLoader.loadDataTo(cardInformationStore);
-
-        Optional<CardInformation> cardInformation = cardInformationStore.find("51122666111");
-
-        assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("master-card"));
-
-    }
-
-    @Test
     public void shouldFindCorporateCreditCardType() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
         BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
