@@ -34,13 +34,16 @@ public class CardInformation {
     }
 
     public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
-        this.brand = brand;
         this.cardType = CardType.of(type);
         this.label = label;
         this.min = min;
         this.max = max;
         this.corporate = corporate;
         this.prepaidStatus = prepaidStatus;
+
+        if (brand != null) {
+            this.brand = brandMapping.getOrDefault(brand, brand.toLowerCase());
+        }
     }
 
     public CardInformation(String brand, String type, String label, Long min, Long max) {
@@ -78,13 +81,6 @@ public class CardInformation {
     public void updateRangeLength(int numLength) {
         min = Long.valueOf(format("%-" + numLength + "d", min).replace(" ", "0"));
         max = Long.valueOf(format("%-" + numLength + "d", max).replace(" ", "9"));
-    }
-
-    public void transformBrand() {
-        if (brandMapping.containsKey(brand)) {
-            this.brand = brandMapping.get(brand);
-        }
-        this.brand = this.getBrand().toLowerCase();
     }
 
     @Override
