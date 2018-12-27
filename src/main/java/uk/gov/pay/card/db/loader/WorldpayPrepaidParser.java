@@ -2,7 +2,7 @@ package uk.gov.pay.card.db.loader;
 
 import uk.gov.pay.card.model.PrepaidStatus;
 
-public class WorldpayPrepaidParser {
+class WorldpayPrepaidParser {
 
     public static PrepaidStatus parse(String value) {
         if ("Y".equals(value)) {
