@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static java.lang.String.format;
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -88,7 +88,7 @@ public class LoggingFilterTest {
 
         assertEquals(format("[%s] - %s to %s began", requestId, requestMethod, requestUrl), loggingEvents.get(0).getFormattedMessage());
         String endLogMessage = loggingEvents.get(1).getFormattedMessage();
-        assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
+        assertThat(endLogMessage, startsWith(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
         assertTrue(NumberUtils.isCreatable(timeTaken[0]));
         verify(mockFilterChain).doFilter(mockRequest, mockResponse);
@@ -110,7 +110,7 @@ public class LoggingFilterTest {
 
         assertEquals(format("[%s] - %s to %s began", "", requestMethod, requestUrl), loggingEvents.get(0).getFormattedMessage());
         String endLogMessage = loggingEvents.get(1).getFormattedMessage();
-        assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", "", requestMethod, requestUrl)));
+        assertThat(endLogMessage, startsWith(format("[%s] - %s to %s ended - total time ", "", requestMethod, requestUrl)));
         verify(mockFilterChain).doFilter(mockRequest, mockResponse);
     }
 
@@ -137,7 +137,7 @@ public class LoggingFilterTest {
         assertEquals(Level.ERROR, loggingEvents.get(1).getLevel());
         assertEquals("Failed request", loggingEvents.get(1).getThrowableProxy().getMessage());
         String endLogMessage = loggingEvents.get(2).getFormattedMessage();
-        assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
+        assertThat(endLogMessage, startsWith(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
         assertTrue(NumberUtils.isCreatable(timeTaken[0]));
     }
