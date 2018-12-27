@@ -3,11 +3,9 @@ package uk.gov.pay.card.db.loader;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import uk.gov.pay.card.db.loader.WorldpayPrepaidParser;
 import uk.gov.pay.card.model.PrepaidStatus;
 
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 
 public class WorldpayPrepaidParserTest {
 
@@ -16,36 +14,36 @@ public class WorldpayPrepaidParserTest {
 
     @Test
     public void shouldReturnPrepaidForY() {
-        assertThat(WorldpayPrepaidParser.parse("Y"), equalTo(PrepaidStatus.PREPAID));
+        assertEquals(WorldpayPrepaidParser.parse("Y"), PrepaidStatus.PREPAID);
     }
 
     @Test
     public void shouldReturnPrepaidForN() {
-        assertThat(WorldpayPrepaidParser.parse("N"), equalTo(PrepaidStatus.NOT_PREPAID));
+        assertEquals(WorldpayPrepaidParser.parse("N"), PrepaidStatus.NOT_PREPAID);
     }
 
     @Test
     public void shouldReturnUnknownForU() {
-        assertThat(WorldpayPrepaidParser.parse("U"), equalTo(PrepaidStatus.UNKNOWN));
+        assertEquals(WorldpayPrepaidParser.parse("U"), PrepaidStatus.UNKNOWN);
     }
 
     @Test
     public void shouldReturnUnknownForNull() {
-        assertThat(WorldpayPrepaidParser.parse(null), equalTo(PrepaidStatus.UNKNOWN));
+        assertEquals(WorldpayPrepaidParser.parse(null), PrepaidStatus.UNKNOWN);
     }
 
     @Test
     public void shouldReturnUnknownForEmptyString() {
-        assertThat(WorldpayPrepaidParser.parse(""), equalTo(PrepaidStatus.UNKNOWN));
+        assertEquals(WorldpayPrepaidParser.parse(""), PrepaidStatus.UNKNOWN);
     }
 
     @Test
     public void shouldReturnUnknownForYES() {
-        assertThat(WorldpayPrepaidParser.parse("YES"), equalTo(PrepaidStatus.UNKNOWN));
+        assertEquals(WorldpayPrepaidParser.parse("YES"), PrepaidStatus.UNKNOWN);
     }
 
     @Test
     public void shouldReturnUnknownForNO() {
-        assertThat(WorldpayPrepaidParser.parse("NO"), equalTo(PrepaidStatus.UNKNOWN));
+        assertEquals(WorldpayPrepaidParser.parse("NO"), PrepaidStatus.UNKNOWN);
     }
 }
