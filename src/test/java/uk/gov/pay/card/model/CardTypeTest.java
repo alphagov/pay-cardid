@@ -4,8 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
 public class CardTypeTest {
 
@@ -15,7 +14,7 @@ public class CardTypeTest {
     @Test
     public void shouldFindCardClass() {
         CardInformation cardInformation = new CardInformation("A", "C", "A", 1L, 2L);
-        assertThat(cardInformation.getCardType(), is(CardType.CREDIT));
+        assertEquals(CardType.CREDIT, cardInformation.getCardType());
     }
 
     @Test

@@ -29,7 +29,7 @@ import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -87,7 +87,7 @@ public class LoggingFilterTest {
         verify(mockAppender, times(2)).doAppend(loggingEventArgumentCaptor.capture());
         List<LoggingEvent> loggingEvents = loggingEventArgumentCaptor.getAllValues();
 
-        assertThat(loggingEvents.get(0).getFormattedMessage(), is(format("[%s] - %s to %s began", requestId, requestMethod, requestUrl)));
+        assertEquals(format("[%s] - %s to %s began", requestId, requestMethod, requestUrl), loggingEvents.get(0).getFormattedMessage());
         String endLogMessage = loggingEvents.get(1).getFormattedMessage();
         assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
@@ -109,7 +109,7 @@ public class LoggingFilterTest {
         verify(mockAppender, times(2)).doAppend(loggingEventArgumentCaptor.capture());
         List<LoggingEvent> loggingEvents = loggingEventArgumentCaptor.getAllValues();
 
-        assertThat(loggingEvents.get(0).getFormattedMessage(), is(format("[%s] - %s to %s began", "", requestMethod, requestUrl)));
+        assertEquals(format("[%s] - %s to %s began", "", requestMethod, requestUrl), loggingEvents.get(0).getFormattedMessage());
         String endLogMessage = loggingEvents.get(1).getFormattedMessage();
         assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", "", requestMethod, requestUrl)));
         verify(mockFilterChain).doFilter(mockRequest, mockResponse);
@@ -133,10 +133,10 @@ public class LoggingFilterTest {
         verify(mockAppender, times(3)).doAppend(loggingEventArgumentCaptor.capture());
         List<LoggingEvent> loggingEvents = loggingEventArgumentCaptor.getAllValues();
 
-        assertThat(loggingEvents.get(0).getFormattedMessage(), is(format("[%s] - %s to %s began", requestId, requestMethod, requestUrl)));
-        assertThat(loggingEvents.get(1).getFormattedMessage(), is("Exception - cardid request - " + requestUrl + " - exception - " + exception.getMessage()));
-        assertThat(loggingEvents.get(1).getLevel(), is(Level.ERROR));
-        assertThat(loggingEvents.get(1).getThrowableProxy().getMessage(), is("Failed request"));
+        assertEquals(format("[%s] - %s to %s began", requestId, requestMethod, requestUrl), loggingEvents.get(0).getFormattedMessage());
+        assertEquals(format("Exception - cardid request - %s - exception - %s", requestUrl, exception.getMessage()), loggingEvents.get(1).getFormattedMessage());
+        assertEquals(Level.ERROR, loggingEvents.get(1).getLevel());
+        assertEquals("Failed request", loggingEvents.get(1).getThrowableProxy().getMessage());
         String endLogMessage = loggingEvents.get(2).getFormattedMessage();
         assertThat(endLogMessage, containsString(format("[%s] - %s to %s ended - total time ", requestId, requestMethod, requestUrl)));
         String[] timeTaken = StringUtils.substringsBetween(endLogMessage, "total time ", "ms");
