@@ -164,4 +164,62 @@ public class TreeMapCardInformationStoreTest {
         assertEquals("keys=5", cardInformationStore.toString());
     }
 
+    private CardInformation createCardRange(long low, long high) {
+        return new CardInformation("master-card", "C", "label", low, high);
+    }
+
+    @Test
+    public void emptyStoreHasNoOverlappingEntries() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        assertNull(store.getOverlappingEntry(createCardRange(0L, 9L)));
+    }
+
+    @Test
+    public void ignoresNonOverlappingLowRange() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(4L, 5L));
+        assertNull(store.getOverlappingEntry(createCardRange(6L, 7L)));
+    }
+
+    @Test
+    public void ignoresNonOverlappingHighRange() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(4L, 5L));
+        assertNull(store.getOverlappingEntry(createCardRange(2L, 3L)));
+    }
+
+    @Test
+    public void canDetectLowSideOverlap() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(4L, 6L));
+        assertNotNull(store.getOverlappingEntry(createCardRange(5L, 7L)));
+    }
+
+    @Test
+    public void canDetectHighSideOverlap() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(6L, 7L));
+        assertNotNull(store.getOverlappingEntry(createCardRange(5L, 7L)));
+    }
+
+    @Test
+    public void canDetectEnclosedRange() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(6L,8L));
+        assertNotNull(store.getOverlappingEntry(createCardRange(5L, 6L)));
+    }
+
+    @Test
+    public void canDetectEnclosedRangeBeingAdded() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(6L,8L));
+        assertNotNull(store.getOverlappingEntry(createCardRange(5L, 6L)));
+    }
+
+    @Test
+    public void canDetectEnclosingRangeBeingAdded() {
+        TreeMapCardInformationStore store = new TreeMapCardInformationStore(null);
+        store.put(createCardRange(5L,6L));
+        assertNotNull(store.getOverlappingEntry(createCardRange(4L, 8L)));
+    }
 }
