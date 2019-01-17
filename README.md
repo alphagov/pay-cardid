@@ -25,7 +25,7 @@ location under the `data` folder as follows:
 Location: /data/sources/worldpay
 Format: csv
 
-* The csv file is expected to have the following structure, as of WordlPay EMIS v19 document
+* The csv file is expected to have the following structure, as of Worldpay EMIS v19 document
 
  ```
  00!12102015!!!!!!!!!!
