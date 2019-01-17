@@ -30,6 +30,13 @@ public class RangeSetCardInformationStoreBenchmark {
 
     private CardInformationStore cardInformationStore;
 
+    @Param({
+            "51122666112", "51122666113", "51122666114", "51122666115", "51122666116", "51122666117", "51122666118", "51122666119", "51122666120",
+            "51122666122", "51122666123", "51122666124", "51122666125", "51122666126", "51122666127", "51122666128", "51122666129", "51122666130",
+            "511948111", "511948112", "511948113", "511948114", "511948115", "511948116", "511948117", "511948118", "511948119"
+    })
+    private String cardIdPrefix;
+
     @Setup(Level.Trial)
     public void setup() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
@@ -37,13 +44,6 @@ public class RangeSetCardInformationStoreBenchmark {
         cardInformationStore = new RangeSetCardInformationStore(singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
     }
-
-    @Param({
-            "51122666112", "51122666113", "51122666114", "51122666115", "51122666116", "51122666117", "51122666118", "51122666119", "51122666120",
-            "51122666122", "51122666123", "51122666124", "51122666125", "51122666126", "51122666127", "51122666128", "51122666129", "51122666130",
-            "511948111", "511948112", "511948113", "511948114", "511948115", "511948116", "511948117", "511948118", "511948119"
-    })
-    private String cardIdPrefix;
 
     @Benchmark
     public void runBenchmark(Blackhole blackhole) {

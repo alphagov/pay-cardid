@@ -40,16 +40,16 @@ public class LoggingFilterTest {
     private LoggingFilter loggingFilter;
 
     @Mock
-    HttpServletRequest mockRequest;
+    private HttpServletRequest mockRequest;
 
     @Mock
-    HttpServletResponse mockResponse;
+    private HttpServletResponse mockResponse;
 
     @Mock
-    FilterChain mockFilterChain;
+    private FilterChain mockFilterChain;
 
     @Mock
-    MetricRegistry mockMetricRegistry;
+    private MetricRegistry mockMetricRegistry;
 
     @Mock
     private Histogram mockHistogram;
@@ -57,7 +57,7 @@ public class LoggingFilterTest {
     private Appender<ILoggingEvent> mockAppender;
 
     @Captor
-    ArgumentCaptor<LoggingEvent> loggingEventArgumentCaptor;
+    private ArgumentCaptor<LoggingEvent> loggingEventArgumentCaptor;
 
 
     @Before

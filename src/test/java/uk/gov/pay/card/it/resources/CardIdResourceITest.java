@@ -106,7 +106,7 @@ public class CardIdResourceITest {
 
     private ValidatableResponse getCardInformation(String cardNumber) {
         return given().port(app.getLocalPort())
-                .contentType(ContentType.JSON)
+                .contentType(JSON)
                 .body(String.format("{\"cardNumber\":%s}", cardNumber))
                 .when()
                 .post("/v1/api/card")
