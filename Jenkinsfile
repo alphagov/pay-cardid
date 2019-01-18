@@ -14,101 +14,18 @@ pipeline {
   }
 
   libraries {
-    lib("pay-jenkins-library@master")
+    lib("pay-jenkins-library@smoke_test_check")
   }
 
   environment {
     DOCKER_HOST = "unix:///var/run/docker.sock"
     RUN_END_TO_END_ON_PR = "${params.runEndToEndTestsOnPR}"
     RUN_ZAP_ON_PR = "${params.runZapTestsOnPR}"
+    GIT_BRANCH="PP-4440-stripe-smoke-tests"
   }
 
   stages {
-    stage('git submodule update') {
-      steps {
-        sh 'git submodule update --init --recursive'
-      }
-    }
-    stage('Maven Build') {
-      steps {
-        script {
-          def long stepBuildTime = System.currentTimeMillis()
- 
-          sh 'mvn clean package'
-          postSuccessfulMetrics("cardid.maven-build", stepBuildTime)
-        }
-      }
-      post {
-        failure {
-          postMetric("cardid.maven-build.failure", 1)
-        }
-      }
-    }
-    stage('Docker Build') {
-      steps {
-        script {
-          buildAppWithMetrics{
-            app = "cardid"
-          }
-        }
-      }
-      post {
-        failure {
-          postMetric("cardid.docker-build.failure", 1)
-        }
-      }
-    }
-    stage('Tests') {
-      failFast true
-      parallel {
-        stage('Card Payment End-to-End Tests') {
-            when {
-                anyOf {
-                  branch 'master'
-                  environment name: 'RUN_END_TO_END_ON_PR', value: 'true'
-                }
-            }
-            steps {
-                runCardPaymentsE2E("cardid")
-            }
-        }
-         stage('ZAP Tests') {
-            when {
-                anyOf {
-                  branch 'master'
-                  environment name: 'RUN_ZAP_ON_PR', value: 'true'
-                }
-            }
-            steps {
-                runZap("cardid")
-            }
-         }
-      }
-    }
-    stage('Docker Tag') {
-      steps {
-        script {
-          dockerTagWithMetrics {
-            app = "cardid"
-          }
-        }
-      }
-      post {
-        failure {
-          postMetric("cardid.docker-tag.failure", 1)
-        }
-      }
-    }
-    stage('Deploy') {
-      when {
-        branch 'master'
-      }
-      steps {
-        deployEcs("cardid")
-      }
-    }
     stage('Card Payment Smoke Test') {
-      when { branch 'master' }
       steps { runCardSmokeTest() }
     }
     stage('Complete') {
