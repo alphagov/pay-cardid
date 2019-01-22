@@ -1,6 +1,5 @@
 package uk.gov.pay.card.it.resources;
 
-import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.ValidatableResponse;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.Rule;

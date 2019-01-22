@@ -12,12 +12,12 @@ import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
-import uk.gov.pay.card.filters.LoggingFilter;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
+import uk.gov.pay.commons.utils.logging.LoggingFilter;
 
 import java.util.concurrent.TimeUnit;
 

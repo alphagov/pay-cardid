@@ -32,7 +32,7 @@ pipeline {
     stage('Maven Build') {
       steps {
         script {
-          def long stepBuildTime = System.currentTimeMillis()
+          long stepBuildTime = System.currentTimeMillis()
  
           sh 'mvn clean package'
           postSuccessfulMetrics("cardid.maven-build", stepBuildTime)
