@@ -29,3 +29,5 @@ production-2.tag=alpha_production-2-103
 production-2.alpha_production-2-103.date=2019-01-24:14:58:50
 
 production-2.alpha_production-2-103.status=success
+
+staging-2.tag=alpha_staging-2-103
