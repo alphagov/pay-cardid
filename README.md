@@ -6,16 +6,16 @@ The service provides an API that could be accessed to retrieve card information 
 
 ## Environment Variables
 
-  - `WORLDPAY_DATA_LOCATION`: Variable to override the default path for the card bin range data provided by Worldpay.
-  - `DISCOVER_DATA_LOCATION`: Variable to override the default path for the card bin range data provided by Discover.
-  - `TEST_CARD_DATA_LOCATION`: Variable to override the default path for the test card bin range data.
+ - `WORLDPAY_DATA_LOCATION`: Variable to override the default path for the card bin range data provided by Worldpay.
+ - `DISCOVER_DATA_LOCATION`: Variable to override the default path for the card bin range data provided by Discover.
+ - `TEST_CARD_DATA_LOCATION`: Variable to override the default path for the test card bin range data.
 
 ## Card data
 The data for this service would need to be sourced externally from relevant providers. 
 The service currently supports data provided by: 
 
-- Worldpay
-- Discover
+  - Worldpay
+  - Discover
 
 For the service to built and run the relevant data from the supported providers would need to be placed in the appropriate
 location under the `data` folder as follows:
