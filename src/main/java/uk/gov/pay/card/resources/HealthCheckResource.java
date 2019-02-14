@@ -8,18 +8,18 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
 import static javax.ws.rs.core.Response.status;
 
 @Path("/")
 public class HealthCheckResource {
-
-    private static final String HEALTHCHECK = "healthcheck";
-    private static final String HEALTHY = "healthy";
 
     private final Environment environment;
 
@@ -28,29 +28,25 @@ public class HealthCheckResource {
     }
 
     @GET
-    @Path(HEALTHCHECK)
+    @Path("healthcheck")
     @Produces(APPLICATION_JSON)
     public Response healthCheck() {
         SortedMap<String, HealthCheck.Result> results = environment.healthChecks().runHealthChecks();
 
-        Map<String, Map<String, Boolean>> response = getResponse(results);
-
-        boolean healthy = results.size() == results.values()
+        Map<String, Map<String, Boolean>> response = results.entrySet()
                 .stream()
-                .filter(HealthCheck.Result::isHealthy)
-                .count();
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        healthcheckResult -> ImmutableMap.of(
+                        "healthy", healthcheckResult.getValue().isHealthy()
+                        )
+                ));
 
-        if(healthy) {
-            return Response.ok().entity(response).build();
-        }
-        return status(503).entity(response).build();
+        Response.Status status = allHealthy(results.values()) ? OK : SERVICE_UNAVAILABLE;
+
+        return status(status).entity(response).build();
     }
 
-    private Map<String, Map<String, Boolean>> getResponse(SortedMap<String, HealthCheck.Result> results) {
-        Map<String, Map<String, Boolean>> response = new HashMap<>();
-        for (SortedMap.Entry<String, HealthCheck.Result> entry : results.entrySet() ) {
-            response.put(entry.getKey(), ImmutableMap.of(HEALTHY, entry.getValue().isHealthy()));
-        }
-        return response;
+    private boolean allHealthy(Collection<HealthCheck.Result> results) {
+        return results.stream().allMatch(HealthCheck.Result::isHealthy);
     }
 }
