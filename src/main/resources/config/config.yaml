@@ -15,9 +15,9 @@ logging:
       target: stdout
       logFormat: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [thread=%thread] [level=%-5level] [logger=%logger{15}] [requestID=%X{X-Request-Id:-(none)}] - %msg%n"
 
-worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-/app/data/worldpay}
-discoverDataLocation: ${DISCOVER_DATA_LOCATION:-/app/data/discover}
-testCardDataLocation: ${TEST_CARD_DATA_LOCATION:-/app/data/test-cards}
+worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-file:///app/data/worldpay/GENERIC2ISOCPTISSUERPREPAID.CSV}
+discoverDataLocation: ${DISCOVER_DATA_LOCATION:-file:///app/data/discover/Merchant_Marketing.csv}
+testCardDataLocation: ${TEST_CARD_DATA_LOCATION:-file:///app/data/test-cards/test-card-bin-ranges.csv}
 
 graphiteHost: ${METRICS_HOST:-localhost}
 graphitePort: ${METRICS_PORT:-8092}
