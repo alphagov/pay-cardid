@@ -21,9 +21,9 @@ public class CardIdResourceITest {
             , resourceFilePath("config/config.yaml")
             , config("server.applicationConnectors[0].port", "0")
             , config("server.adminConnectors[0].port", "0")
-            , config("worldpayDataLocation", "data/sources/worldpay/")
-            , config("discoverDataLocation", "data/sources/discover/")
-            , config("testCardDataLocation", "data/sources/test-cards/"));
+            , config("worldpayDataLocation", "file://" + System.getProperty("user.dir") + "/data/sources/worldpay/GENERIC2ISOCPTISSUERPREPAID.CSV")
+            , config("discoverDataLocation", "file://" + System.getProperty("user.dir") + "/data/sources/discover/Merchant_Marketing.csv")
+            , config("testCardDataLocation", "file://" + System.getProperty("user.dir") + "/data/sources/test-cards/test-card-bin-ranges.csv"));
 
     @Test
     public void shouldFindDiscoverCardInformation() {

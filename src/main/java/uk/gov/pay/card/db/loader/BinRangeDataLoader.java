@@ -8,7 +8,10 @@ import uk.gov.pay.card.model.CardInformation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
@@ -19,7 +22,7 @@ public class BinRangeDataLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(BinRangeDataLoader.class);
     private final String name;
-    private final String filePath;
+    private final String source;
     private final String delimeter;
     private final String dataRowIdentifier;
     private final Function<String[], CardInformation> cardInformationExtractor;
@@ -57,9 +60,9 @@ public class BinRangeDataLoader {
         }
     }
 
-    private BinRangeDataLoader(String name, String filePath, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
+    private BinRangeDataLoader(String name, String source, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
         this.name = name;
-        this.filePath = filePath;
+        this.source = source;
         this.delimeter = delimeter;
         this.dataRowIdentifier = dataRowIdentifier;
         this.cardInformationExtractor = cardInformationExtractor;
@@ -70,7 +73,7 @@ public class BinRangeDataLoader {
         final AtomicLong lastPrintedCount = new AtomicLong(System.currentTimeMillis());
         final AtomicLong count = new AtomicLong(0);
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(getBinRangeFile())))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getBinRangeData()))) {
             bufferedReader
                     .lines()
                     .forEach(line -> {
@@ -90,15 +93,21 @@ public class BinRangeDataLoader {
             logger.info("{} records loaded... DONE", count);
 
         } catch (Exception e) {
-            throw new DataLoaderException(format("Exception loading file at: %s", filePath), e);
+            throw new DataLoaderException(format("Exception loading file at: %s", source), e);
         }
 
         logger.info("Finished initialising the card information store - {}", cardInformationStore);
 
     }
 
+    private InputStream getBinRangeData() throws DataLoaderException, IOException {
+        return source.charAt(0) == '/' || source.indexOf(':') == -1
+                ? new FileInputStream(getBinRangeFile())
+                : new URL(source).openStream();
+    }
+
     private File getBinRangeFile() throws DataLoaderException {
-        File folder = new File(filePath);
+        File folder = new File(source);
         File[] matchingFiles = folder.listFiles((dir, fileName) -> fileName.toLowerCase().endsWith("csv"));
 
         return validateDirectorysAndGetFile(matchingFiles);
@@ -109,17 +118,17 @@ public class BinRangeDataLoader {
             if (matchingFiles.length != 1) {
                 String message = null;
 
-                if (matchingFiles.length == 0) message = "No CSV found at " + filePath;
-                if (matchingFiles.length > 1) message = "More than one CSV found at " + filePath;
+                if (matchingFiles.length == 0) message = "No CSV found at " + source;
+                if (matchingFiles.length > 1) message = "More than one CSV found at " + source;
 
                 logger.error(message);
                 throw new DataLoaderException(message);
             } else {
-                logger.info("Found one file to load [{}]", filePath);
+                logger.info("Found one file to load [{}]", source);
                 return matchingFiles[0];
             }
         } else {
-            final String message = format("No directory exists at [%s]", filePath);
+            final String message = format("No directory exists at [%s]", source);
             logger.error(message);
             throw new DataLoaderException(message);
         }
