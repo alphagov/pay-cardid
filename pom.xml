@@ -55,6 +55,11 @@
             <artifactId>utils</artifactId>
             <version>1.0.20190724104450</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.11.519</version>
+        </dependency>
 
         <!-- testing -->
         <dependency>
