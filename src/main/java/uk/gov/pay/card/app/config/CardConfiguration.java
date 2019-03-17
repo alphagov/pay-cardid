@@ -3,18 +3,19 @@ package uk.gov.pay.card.app.config;
 import io.dropwizard.Configuration;
 
 import javax.validation.constraints.NotNull;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CardConfiguration extends Configuration {
 
     @NotNull
-    private URL worldpayDataLocation;
+    private String worldpayDataLocation;
 
     @NotNull
-    private URL discoverDataLocation;
+    private String discoverDataLocation;
 
     @NotNull
-    private URL testCardDataLocation;
+    private String testCardDataLocation;
 
     @NotNull
     private String graphiteHost;
@@ -23,15 +24,27 @@ public class CardConfiguration extends Configuration {
     private String graphitePort;
 
     public URL getDiscoverDataLocation() {
-        return discoverDataLocation;
+        try {
+            return new URL(discoverDataLocation);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public URL getWorldpayDataLocation() {
-        return worldpayDataLocation;
+        try {
+            return new URL(worldpayDataLocation);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public URL getTestCardDataLocation() {
-        return testCardDataLocation;
+        try {
+            return new URL(testCardDataLocation);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getGraphiteHost() {

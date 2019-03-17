@@ -1,11 +1,16 @@
 package uk.gov.pay.card.db.loader;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.AmazonS3URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
@@ -64,12 +69,21 @@ public class BinRangeDataLoader {
         this.cardInformationExtractor = cardInformationExtractor;
     }
 
+    private InputStream getDataInputStream(URL source) throws IOException {
+        if ("s3".equals(source.getProtocol())) {
+            AmazonS3URI s3URI = new AmazonS3URI(source.toString());
+            AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
+            return s3.getObject(s3URI.getBucket(), s3URI.getKey()).getObjectContent();
+        }
+        return source.openStream();
+    }
+
     public void loadDataTo(CardInformationStore cardInformationStore) throws DataLoaderException {
         logger.info("Loading {} data in to card information store", name);
         final AtomicLong lastPrintedCount = new AtomicLong(System.currentTimeMillis());
         final AtomicLong count = new AtomicLong(0);
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(source.openStream()))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getDataInputStream(source)))) {
             bufferedReader
                     .lines()
                     .forEach(line -> {
