@@ -6,9 +6,14 @@ The service provides an API that could be accessed to retrieve card information 
 
 ## Environment Variables
 
-  - `WORLDPAY_DATA_LOCATION`: Variable to override the default path for the card bin range data provided by Worldpay.
-  - `DISCOVER_DATA_LOCATION`: Variable to override the default path for the card bin range data provided by Discover.
-  - `TEST_CARD_DATA_LOCATION`: Variable to override the default path for the test card bin range data.
+  - `ADMIN_PORT`: The port number to listen for Dropwizard admin requests on. Defaults to `8081`.
+  - `DISCOVER_DATA_LOCATION`: Where to load bin ranges for Discover cards from. Defaults to `/app/data/discover`.
+  - `JAVA_OPTS`: Options to pass to the JRE. Defaults to `-Xms1500m -Xmx1500m`.
+  - `METRICS_HOST`: The hostname to send graphite metrics to. Defaults to `localhost`.
+  - `METRICS_PORT`: The port on `METRICS_HOST` to send graphite metrics to. Defaults to `8081`.
+  - `PORT`: The port number to listen for requests on. Defaults to `8080`.
+  - `TEST_CARD_DATA_LOCATION`: Where to load bin ranges for test cards from. Defaults to `/app/data/test-cards`.
+  - `WORLDPAY_DATA_LOCATION`: Where to load the Worldpay bin range data from. Defaults to `/app/data/worldpay`.
 
 ## Card data
 The data for this service would need to be sourced externally from relevant providers. 
