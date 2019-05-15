@@ -36,7 +36,7 @@ pipeline {
           long stepBuildTime = System.currentTimeMillis()
 
           sh 'mvn -version'
-          sh 'mvn clean package'
+          sh 'mvn clean verify'
           postSuccessfulMetrics("cardid.maven-build", stepBuildTime)
         }
       }

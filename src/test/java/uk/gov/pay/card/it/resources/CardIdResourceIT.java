@@ -13,7 +13,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.core.Is.is;
 
-public class CardIdResourceITest {
+public class CardIdResourceIT {
 
     @Rule
     public final DropwizardAppRule<CardConfiguration> app = new DropwizardAppRule<>(
