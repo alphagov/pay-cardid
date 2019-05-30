@@ -12,15 +12,15 @@ RUN echo networkaddress.cache.ttl=$DNS_TTL >> "$JAVA_HOME/conf/security/java.sec
 
 ENV PORT 8080
 ENV ADMIN_PORT 8081
+ENV JAVA_OPTS -Xms1500m -Xmx1500m
 
 EXPOSE 8080
 EXPOSE 8081
 
 WORKDIR /app
 
-COPY docker-startup.sh /app/docker-startup.sh
 COPY data/sources/ /app/data/
 COPY target/*.yaml /app/
 COPY target/pay-*-allinone.jar /app/
 
-CMD bash ./docker-startup.sh
+CMD java $JAVA_OPTS -jar ./pay-*-allinone.jar server ./*.yaml
