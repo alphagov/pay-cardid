@@ -23,4 +23,4 @@ COPY data/sources/ /app/data/
 COPY target/*.yaml /app/
 COPY target/pay-*-allinone.jar /app/
 
-CMD java $JAVA_OPTS -jar ./pay-*-allinone.jar server ./*.yaml
+CMD exec java $JAVA_OPTS -jar ./pay-*-allinone.jar server ./*.yaml
