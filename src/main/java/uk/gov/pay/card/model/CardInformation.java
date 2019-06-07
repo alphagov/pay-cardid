@@ -1,13 +1,23 @@
 package uk.gov.pay.card.model;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import static java.lang.String.format;
 
 public class CardInformation {
+
+    private static final Map<String, String> BRAND_MAPPING = Map.of(
+            "MC", "master-card",
+            "MCI DEBIT", "master-card",
+            "MCI CREDIT", "master-card",
+            "MAESTRO", "maestro",
+            "AMERICAN EXPRESS", "american-express",
+            "DINERS CLUB", "diners-club",
+            "VISA CREDIT", "visa",
+            "VISA DEBIT", "visa",
+            "ELECTRON", "visa"
+    );
 
     private final String brand;
     private final CardType cardType;
@@ -16,22 +26,6 @@ public class CardInformation {
     private Long max;
     private final boolean corporate;
     private final PrepaidStatus prepaidStatus;
-
-    private static final Map<String, String> brandMapping;
-
-    static {
-        Map<String, String> brands = new HashMap<>();
-        brands.put("MC", "master-card");
-        brands.put("MCI DEBIT", "master-card");
-        brands.put("MCI CREDIT", "master-card");
-        brands.put("MAESTRO", "maestro");
-        brands.put("AMERICAN EXPRESS", "american-express");
-        brands.put("DINERS CLUB", "diners-club");
-        brands.put("VISA CREDIT", "visa");
-        brands.put("VISA DEBIT", "visa");
-        brands.put("ELECTRON", "visa");
-        brandMapping = Collections.unmodifiableMap(brands);
-    }
 
     public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
         this.cardType = CardType.of(type);
@@ -42,7 +36,7 @@ public class CardInformation {
         this.prepaidStatus = prepaidStatus;
 
         if (brand != null) {
-            this.brand = brandMapping.getOrDefault(brand, brand.toLowerCase());
+            this.brand = BRAND_MAPPING.getOrDefault(brand, brand.toLowerCase());
         } else {
             this.brand = null;
         }
