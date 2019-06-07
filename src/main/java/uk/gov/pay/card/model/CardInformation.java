@@ -9,13 +9,13 @@ import static java.lang.String.format;
 
 public class CardInformation {
 
-    private String brand;
-    private CardType cardType;
-    private String label;
+    private final String brand;
+    private final CardType cardType;
+    private final String label;
     private Long min;
     private Long max;
-    private boolean corporate;
-    private PrepaidStatus prepaidStatus;
+    private final boolean corporate;
+    private final PrepaidStatus prepaidStatus;
 
     private static final Map<String, String> brandMapping;
 
@@ -43,6 +43,8 @@ public class CardInformation {
 
         if (brand != null) {
             this.brand = brandMapping.getOrDefault(brand, brand.toLowerCase());
+        } else {
+            this.brand = null;
         }
     }
 
