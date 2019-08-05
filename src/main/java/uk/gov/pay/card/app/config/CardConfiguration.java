@@ -3,17 +3,18 @@ package uk.gov.pay.card.app.config;
 import io.dropwizard.Configuration;
 
 import javax.validation.constraints.NotNull;
+import java.net.URL;
 
 public class CardConfiguration extends Configuration {
 
     @NotNull
-    private String worldpayDataLocation;
+    private URL worldpayDataLocation;
 
     @NotNull
-    private String discoverDataLocation;
+    private URL discoverDataLocation;
 
     @NotNull
-    private String testCardDataLocation;
+    private URL testCardDataLocation;
 
     @NotNull
     private String graphiteHost;
@@ -21,15 +22,15 @@ public class CardConfiguration extends Configuration {
     @NotNull
     private String graphitePort;
 
-    public String getDiscoverDataLocation() {
+    public URL getDiscoverDataLocation() {
         return discoverDataLocation;
     }
 
-    public String getWorldpayDataLocation() {
+    public URL getWorldpayDataLocation() {
         return worldpayDataLocation;
     }
 
-    public String getTestCardDataLocation() {
+    public URL getTestCardDataLocation() {
         return testCardDataLocation;
     }
 

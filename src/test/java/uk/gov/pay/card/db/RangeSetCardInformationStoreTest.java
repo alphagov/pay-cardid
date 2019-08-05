@@ -44,7 +44,7 @@ public class RangeSetCardInformationStoreTest {
     public void shouldFindCardInformationForCardIdPrefix() throws Exception {
 
         URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.toString());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
@@ -60,7 +60,7 @@ public class RangeSetCardInformationStoreTest {
     public void shouldFindCardInformationForCardIdPrefixWith11Digits() throws Exception {
 
         URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.toString());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
@@ -75,7 +75,7 @@ public class RangeSetCardInformationStoreTest {
     @Test
     public void shouldFindCardInformationWithRangeLengthLessThan9digits() throws Exception {
         URL url = this.getClass().getResource("/worldpay-6-digits/worldpay-bin-ranges-with-6digit-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.toString());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
@@ -90,7 +90,7 @@ public class RangeSetCardInformationStoreTest {
     @Test
     public void shouldFindCardInformationWithRange6digitsWhenRangeMinAndMaxAreTheSame() throws Exception {
         URL url = this.getClass().getResource("/worldpay-6-digits/worldpay-bin-ranges-with-6digit-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.toString());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
@@ -106,7 +106,7 @@ public class RangeSetCardInformationStoreTest {
     public void shouldFindCardInformationWithRange9digitsWhenRangeMinAndMaxAreTheSame() throws Exception {
 
         URL url = this.getClass().getResource("/worldpay-9-digits/worldpay-bin-ranges-with-9digit-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.toString());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
@@ -136,7 +136,7 @@ public class RangeSetCardInformationStoreTest {
     @Test
     public void shouldFindCorporateCreditCardType() throws Exception {
         URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.toString());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
 
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
