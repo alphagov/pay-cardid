@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 @Path("/")
 public class CardIdResource {
@@ -40,7 +41,6 @@ public class CardIdResource {
             logger.info("Card Information Response - {}", cardInformationResponse);
             return Response.ok(cardInformationResponse).build();
 
-        }).orElse(Response.status(404).build());
-
+        }).orElse(Response.status(NOT_FOUND).build());
     }
 }
