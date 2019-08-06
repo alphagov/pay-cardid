@@ -4,7 +4,7 @@ import uk.gov.pay.card.model.PrepaidStatus;
 
 class WorldpayPrepaidParser {
 
-    public static PrepaidStatus parse(String value) {
+    static PrepaidStatus parse(String value) {
         if ("Y".equals(value)) {
             return PrepaidStatus.PREPAID;
         }
