@@ -65,7 +65,7 @@ public class CardApi extends Application<CardConfiguration> {
     }
 
     private void initialiseMetrics(CardConfiguration configuration, Environment environment) {
-        GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), Integer.valueOf(configuration.getGraphitePort()));
+        GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), configuration.getGraphitePort());
         GraphiteReporter.forRegistry(environment.metrics())
                 .prefixedWith(SERVICE_METRICS_NODE)
                 .build(graphiteUDP)

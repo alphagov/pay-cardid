@@ -20,7 +20,7 @@ public class CardConfiguration extends Configuration {
     private String graphiteHost;
 
     @NotNull
-    private String graphitePort;
+    private Integer graphitePort;
 
     public URL getDiscoverDataLocation() {
         return discoverDataLocation;
@@ -38,7 +38,7 @@ public class CardConfiguration extends Configuration {
         return graphiteHost;
     }
 
-    public String getGraphitePort() {
+    public Integer getGraphitePort() {
         return graphitePort;
     }
 }
