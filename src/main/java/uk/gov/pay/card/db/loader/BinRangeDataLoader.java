@@ -19,7 +19,7 @@ public class BinRangeDataLoader {
     private static final Logger logger = LoggerFactory.getLogger(BinRangeDataLoader.class);
     private final String name;
     private final URL source;
-    private final String delimeter;
+    private final String delimiter;
     private final String dataRowIdentifier;
     private final Function<String[], CardInformation> cardInformationExtractor;
 
@@ -56,10 +56,10 @@ public class BinRangeDataLoader {
         }
     }
 
-    private BinRangeDataLoader(String name, URL source, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
+    private BinRangeDataLoader(String name, URL source, String delimiter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
         this.name = name;
         this.source = source;
-        this.delimeter = delimeter;
+        this.delimiter = delimiter;
         this.dataRowIdentifier = dataRowIdentifier;
         this.cardInformationExtractor = cardInformationExtractor;
     }
@@ -73,7 +73,7 @@ public class BinRangeDataLoader {
             bufferedReader
                     .lines()
                     .forEach(line -> {
-                        String[] entry = line.split(this.delimeter);
+                        String[] entry = line.split(this.delimiter);
                         if (this.dataRowIdentifier.equals(entry[0])) {
                             CardInformation cardInformation = cardInformationExtractor.apply(entry);
                             cardInformationStore.put(cardInformation);
