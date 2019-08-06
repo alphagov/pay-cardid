@@ -6,9 +6,8 @@ import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
@@ -19,7 +18,7 @@ public class BinRangeDataLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(BinRangeDataLoader.class);
     private final String name;
-    private final String filePath;
+    private final URL source;
     private final String delimeter;
     private final String dataRowIdentifier;
     private final Function<String[], CardInformation> cardInformationExtractor;
@@ -44,22 +43,22 @@ public class BinRangeDataLoader {
 
     public static class BinRangeDataLoaderFactory {
 
-        public static BinRangeDataLoader worldpay(String filePath) {
-            return new BinRangeDataLoader("Worldpay", filePath, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
+        public static BinRangeDataLoader worldpay(URL source) {
+            return new BinRangeDataLoader("Worldpay", source, WORLDPAY_DELIMITER, WORLDPAY_ROW_IDENTIFIER, WORLDPAY_CARD_INFORMATION_EXTRACTOR);
         }
 
-        public static BinRangeDataLoader discover(String filePath) {
-            return new BinRangeDataLoader("Discover", filePath, DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
+        public static BinRangeDataLoader discover(URL source) {
+            return new BinRangeDataLoader("Discover", source, DISCOVER_DELIMITER, DISCOVER_ROW_IDENTIFIER, DISCOVER_CARD_INFORMATION_EXTRACTOR);
         }
 
-        public static BinRangeDataLoader testCards(String filePath) {
-            return new BinRangeDataLoader("Test Cards", filePath, TEST_CARD_DATA_DELIMITER, TEST_CARD_DATA_ROW_IDENTIFIER, TEST_CARD_DATA_INFORMATION_EXTRACTOR);
+        public static BinRangeDataLoader testCards(URL source) {
+            return new BinRangeDataLoader("Test Cards", source, TEST_CARD_DATA_DELIMITER, TEST_CARD_DATA_ROW_IDENTIFIER, TEST_CARD_DATA_INFORMATION_EXTRACTOR);
         }
     }
 
-    private BinRangeDataLoader(String name, String filePath, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
+    private BinRangeDataLoader(String name, URL source, String delimeter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
         this.name = name;
-        this.filePath = filePath;
+        this.source = source;
         this.delimeter = delimeter;
         this.dataRowIdentifier = dataRowIdentifier;
         this.cardInformationExtractor = cardInformationExtractor;
@@ -70,7 +69,7 @@ public class BinRangeDataLoader {
         final AtomicLong lastPrintedCount = new AtomicLong(System.currentTimeMillis());
         final AtomicLong count = new AtomicLong(0);
 
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(getBinRangeFile())))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(source.openStream()))) {
             bufferedReader
                     .lines()
                     .forEach(line -> {
@@ -88,52 +87,16 @@ public class BinRangeDataLoader {
                     });
 
             logger.info("{} records loaded... DONE", count);
-
         } catch (Exception e) {
-            throw new DataLoaderException("Exception loading file at:" + filePath, e);
+            throw new DataLoaderException(format("Exception loading file at: %s", source.toString()), e);
         }
 
         logger.info("Finished initialising the card information store - {}", cardInformationStore);
-
     }
 
-    private File getBinRangeFile() throws DataLoaderException {
-        File folder = new File(filePath);
-        File[] matchingFiles = folder.listFiles((dir, fileName) -> fileName.toLowerCase().endsWith("csv"));
-
-        return validateDirectorysAndGetFile(matchingFiles);
-    }
-
-    private File validateDirectorysAndGetFile(File[] matchingFiles) throws DataLoaderException {
-        if (matchingFiles != null) {
-            if (matchingFiles.length != 1) {
-                String message = null;
-
-                if (matchingFiles.length == 0) message = "No CSV found at " + filePath;
-                if (matchingFiles.length > 1) message = "More than one CSV found at " + filePath;
-
-                logger.error(message);
-                throw new DataLoaderException(message);
-            } else {
-                logger.info("Found one file to load [{}]", filePath);
-                return matchingFiles[0];
-            }
-        } else {
-            final String message = format("No directory exists at [%s]", filePath);
-            logger.error(message);
-            throw new DataLoaderException(message);
-        }
-    }
-
-    class DataLoaderException extends Exception {
-
+    static class DataLoaderException extends Exception {
         DataLoaderException(String message, Throwable throwable) {
             super(message, throwable);
         }
-
-        DataLoaderException(String message) {
-            super(message);
-        }
     }
-
 }

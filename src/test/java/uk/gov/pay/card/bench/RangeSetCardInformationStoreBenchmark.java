@@ -40,7 +40,7 @@ public class RangeSetCardInformationStoreBenchmark {
     @Setup(Level.Trial)
     public void setup() throws Exception {
         URL url = this.getClass().getResource("/worldpay/");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url.getFile());
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
         cardInformationStore = new RangeSetCardInformationStore(singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
     }
