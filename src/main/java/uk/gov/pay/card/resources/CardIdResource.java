@@ -12,7 +12,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -34,13 +33,16 @@ public class CardIdResource {
     public Response cardInformation(CardInformationRequest cardInformationRequest) {
         logger.info("Card Information Request - {}", cardInformationRequest);
 
-        Optional<CardInformation> cardInformation = cardService.getCardInformation(cardInformationRequest.getCardNumber());
+        return cardService.getCardInformation(cardInformationRequest.getCardNumber())
+                .map(CardIdResource::newCardInformationResponse)
+                .map(Response::ok)
+                .orElse(Response.status(NOT_FOUND))
+                .build();
+    }
 
-        return cardInformation.map(cardData -> {
-            CardInformationResponse cardInformationResponse = new CardInformationResponse(cardData);
-            logger.info("Card Information Response - {}", cardInformationResponse);
-            return Response.ok(cardInformationResponse).build();
-
-        }).orElse(Response.status(NOT_FOUND).build());
+    private static CardInformationResponse newCardInformationResponse(CardInformation cardInformation) {
+        final CardInformationResponse cardInformationResponse = new CardInformationResponse(cardInformation);
+        logger.info("Card Information Response - {}", cardInformationResponse);
+        return cardInformationResponse;
     }
 }
