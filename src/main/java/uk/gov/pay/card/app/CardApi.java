@@ -3,6 +3,7 @@ package uk.gov.pay.card.app;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteSender;
 import com.codahale.metrics.graphite.GraphiteUDP;
+import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -11,7 +12,6 @@ import io.dropwizard.setup.Environment;
 import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
-import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
@@ -46,7 +46,12 @@ public class CardApi extends Application<CardConfiguration> {
 
     @Override
     public void run(CardConfiguration configuration, Environment environment) {
-        environment.healthChecks().register("ping", new Ping());
+        environment.healthChecks().register("ping", new HealthCheck() {
+            @Override
+            protected Result check() {
+                return Result.healthy();
+            }
+        });
 
         CardInformationStore store = initialiseCardInformationStore(configuration);
         initialiseMetrics(configuration, environment);
