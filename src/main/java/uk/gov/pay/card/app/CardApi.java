@@ -11,7 +11,6 @@ import io.dropwizard.setup.Environment;
 import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
-import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
@@ -19,9 +18,9 @@ import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
 import uk.gov.pay.commons.utils.logging.LoggingFilter;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
 import static javax.servlet.DispatcherType.REQUEST;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
@@ -70,13 +69,10 @@ public class CardApi extends Application<CardConfiguration> {
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {
-
-        BinRangeDataLoader worldPayBinRangeDataLoader = BinRangeDataLoaderFactory.worldpay(configuration.getWorldpayDataLocation());
-
-        BinRangeDataLoader discoverBinRangeDataLoader = BinRangeDataLoaderFactory.discover(configuration.getDiscoverDataLocation());
-
-        BinRangeDataLoader testCardsBinRangeDataLoader = BinRangeDataLoaderFactory.testCards(configuration.getTestCardDataLocation());
-
-        return new RangeSetCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader, testCardsBinRangeDataLoader));
+        return new RangeSetCardInformationStore(List.of(
+                BinRangeDataLoaderFactory.worldpay(configuration.getWorldpayDataLocation()),
+                BinRangeDataLoaderFactory.discover(configuration.getDiscoverDataLocation()),
+                BinRangeDataLoaderFactory.testCards(configuration.getTestCardDataLocation())
+        ));
     }
 }
