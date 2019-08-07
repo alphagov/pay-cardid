@@ -144,10 +144,10 @@ public class RangeSetCardInformationStoreTest {
         Optional<CardInformation> cardInformation = cardInformationStore.find("5101180000000007");
 
         assertThat(cardInformation.isPresent(), is(true));
-        assertThat(cardInformation.get().getBrand(), is("master-card"));
-        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
-        assertThat(cardInformation.get().getLabel(), is("MCI CREDIT"));
-        assertThat(cardInformation.get().isCorporate(), is(true));
+        assertThat(cardInformation.orElseThrow().getBrand(), is("master-card"));
+        assertThat(cardInformation.orElseThrow().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.orElseThrow().getLabel(), is("MCI CREDIT"));
+        assertThat(cardInformation.orElseThrow().isCorporate(), is(true));
     }
 
 }

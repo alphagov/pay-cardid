@@ -3,16 +3,15 @@ package uk.gov.pay.card.db.loader;
 import uk.gov.pay.card.model.PrepaidStatus;
 
 class WorldpayPrepaidParser {
-
-    public static PrepaidStatus parse(String value) {
-        if ("Y".equals(value)) {
-            return PrepaidStatus.PREPAID;
+    static PrepaidStatus parse(String value) {
+        if (value == null) {
+            return PrepaidStatus.UNKNOWN;
         }
 
-        if ("N".equals(value)) {
-            return PrepaidStatus.NOT_PREPAID;
+        switch (value) {
+            case "Y": return PrepaidStatus.PREPAID;
+            case "N": return PrepaidStatus.NOT_PREPAID;
+            default: return PrepaidStatus.UNKNOWN;
         }
-
-        return PrepaidStatus.UNKNOWN;
     }
 }

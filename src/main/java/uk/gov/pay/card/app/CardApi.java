@@ -3,6 +3,7 @@ package uk.gov.pay.card.app;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteSender;
 import com.codahale.metrics.graphite.GraphiteUDP;
+import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -11,17 +12,15 @@ import io.dropwizard.setup.Environment;
 import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
-import uk.gov.pay.card.db.loader.BinRangeDataLoader;
-import uk.gov.pay.card.healthcheck.Ping;
 import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
 import uk.gov.pay.commons.utils.logging.LoggingFilter;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
 import static javax.servlet.DispatcherType.REQUEST;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
@@ -47,7 +46,12 @@ public class CardApi extends Application<CardConfiguration> {
 
     @Override
     public void run(CardConfiguration configuration, Environment environment) {
-        environment.healthChecks().register("ping", new Ping());
+        environment.healthChecks().register("ping", new HealthCheck() {
+            @Override
+            protected Result check() {
+                return Result.healthy();
+            }
+        });
 
         CardInformationStore store = initialiseCardInformationStore(configuration);
         initialiseMetrics(configuration, environment);
@@ -61,7 +65,7 @@ public class CardApi extends Application<CardConfiguration> {
     }
 
     private void initialiseMetrics(CardConfiguration configuration, Environment environment) {
-        GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), Integer.valueOf(configuration.getGraphitePort()));
+        GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), configuration.getGraphitePort());
         GraphiteReporter.forRegistry(environment.metrics())
                 .prefixedWith(SERVICE_METRICS_NODE)
                 .build(graphiteUDP)
@@ -70,13 +74,10 @@ public class CardApi extends Application<CardConfiguration> {
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {
-
-        BinRangeDataLoader worldPayBinRangeDataLoader = BinRangeDataLoaderFactory.worldpay(configuration.getWorldpayDataLocation());
-
-        BinRangeDataLoader discoverBinRangeDataLoader = BinRangeDataLoaderFactory.discover(configuration.getDiscoverDataLocation());
-
-        BinRangeDataLoader testCardsBinRangeDataLoader = BinRangeDataLoaderFactory.testCards(configuration.getTestCardDataLocation());
-
-        return new RangeSetCardInformationStore(asList(worldPayBinRangeDataLoader, discoverBinRangeDataLoader, testCardsBinRangeDataLoader));
+        return new RangeSetCardInformationStore(List.of(
+                BinRangeDataLoaderFactory.worldpay(configuration.getWorldpayDataLocation()),
+                BinRangeDataLoaderFactory.discover(configuration.getDiscoverDataLocation()),
+                BinRangeDataLoaderFactory.testCards(configuration.getTestCardDataLocation())
+        ));
     }
 }

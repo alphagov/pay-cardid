@@ -70,7 +70,7 @@ public class CardInformation {
         return corporate;
     }
 
-    public PrepaidStatus getPrepaidStatus() {
+    PrepaidStatus getPrepaidStatus() {
         return prepaidStatus;
     }
 
