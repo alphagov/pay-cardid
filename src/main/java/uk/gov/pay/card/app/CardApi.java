@@ -46,18 +46,18 @@ public class CardApi extends Application<CardConfiguration> {
 
     @Override
     public void run(CardConfiguration configuration, Environment environment) {
-        environment.healthChecks().register("ping", new HealthCheck() {
+        CardInformationStore store = initialiseCardInformationStore(configuration);
+        environment.healthChecks().register("informationstore", new HealthCheck() {
             @Override
             protected Result check() {
-                return Result.healthy();
+                return store.isReady() ? Result.healthy() : Result.unhealthy("Card information not yet loaded");
             }
         });
 
-        CardInformationStore store = initialiseCardInformationStore(configuration);
         initialiseMetrics(configuration, environment);
 
-        environment.lifecycle().manage(new CardInformationStoreManaged(store));
         environment.jersey().register(new HealthCheckResource(environment));
+        environment.lifecycle().manage(new CardInformationStoreManaged(store));
         environment.jersey().register(new CardIdResource(new CardService(store)));
 
         environment.servlets().addFilter("LoggingFilter", new LoggingFilter(environment.metrics()))
