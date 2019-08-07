@@ -11,6 +11,8 @@ public interface CardInformationStore {
 
     void initialiseCardInformation() throws Exception;
 
+    boolean isReady();
+
     void put(CardInformation cardInformation);
 
     Optional<CardInformation> find(String prefix);

@@ -22,6 +22,7 @@ public class RangeSetCardInformationStore implements CardInformationStore {
     private final List<BinRangeDataLoader> binRangeLoaders;
     private final RangeSet<Long> rangeSet;
     private final ConcurrentHashMap<Range, CardInformation> store;
+    private boolean loaded;
 
     public RangeSetCardInformationStore(List<BinRangeDataLoader> binRangeLoaders) {
         this.binRangeLoaders = binRangeLoaders;
@@ -34,6 +35,11 @@ public class RangeSetCardInformationStore implements CardInformationStore {
         for (BinRangeDataLoader loader : binRangeLoaders) {
             loader.loadDataTo(this);
         }
+        loaded = true;
+    }
+
+    @Override public boolean isReady() {
+        return loaded;
     }
 
     @Override
