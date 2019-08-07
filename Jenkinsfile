@@ -142,5 +142,8 @@ pipeline {
     success {
       postSuccessfulMetrics(appendBranchSuffix("cardid"))
     }
+    always {
+      junit "**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml"
+    }
   }
 }
