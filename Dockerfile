@@ -1,7 +1,7 @@
 FROM adoptopenjdk/openjdk11@sha256:eaa182283f19d3f0ee0c6217d29e299bb4056d379244ce957e30dcdc9e278e1e
 
 RUN ["apk", "--no-cache", "upgrade"]
-RUN ["apk", "--no-cache", "add", "tini"]
+RUN ["apk", "--no-cache", "add", "tini", "curl"]
 
 ARG DNS_TTL=15
 
@@ -22,6 +22,8 @@ WORKDIR /app
 COPY data/sources/ /app/data/
 COPY target/*.yaml /app/
 COPY target/pay-*-allinone.jar /app/
+
+HEALTHCHECK --interval=20s --timeout=3s --start-period=30s CMD curl -A "curl (pay-cardid Dockerfile healthcheck; localhost:$PORT)" -sf "http://localhost:$PORT/healthcheck" || exit 1
 
 ENTRYPOINT ["tini", "-e", "143", "--"]
 
