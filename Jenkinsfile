@@ -69,7 +69,7 @@ pipeline {
                 }
             }
             steps {
-                runAppE2E("cardid", "card,zap")
+                runAppE2E("cardid", "card")
             }
         }
       }
