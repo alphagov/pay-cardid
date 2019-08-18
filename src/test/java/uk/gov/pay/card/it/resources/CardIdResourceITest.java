@@ -103,6 +103,38 @@ public class CardIdResourceITest {
                 .statusCode(404);
     }
 
+    @Test
+    public void shouldReturn422WhenCardNumberIsTooSmall() {
+        getCardInformation("8")
+                .statusCode(422);
+    }
+
+    @Test
+    public void shouldReturn422WhenCardNumberIsTooBig() {
+        getCardInformation("12345678901234567890")
+                .statusCode(422);
+    }
+
+    @Test
+    public void shouldReturn422WhenJSONIsEmpty() {
+        given().port(app.getLocalPort())
+                .contentType(JSON)
+                .body("{}")
+                .when()
+                .post("/v1/api/card")
+                .then().statusCode(422);
+    }
+
+    @Test
+    public void shouldReturn422WhenJSONIsMissing() {
+        given().port(app.getLocalPort())
+                .contentType(JSON)
+                .body("")
+                .when()
+                .post("/v1/api/card")
+                .then().statusCode(422);
+    }
+
     private ValidatableResponse getCardInformation(String cardNumber) {
         return given().port(app.getLocalPort())
                 .contentType(JSON)
