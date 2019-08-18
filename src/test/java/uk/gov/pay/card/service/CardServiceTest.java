@@ -1,39 +1,44 @@
 package uk.gov.pay.card.service;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.model.CardInformation;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CardServiceTest {
+    @Mock
+    CardInformationStore cardInformationStore;
 
-    private final CardInformationStore cardInformationStore = mock(CardInformationStore.class);
+    @Test
+    public void testShortCardNumber() {
+        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", "C", "dummy", 0L, 0L));
+        when(cardInformationStore.find("00")).thenReturn(cardInfo);
 
-    private CardService cardService;
-
-    @Before
-    public void setup() {
-        cardService = new CardService(cardInformationStore);
+        assertThat(new CardService(cardInformationStore).getCardInformation("00"), is(cardInfo));
     }
 
     @Test
-    public void shouldStripTheCardNumberTo11DigitsForBinRangeLookup() {
+    public void test11DigitCardNumber() {
+        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", "C", "dummy", 0L, 0L));
+        when(cardInformationStore.find("12345678901")).thenReturn(cardInfo);
 
-        CardInformation expectedCardInformation = new CardInformation("visa", "D", "visa", 11000L, 13000L);
-        when(cardInformationStore.find("12345678901")).thenReturn(Optional.of(expectedCardInformation));
+        assertThat(new CardService(cardInformationStore).getCardInformation("12345678901"), is(cardInfo));
+    }
 
-        Optional<CardInformation> cardInformation = cardService.getCardInformation("1234567890123456");
+    @Test
+    public void test12DigitCardNumberIsTruncated() {
+        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", "C", "dummy", 0L, 0L));
+        when(cardInformationStore.find("12345678901")).thenReturn(cardInfo);
 
-        assertTrue(cardInformation.isPresent());
-        assertEquals(expectedCardInformation, cardInformation.get());
-        verify(cardInformationStore).find("12345678901");
+        assertThat(new CardService(cardInformationStore).getCardInformation("123456789012"), is(cardInfo));
     }
 }
