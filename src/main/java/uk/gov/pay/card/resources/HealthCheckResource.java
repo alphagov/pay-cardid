@@ -43,7 +43,7 @@ public class HealthCheckResource {
 
         Response.Status status = allHealthy(results.values()) ? OK : SERVICE_UNAVAILABLE;
 
-        return status(status).entity(response).build();
+        return status(status).entity(response).header("X-Content-Type-Options", "nosniff").build();
     }
 
     private boolean allHealthy(Collection<HealthCheck.Result> results) {
