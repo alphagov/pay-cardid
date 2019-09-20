@@ -7,6 +7,8 @@ import uk.gov.pay.card.model.CardInformationRequest;
 import uk.gov.pay.card.model.CardInformationResponse;
 import uk.gov.pay.card.service.CardService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -30,7 +32,7 @@ public class CardIdResource {
     @Path("/v1/api/card")
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response cardInformation(CardInformationRequest cardInformationRequest) {
+    public Response cardInformation(@NotNull @Valid CardInformationRequest cardInformationRequest) {
         logger.info("Card Information Request - {}", cardInformationRequest);
 
         return cardService.getCardInformation(cardInformationRequest.getCardNumber())
