@@ -17,6 +17,7 @@ import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
 import uk.gov.pay.commons.utils.logging.LoggingFilter;
+import uk.gov.pay.logging.LogstashConsoleAppenderFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +43,8 @@ public class CardApi extends Application<CardConfiguration> {
                         new EnvironmentVariableSubstitutor(false)
                 )
         );
+
+        bootstrap.getObjectMapper().getSubtypeResolver().registerSubtypes(LogstashConsoleAppenderFactory.class);
     }
 
     @Override

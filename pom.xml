@@ -11,6 +11,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.21</jmh.version>
         <jackson.version>2.10.0</jackson.version>
+        <pay-java-commons.version>1.0.20191017105041</pay-java-commons.version>
     </properties>
 
     <repositories>
@@ -25,6 +26,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>uk.gov.pay</groupId>
+            <artifactId>logging</artifactId>
+            <version>${pay-java-commons.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
