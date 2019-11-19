@@ -61,7 +61,7 @@ public class RangeSetCardInformationStore implements CardInformationStore {
         try {
             return Optional.of(Long.valueOf(prefix));
         } catch (NumberFormatException e) {
-            LOGGER.error("Received card number that cannot be parsed into long");
+            LOGGER.info("Received card number that cannot be parsed into long");
             return Optional.empty();
         }
     }
