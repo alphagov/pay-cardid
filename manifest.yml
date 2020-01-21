@@ -1,0 +1,26 @@
+---
+applications:
+  - name: cardid
+    buildpacks:
+      - java_buildpack
+    path: target/pay-cardid-0.1-SNAPSHOT-allinone.jar
+    health-check-type: http
+    health-check-http-endpoint: '/healthcheck'
+    health-check-invocation-timeout: 5
+    memory: ((memory))
+    disk_quota: ((disk_quota))
+    env:
+      ADMIN_PORT: '9801'
+      ENVIRONMENT: ((space))
+      JAVA_OPTS: -Xms512m -Xmx1G
+      JBP_CONFIG_JAVA_MAIN: '{ arguments: "server /home/vcap/app/config/config.yaml" }'
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
+
+      AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
+
+      # Provide via Sentry service
+      SENTRY_DSN: noop://localhost
+
+      RUN_APP: 'true'
+    routes:
+      - route: ((cardid_internal_route))
