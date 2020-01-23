@@ -9,7 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dropwizard.version>2.0.0</dropwizard.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <jmh.version>1.22</jmh.version>
+        <jmh.version>1.23</jmh.version>
         <jackson.version>2.10.2</jackson.version>
         <pay-java-commons.version>1.0.20200114170822</pay-java-commons.version>
     </properties>
