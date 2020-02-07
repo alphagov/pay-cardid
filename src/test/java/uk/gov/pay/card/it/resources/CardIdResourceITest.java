@@ -13,6 +13,24 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.core.Is.is;
 
+/**
+ * @deprecated The usefulness of many of these tests is unclear - move them to pay-cardid-data?
+ *
+ * These tests used to make assertions about data in pay-cardid-data, but that lives in a private repo.
+ *
+ * We want to be able to test pay-cardid in a CI system that doesn't have access to private repos,
+ * so the data needed for the tests to pass has been redacted to reduce its sensitivity and inlined
+ * in src/test/resources/card-id-resource-integration-test
+ *
+ * The overall effect is that a lot of these tests are now just checking that "the tests do what the tests do",
+ * whereas they used to make some (fairly loose) assertions that the bin data in pay-cardid-data was correct.
+ *
+ * If we care about testing pay-cardid-data we should set up CI for that repo separately in a system that
+ * has access to private repos and move the tests that use card data there.
+ *
+ * A test that checks the general success case and the tests for the error conditions without relying on specific
+ * card details are probably still valid and should stay.
+ */
 public class CardIdResourceITest {
 
     @Rule
@@ -21,9 +39,9 @@ public class CardIdResourceITest {
             , resourceFilePath("config/config.yaml")
             , config("server.applicationConnectors[0].port", "0")
             , config("server.adminConnectors[0].port", "0")
-            , config("worldpayDataLocation", "file://" + System.getProperty("user.dir") + "/data/sources/worldpay/GENERIC2ISOCPTISSUERPREPAID.CSV")
-            , config("discoverDataLocation", "file://" + System.getProperty("user.dir") + "/data/sources/discover/Merchant_Marketing.csv")
-            , config("testCardDataLocation", "file://" + System.getProperty("user.dir") + "/data/sources/test-cards/test-card-bin-ranges.csv"));
+            , config("worldpayDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/worldpay-bin-ranges.csv"))
+            , config("discoverDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/discover-bin-ranges.csv"))
+            , config("testCardDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/test-bin-ranges.csv")));
 
     @Test
     public void shouldFindDiscoverCardInformation() {
