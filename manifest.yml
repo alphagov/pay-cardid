@@ -17,10 +17,11 @@ applications:
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
 
       AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
+      TEST_CARD_DATA_LOCATION: ((test_card_data_location))
+      WORLDPAY_DATA_LOCATION: ((worldpay_data_location))
+      DISCOVER_DATA_LOCATION: ((discover_data_location))
 
       # Provide via Sentry service
       SENTRY_DSN: noop://localhost
 
       RUN_APP: 'true'
-    routes:
-      - route: ((cardid_internal_route))
