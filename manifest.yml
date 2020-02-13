@@ -2,6 +2,7 @@
 applications:
   - name: cardid
     buildpacks:
+      - https://github.com/alphagov/env-map-buildpack.git#v2
       - java_buildpack
     path: target/pay-cardid-0.1-SNAPSHOT-allinone.jar
     health-check-type: http
@@ -9,19 +10,22 @@ applications:
     health-check-invocation-timeout: 5
     memory: ((memory))
     disk_quota: ((disk_quota))
+    services:
+      - app-catalog
+      - cardid-secret-service
     env:
+      ENV_MAP_BP_USE_APP_PROFILE_DIR: true
       ADMIN_PORT: '9801'
       ENVIRONMENT: ((space))
       JAVA_OPTS: -Xms512m -Xmx1G
       JBP_CONFIG_JAVA_MAIN: '{ arguments: "server /home/vcap/app/config/config.yaml" }'
       JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
-
       AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
-      TEST_CARD_DATA_LOCATION: ((test_card_data_location))
-      WORLDPAY_DATA_LOCATION: ((worldpay_data_location))
-      DISCOVER_DATA_LOCATION: ((discover_data_location))
-
-      # Provide via Sentry service
-      SENTRY_DSN: noop://localhost
-
       RUN_APP: 'true'
+
+      # Provided via cardid-secret-service see env-map.yml
+      TEST_CARD_DATA_LOCATION: ""
+      WORLDPAY_DATA_LOCATION: ""
+      DISCOVER_DATA_LOCATION: ""
+      SENTRY_DSN: ""
+
