@@ -2,4 +2,6 @@ env_vars:
   TEST_CARD_DATA_LOCATION:  '.[][] | select(.name == "app-catalog")           | .credentials.cardid_data_test_card_data_location'
   WORLDPAY_DATA_LOCATION:   '.[][] | select(.name == "app-catalog")           | .credentials.cardid_data_worldpay_data_location'
   DISCOVER_DATA_LOCATION:   '.[][] | select(.name == "app-catalog")           | .credentials.cardid_data_discover_data_location'
+  METRICS_HOST:             '.[][] | select(.name == "app-catalog")           | .credentials.carbon_relay_route'
+  METRICS_PORT:             '.[][] | select(.name == "app-catalog")           | .credentials.carbon_relay_port'
   SENTRY_DSN:               '.[][] | select(.name == "cardid-secret-service") | .credentials.sentry_dsn'
