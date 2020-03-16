@@ -23,6 +23,10 @@ applications:
       AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
       RUN_APP: 'true'
 
+      # Provided via the app-catalog service, see env-map.yml
+      METRICS_HOST: ""
+      METRICS_PORT: ""
+
       # Provided via cardid-secret-service see env-map.yml
       TEST_CARD_DATA_LOCATION: ""
       WORLDPAY_DATA_LOCATION: ""
