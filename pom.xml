@@ -65,7 +65,7 @@
         <dependency>
             <groupId>uk.gov.pay</groupId>
             <artifactId>utils</artifactId>
-            <version>1.0.20200316101949</version>
+            <version>1.0.20200330101804</version>
         </dependency>
         <dependency>
             <groupId>org.dhatim</groupId>
