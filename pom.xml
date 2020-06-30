@@ -10,7 +10,7 @@
         <dropwizard.version>2.0.10</dropwizard.version>
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.23</jmh.version>
-        <jackson.version>2.11.0</jackson.version>
+        <jackson.version>2.11.1</jackson.version>
         <pay-java-commons.version>1.0.20200601131959</pay-java-commons.version>
     </properties>
 
