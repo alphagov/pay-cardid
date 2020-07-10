@@ -1,4 +1,4 @@
 [submodule "data"]
 	path = data
-	url = git@github.com:alphagov/pay-cardid-data.git
+	url = ../pay-cardid-data.git
 	branch = master
