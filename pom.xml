@@ -11,7 +11,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.26</jmh.version>
         <jackson.version>2.11.3</jackson.version>
-        <pay-java-commons.version>1.0.20201001124822</pay-java-commons.version>
+        <pay-java-commons.version>1.0.20201026142953</pay-java-commons.version>
     </properties>
 
     <repositories>
