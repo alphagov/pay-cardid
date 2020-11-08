@@ -1,16 +1,12 @@
 package uk.gov.pay.card.db.loader;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import uk.gov.pay.card.model.PrepaidStatus;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class WorldpayPrepaidParserTest {
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldReturnPrepaidForY() {
