@@ -1,9 +1,9 @@
 package uk.gov.pay.card.db;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader;
 import uk.gov.pay.card.model.CardType;
 import uk.gov.pay.card.model.CardInformation;
@@ -12,20 +12,20 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RangeSetCardInformationStoreTest {
 
     private CardInformationStore cardInformationStore;
 
-    @After
+    @AfterEach
     public void tearDown() {
         cardInformationStore.destroy();
     }

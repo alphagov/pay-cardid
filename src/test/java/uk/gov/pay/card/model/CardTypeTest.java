@@ -1,15 +1,11 @@
 package uk.gov.pay.card.model;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CardTypeTest {
-
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void shouldFindCardClass() {
@@ -19,15 +15,25 @@ public class CardTypeTest {
 
     @Test
     public void shouldThrowNullPointerException_WhenNullValuePassed_forCardClass() {
-        thrown.expect(java.lang.NullPointerException.class);
-        thrown.expectMessage("Value cannot be null for paymentGatewayRepresentation");
-        new CardInformation("A", null, "A", 1L, 2L);
+        try {
+            new CardInformation("A", null, "A", 1L, 2L);
+            fail("The constructor was expected to throw an exception");
+        } catch (NullPointerException e) {
+            assertEquals("Value cannot be null for paymentGatewayRepresentation", e.getMessage());
+        } catch (Throwable e) {
+            fail("An unexpected exception was thrown by the constructor: " + e);
+        }
     }
 
     @Test
     public void shouldThrowIllegalArgumentException_WhenInvalidValuePassed_forCardClass() {
-        thrown.expect(java.lang.IllegalArgumentException.class);
-        thrown.expectMessage("No enum found for value [I do not exist]");
-        new CardInformation("A", "I do not exist", "A", 1L, 2L);
+        try {
+            new CardInformation("A", "I do not exist", "A", 1L, 2L);
+            fail("The constructor was expected to throw an exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals("No enum found for value [I do not exist]", e.getMessage());
+        } catch (Throwable e) {
+            fail("An unexpected exception was thrown by the constructor: " + e);
+        }
     }
 }
