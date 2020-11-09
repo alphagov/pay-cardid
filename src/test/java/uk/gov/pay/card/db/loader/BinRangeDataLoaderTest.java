@@ -1,8 +1,6 @@
 package uk.gov.pay.card.db.loader;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 import uk.gov.pay.card.model.CardInformation;
@@ -10,6 +8,7 @@ import uk.gov.pay.card.model.PrepaidStatus;
 
 import java.net.URL;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -17,9 +16,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class BinRangeDataLoaderTest {
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void shouldLoadWorldpayBinRangesFromURL() throws Exception {
@@ -51,9 +47,8 @@ public class BinRangeDataLoaderTest {
         BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(new URL("file:///nonexistent/path"));
 
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
-        exception.expect(BinRangeDataLoader.DataLoaderException.class);
 
-        worldpayBinRangeLoader.loadDataTo(cardInformationStore);
+        assertThrows(BinRangeDataLoader.DataLoaderException.class, () -> worldpayBinRangeLoader.loadDataTo(cardInformationStore));
 
         verifyZeroInteractions(cardInformationStore);
     }
