@@ -12,7 +12,7 @@
         <jmh.version>1.27</jmh.version>
         <jackson.version>2.12.1</jackson.version>
         <mockito.version>3.7.0</mockito.version>
-        <pay-java-commons.version>1.0.20210107154625</pay-java-commons.version>
+        <pay-java-commons.version>1.0.20210112123119</pay-java-commons.version>
     </properties>
 
     <repositories>
