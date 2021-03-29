@@ -16,9 +16,9 @@ import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
-import uk.gov.pay.logging.GovUkPayDropwizardRequestJsonLogLayoutFactory;
-import uk.gov.pay.logging.LoggingFilter;
-import uk.gov.pay.logging.LogstashConsoleAppenderFactory;
+import uk.gov.service.payments.logging.GovUkPayDropwizardRequestJsonLogLayoutFactory;
+import uk.gov.service.payments.logging.LoggingFilter;
+import uk.gov.service.payments.logging.LogstashConsoleAppenderFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
