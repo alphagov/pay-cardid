@@ -12,19 +12,8 @@
         <jmh.version>1.29</jmh.version>
         <jackson.version>2.12.2</jackson.version>
         <mockito.version>3.8.0</mockito.version>
-        <pay-java-commons.version>1.0.20210310094438</pay-java-commons.version>
+        <pay-java-commons.version>1.0.20210326162042</pay-java-commons.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-govuk-pay-pay-java-commons</id>
-            <name>bintray</name>
-            <url>https://dl.bintray.com/govuk-pay/pay-java-commons</url>
-        </repository>
-    </repositories>
 
     <parent>
         <groupId>io.dropwizard</groupId>
@@ -34,7 +23,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>uk.gov.pay</groupId>
+            <groupId>uk.gov.service.payments</groupId>
             <artifactId>logging</artifactId>
             <version>${pay-java-commons.version}</version>
         </dependency>
