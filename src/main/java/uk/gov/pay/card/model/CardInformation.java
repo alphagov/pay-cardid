@@ -9,11 +9,12 @@ public class CardInformation {
 
     private static final Map<String, String> BRAND_MAPPING = Map.of(
             "MC", "master-card",
-            "MCI DEBIT", "master-card",
-            "MCI CREDIT", "master-card",
+            "MASTERCARD CREDIT", "master-card",
+            "DEBIT MASTERCARD", "master-card",
             "MAESTRO", "maestro",
-            "AMERICAN EXPRESS", "american-express",
+            "AMEX", "american-express",
             "DINERS CLUB", "diners-club",
+            "DINERS DISCOVER", "diners-club",
             "VISA CREDIT", "visa",
             "VISA DEBIT", "visa",
             "ELECTRON", "visa"
@@ -25,15 +26,13 @@ public class CardInformation {
     private Long min;
     private Long max;
     private final boolean corporate;
-    private final PrepaidStatus prepaidStatus;
 
-    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
+    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate) {
         this.cardType = CardType.of(type);
         this.label = label;
         this.min = min;
         this.max = max;
         this.corporate = corporate;
-        this.prepaidStatus = prepaidStatus;
 
         if (brand != null) {
             this.brand = BRAND_MAPPING.getOrDefault(brand, brand.toLowerCase());
@@ -43,7 +42,7 @@ public class CardInformation {
     }
 
     public CardInformation(String brand, String type, String label, Long min, Long max) {
-        this(brand, type, label, min, max, false, PrepaidStatus.UNKNOWN);
+        this(brand, type, label, min, max, false);
     }
 
     public String getBrand() {
@@ -70,10 +69,6 @@ public class CardInformation {
         return corporate;
     }
 
-    PrepaidStatus getPrepaidStatus() {
-        return prepaidStatus;
-    }
-
     public void updateRangeLength(int numLength) {
         min = Long.valueOf(format("%-" + numLength + "d", min).replace(" ", "0"));
         max = Long.valueOf(format("%-" + numLength + "d", max).replace(" ", "9"));
@@ -89,8 +84,7 @@ public class CardInformation {
                 cardType == that.cardType &&
                 Objects.equals(label, that.label) &&
                 Objects.equals(min, that.min) &&
-                Objects.equals(max, that.max) &&
-                Objects.equals(prepaidStatus, that.prepaidStatus);
+                Objects.equals(max, that.max);
     }
 
     @Override
@@ -104,7 +98,6 @@ public class CardInformation {
                 "brand='" + brand + '\'' +
                 ", cardType=" + cardType +
                 ", label='" + label + '\'' +
-                ", prepaidStatus='" + prepaidStatus + '\'' +
                 ", min=" + min +
                 ", max=" + max +
                 ", corporate=" + corporate +

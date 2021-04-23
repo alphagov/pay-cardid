@@ -13,7 +13,8 @@ public enum CardType {
     CREDIT("C", "C", "Credit"),
     DEBIT("D", "D", "Debit"),
     CREDIT_DEBIT("CD", "CD", "Both Credit and Debit"),
-    DEBIT_II("F", "D", "Debit II");
+    DEBIT_II("F", "D", "Debit II"),
+    PREPAID("P", "P", "Prepaid");
 
     private final String paymentGatewayRepresentation;
     private final String govUkPayRepresentation;
@@ -78,6 +79,8 @@ public enum CardType {
                 return DEBIT;
             case "F":
                 return DEBIT_II;
+            case "P":
+                return PREPAID;
         }
 
         throw new IllegalArgumentException(format("No enum found for value [%s]", paymentGatewayRepresentation));

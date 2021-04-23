@@ -57,6 +57,22 @@ public class RangeSetCardInformationStoreTest {
     }
 
     @Test
+    public void shouldFindCardInformationForCardIdPrefix_dartFormat() throws Exception {
+
+        URL url = this.getClass().getResource("/worldpay/worldpay-dart-bin-ranges.csv");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
+        cardInformationStore.initialiseCardInformation();
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("22256712345");
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("master-card"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.get().getLabel(), is("DEBIT MASTERCARD"));
+        assertThat(cardInformation.get().isCorporate(), is(false));
+    }
+
+    @Test
     public void shouldFindCardInformationForCardIdPrefixWith11Digits() throws Exception {
 
         URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
