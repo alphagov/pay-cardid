@@ -20,3 +20,8 @@ updates:
   - dependencies
   - java
   - govuk-pay
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "daily"
+    time: "03:00"
