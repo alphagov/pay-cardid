@@ -88,14 +88,6 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
-      when {
-        branch 'master'
-      }
-      steps {
-        deployEcs("cardid")
-      }
-    }
     stage('Card Payment Smoke Test') {
       when { branch 'master' }
       steps { runCardSmokeTest() }
