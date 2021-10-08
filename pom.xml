@@ -11,7 +11,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.33</jmh.version>
         <jackson.version>2.13.0</jackson.version>
-        <mockito.version>3.12.4</mockito.version>
+        <mockito.version>4.0.0</mockito.version>
         <pay-java-commons.version>1.0.20211004094530</pay-java-commons.version>
     </properties>
 
