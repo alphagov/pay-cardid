@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 import static java.lang.String.format;
+import static uk.gov.pay.card.db.CardInformationStore.CARD_RANGE_LENGTH;
 
 public class BinRangeDataLoader {
     private static final long LOG_COUNT_EVERY_MS = 5000;
@@ -23,17 +24,17 @@ public class BinRangeDataLoader {
     private final String dataRowIdentifier;
     private final Function<String[], CardInformation> cardInformationExtractor;
 
-    private static final String WORLDPAY_DELIMITER = "!";
+    private static final String WORLDPAY_DELIMITER = ",";
     private static final String DISCOVER_DELIMITER = ",";
     private static final String TEST_CARD_DATA_DELIMITER = ",";
-    private static final String WORLDPAY_ROW_IDENTIFIER = "05";
+    private static final String WORLDPAY_ROW_IDENTIFIER = "01";
     private static final String DISCOVER_ROW_IDENTIFIER = "02";
     private static final String TEST_CARD_DATA_ROW_IDENTIFIER = "02";
     private static final String WORLDPAY_CORPORATE_CARD_MARKER = "CP";
 
     private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
-            entry[4], entry[8], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]),
-            WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]), WorldpayPrepaidParser.parse(entry[11]));
+            entry[4], entry[9], entry[4], Long.valueOf(entry[1].substring(0, CARD_RANGE_LENGTH)), Long.valueOf(entry[2].substring(0, CARD_RANGE_LENGTH)),
+            WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]));
 
     private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
             entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));

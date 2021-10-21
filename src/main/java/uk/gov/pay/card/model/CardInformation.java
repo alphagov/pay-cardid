@@ -4,19 +4,22 @@ import java.util.Map;
 import java.util.Objects;
 
 import static java.lang.String.format;
+import static java.util.Map.entry;
 
 public class CardInformation {
 
-    private static final Map<String, String> BRAND_MAPPING = Map.of(
-            "MC", "master-card",
-            "MCI DEBIT", "master-card",
-            "MCI CREDIT", "master-card",
-            "MAESTRO", "maestro",
-            "AMERICAN EXPRESS", "american-express",
-            "DINERS CLUB", "diners-club",
-            "VISA CREDIT", "visa",
-            "VISA DEBIT", "visa",
-            "ELECTRON", "visa"
+    private static final Map<String, String> BRAND_MAPPING = Map.ofEntries(
+            entry("MC", "master-card"),
+            entry("DEBIT MASTERCARD", "master-card"),
+            entry("MASTERCARD CREDIT", "master-card"),
+            entry("MAESTRO", "maestro"),
+            entry("AMEX", "american-express"),
+            entry("DINERS CLUB", "diners-club"),
+            entry("DINERS DISCOVER", "diners-club"),
+            entry("JAPANESE CREDIT BUREAU", "jcb"),
+            entry("VISA CREDIT", "visa"),
+            entry("VISA DEBIT", "visa"),
+            entry("ELECTRON", "visa")
     );
 
     private final String brand;
@@ -27,23 +30,18 @@ public class CardInformation {
     private final boolean corporate;
     private final PrepaidStatus prepaidStatus;
 
-    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
+    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate) {
         this.cardType = CardType.of(type);
         this.label = label;
         this.min = min;
         this.max = max;
         this.corporate = corporate;
-        this.prepaidStatus = prepaidStatus;
-
-        if (brand != null) {
-            this.brand = BRAND_MAPPING.getOrDefault(brand, brand.toLowerCase());
-        } else {
-            this.brand = null;
-        }
+        this.brand = brand != null ? BRAND_MAPPING.getOrDefault(brand, brand.toLowerCase()) : null;
+        this.prepaidStatus = "P".equals(type) ? PrepaidStatus.PREPAID : PrepaidStatus.NOT_PREPAID;
     }
 
     public CardInformation(String brand, String type, String label, Long min, Long max) {
-        this(brand, type, label, min, max, false, PrepaidStatus.UNKNOWN);
+        this(brand, type, label, min, max, false);
     }
 
     public String getBrand() {

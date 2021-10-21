@@ -26,7 +26,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        verify(cardInformationStore, times(5)).put(any(CardInformation.class));
+        verify(cardInformationStore, times(4)).put(any(CardInformation.class));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        CardInformation expectedCardInformation = new CardInformation("ELECTRON", "D", "ELECTRON", 511226111L, 511226200L, false, PrepaidStatus.PREPAID);
+        CardInformation expectedCardInformation = new CardInformation("MASTERCARD CREDIT", "D", "MASTERCARD CREDIT", 22234500000L, 22234500999L, true);
         verify(cardInformationStore).put(expectedCardInformation);
     }
 }
