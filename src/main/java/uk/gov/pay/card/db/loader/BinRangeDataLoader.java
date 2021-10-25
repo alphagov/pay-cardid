@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.model.CardInformation;
+import uk.gov.pay.card.model.CardType;
+import uk.gov.pay.card.model.PrepaidStatus;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,15 +34,37 @@ public class BinRangeDataLoader {
     private static final String TEST_CARD_DATA_ROW_IDENTIFIER = "02";
     private static final String WORLDPAY_CORPORATE_CARD_MARKER = "CP";
 
-    private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
-            entry[4], entry[9], entry[4], Long.valueOf(entry[1].substring(0, CARD_RANGE_LENGTH)), Long.valueOf(entry[2].substring(0, CARD_RANGE_LENGTH)),
-            WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]));
+    private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> {
+        String label = entry[4];
+        String brand = BinRangeParser.calculateCardBrand(label);
+        CardType type = BinRangeParser.calculateCardType(entry[9]);
+        Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1].substring(0, CARD_RANGE_LENGTH)), CARD_RANGE_LENGTH);
+        Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2].substring(0, CARD_RANGE_LENGTH)), CARD_RANGE_LENGTH);
+        PrepaidStatus prepaidStatus = BinRangeParser.calculateWorldpayPrepaidStatus(entry[9]);
+        boolean corporateSurcharge = WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]);
 
-    private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> new CardInformation(
-            entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
+        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit, corporateSurcharge, prepaidStatus);
+    };
 
-    private static final Function<String[], CardInformation> TEST_CARD_DATA_INFORMATION_EXTRACTOR = entry -> new CardInformation(
-            entry[4], entry[3], entry[4], Long.valueOf(entry[1]), Long.valueOf(entry[2]));
+    private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> {
+        String label = entry[4];
+        String brand = BinRangeParser.calculateCardBrand(label);
+        CardType type = BinRangeParser.calculateCardType(entry[3]);
+        Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1]), CARD_RANGE_LENGTH);
+        Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2]), CARD_RANGE_LENGTH);
+
+        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit);
+    };
+
+    private static final Function<String[], CardInformation> TEST_CARD_DATA_INFORMATION_EXTRACTOR = entry -> {
+        String label = entry[4];
+        String brand = BinRangeParser.calculateCardBrand(label);
+        CardType type = BinRangeParser.calculateCardType(entry[3]);
+        Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1]), CARD_RANGE_LENGTH);
+        Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2]), CARD_RANGE_LENGTH);
+
+        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit);
+    };
 
     public static class BinRangeDataLoaderFactory {
 

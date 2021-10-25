@@ -1,26 +1,8 @@
 package uk.gov.pay.card.model;
 
-import java.util.Map;
 import java.util.Objects;
 
-import static java.lang.String.format;
-import static java.util.Map.entry;
-
 public class CardInformation {
-
-    private static final Map<String, String> BRAND_MAPPING = Map.ofEntries(
-            entry("MC", "master-card"),
-            entry("DEBIT MASTERCARD", "master-card"),
-            entry("MASTERCARD CREDIT", "master-card"),
-            entry("MAESTRO", "maestro"),
-            entry("AMEX", "american-express"),
-            entry("DINERS CLUB", "diners-club"),
-            entry("DINERS DISCOVER", "diners-club"),
-            entry("JAPANESE CREDIT BUREAU", "jcb"),
-            entry("VISA CREDIT", "visa"),
-            entry("VISA DEBIT", "visa"),
-            entry("ELECTRON", "visa")
-    );
 
     private final String brand;
     private final CardType cardType;
@@ -30,18 +12,18 @@ public class CardInformation {
     private final boolean corporate;
     private final PrepaidStatus prepaidStatus;
 
-    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate) {
-        this.cardType = CardType.of(type);
+    public CardInformation(String brand, CardType type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
+        this.cardType = type;
         this.label = label;
         this.min = min;
         this.max = max;
         this.corporate = corporate;
-        this.brand = brand != null ? BRAND_MAPPING.getOrDefault(brand, brand.toLowerCase()) : null;
-        this.prepaidStatus = "P".equals(type) ? PrepaidStatus.PREPAID : PrepaidStatus.NOT_PREPAID;
+        this.brand = brand;
+        this.prepaidStatus = prepaidStatus;
     }
 
-    public CardInformation(String brand, String type, String label, Long min, Long max) {
-        this(brand, type, label, min, max, false);
+    public CardInformation(String brand, CardType type, String label, Long min, Long max) {
+        this(brand, type, label, min, max, false, PrepaidStatus.NOT_PREPAID);
     }
 
     public String getBrand() {
@@ -72,9 +54,12 @@ public class CardInformation {
         return prepaidStatus;
     }
 
-    public void updateRangeLength(int numLength) {
-        min = Long.valueOf(format("%-" + numLength + "d", min).replace(" ", "0"));
-        max = Long.valueOf(format("%-" + numLength + "d", max).replace(" ", "9"));
+    public void setMin(Long min) {
+        this.min = min;
+    }
+
+    public void setMax(Long max) {
+        this.max = max;
     }
 
     @Override

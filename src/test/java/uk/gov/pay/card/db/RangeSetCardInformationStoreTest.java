@@ -41,21 +41,6 @@ public class RangeSetCardInformationStoreTest {
     }
 
     @Test
-    void put_shouldUpdateRangeLengthTo11Digits() {
-
-        BinRangeDataLoader mockBinRangeLoader = mock(BinRangeDataLoader.class);
-        CardInformation cardInformation = mock(CardInformation.class);
-
-        when(cardInformation.getMin()).thenReturn(1L);
-        when(cardInformation.getMax()).thenReturn(19L);
-
-        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(mockBinRangeLoader));
-        cardInformationStore.put(cardInformation);
-
-        verify(cardInformation).updateRangeLength(11);
-    }
-
-    @Test
     void shouldFindCorporateCreditCardType() throws Exception {
         URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
         BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);

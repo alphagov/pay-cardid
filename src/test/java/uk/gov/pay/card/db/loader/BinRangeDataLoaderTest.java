@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 import uk.gov.pay.card.model.CardInformation;
+import uk.gov.pay.card.model.CardType;
 import uk.gov.pay.card.model.PrepaidStatus;
 
 import java.net.URL;
@@ -61,7 +62,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        CardInformation expectedCardInformation = new CardInformation("MASTERCARD CREDIT", "D", "MASTERCARD CREDIT", 22234500000L, 22234500999L, true);
+        CardInformation expectedCardInformation = new CardInformation("master-card", CardType.DEBIT, "DEBIT MASTERCARD", 22234500000L, 22234500999L, true, PrepaidStatus.NOT_PREPAID);
         verify(cardInformationStore).put(expectedCardInformation);
     }
 }

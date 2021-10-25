@@ -70,7 +70,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindWorldpayCardInformation() {
-        getCardInformation("22256700000")
+        getCardInformation("2225670000000000")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -82,7 +82,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindAmexCardInformation() {
-        getCardInformation("22289000001")
+        getCardInformation("3714496353984311")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("american-express"))
@@ -94,7 +94,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindMastercardCreditCorporateCardInformation() {
-        getCardInformation("22234510443")
+        getCardInformation("2223451044300001")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -106,7 +106,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindPrepaidCard() {
-        getCardInformation("42089333302")
+        getCardInformation("4208933330200001")
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("visa"))
