@@ -3,7 +3,6 @@ package uk.gov.pay.card.model;
 import static java.lang.String.format;
 
 /**
- * An object type representing a card class according to ISO CPT BIN File specification
  * Possible values in this field can be C, D, CD and F. Each one of them has a different
  * meaning, where C=Credit,D=Debit, CD=Both and F=Debit II
  * <p>
@@ -75,6 +74,7 @@ public enum CardType {
             case "CD":
                 return CREDIT_DEBIT;
             case "D":
+            case "P":
                 return DEBIT;
             case "F":
                 return DEBIT_II;
