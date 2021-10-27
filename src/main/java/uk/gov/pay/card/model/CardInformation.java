@@ -1,8 +1,23 @@
 package uk.gov.pay.card.model;
 
+import java.util.Map;
 import java.util.Objects;
 
+import static java.lang.String.format;
+
 public class CardInformation {
+
+    private static final Map<String, String> BRAND_MAPPING = Map.of(
+            "MC", "master-card",
+            "MCI DEBIT", "master-card",
+            "MCI CREDIT", "master-card",
+            "MAESTRO", "maestro",
+            "AMERICAN EXPRESS", "american-express",
+            "DINERS CLUB", "diners-club",
+            "VISA CREDIT", "visa",
+            "VISA DEBIT", "visa",
+            "ELECTRON", "visa"
+    );
 
     private final String brand;
     private final CardType cardType;
@@ -12,18 +27,23 @@ public class CardInformation {
     private final boolean corporate;
     private final PrepaidStatus prepaidStatus;
 
-    public CardInformation(String brand, CardType type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
-        this.cardType = type;
+    public CardInformation(String brand, String type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
+        this.cardType = CardType.of(type);
         this.label = label;
         this.min = min;
         this.max = max;
         this.corporate = corporate;
-        this.brand = brand;
         this.prepaidStatus = prepaidStatus;
+
+        if (brand != null) {
+            this.brand = BRAND_MAPPING.getOrDefault(brand, brand.toLowerCase());
+        } else {
+            this.brand = null;
+        }
     }
 
-    public CardInformation(String brand, CardType type, String label, Long min, Long max) {
-        this(brand, type, label, min, max, false, PrepaidStatus.NOT_PREPAID);
+    public CardInformation(String brand, String type, String label, Long min, Long max) {
+        this(brand, type, label, min, max, false, PrepaidStatus.UNKNOWN);
     }
 
     public String getBrand() {
@@ -54,12 +74,9 @@ public class CardInformation {
         return prepaidStatus;
     }
 
-    public void setMin(Long min) {
-        this.min = min;
-    }
-
-    public void setMax(Long max) {
-        this.max = max;
+    public void updateRangeLength(int numLength) {
+        min = Long.valueOf(format("%-" + numLength + "d", min).replace(" ", "0"));
+        max = Long.valueOf(format("%-" + numLength + "d", max).replace(" ", "9"));
     }
 
     @Override

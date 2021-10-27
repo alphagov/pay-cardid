@@ -26,35 +26,18 @@ public class RangeSetCardInformationStoreTest {
     private CardInformationStore cardInformationStore;
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         cardInformationStore.destroy();
     }
 
     @Test
-    void shouldUseLoadersToInitialiseData() throws Exception {
+    public void shouldUseLoadersToInitialiseData() throws Exception {
         BinRangeDataLoader mockBinRangeLoader = mock(BinRangeDataLoader.class);
 
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(mockBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
         verify(mockBinRangeLoader).loadDataTo(cardInformationStore);
-    }
-
-    @Test
-    void shouldFindCorporateCreditCardType() throws Exception {
-        URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
-        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
-
-        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
-        worldpayBinRangeLoader.loadDataTo(cardInformationStore);
-
-        Optional<CardInformation> cardInformation = cardInformationStore.find("22234500001");
-
-        assertThat(cardInformation.isPresent(), is(true));
-        assertThat(cardInformation.orElseThrow().getBrand(), is("master-card"));
-        assertThat(cardInformation.orElseThrow().getCardType(), is(CardType.DEBIT));
-        assertThat(cardInformation.orElseThrow().getLabel(), is("MASTERCARD CREDIT"));
-        assertThat(cardInformation.orElseThrow().isCorporate(), is(true));
     }
 
     @Test
@@ -65,11 +48,106 @@ public class RangeSetCardInformationStoreTest {
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
-        Optional<CardInformation> cardInformation = cardInformationStore.find("22256712345");
+        Optional<CardInformation> cardInformation = cardInformationStore.find("51194812198");
         assertTrue(cardInformation.isPresent());
-        assertThat(cardInformation.get().getBrand(), is("master-card"));
+        assertThat(cardInformation.get().getBrand(), is("visa"));
         assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
-        assertThat(cardInformation.get().getLabel(), is("DEBIT MASTERCARD"));
+        assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
         assertThat(cardInformation.get().isCorporate(), is(false));
     }
+
+    @Test
+    public void shouldFindCardInformationForCardIdPrefixWith11Digits() throws Exception {
+
+        URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
+        cardInformationStore.initialiseCardInformation();
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("51194912333");
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("discover"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.get().getLabel(), is("DISCOVER"));
+        assertThat(cardInformation.get().isCorporate(), is(false));
+    }
+
+    @Test
+    public void shouldFindCardInformationWithRangeLengthLessThan9digits() throws Exception {
+        URL url = this.getClass().getResource("/worldpay-6-digits/worldpay-bin-ranges-with-6digit-ranges.csv");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
+        cardInformationStore.initialiseCardInformation();
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("51122676499");
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("visa"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
+        assertThat(cardInformation.get().isCorporate(), is(false));
+    }
+
+    @Test
+    public void shouldFindCardInformationWithRange6digitsWhenRangeMinAndMaxAreTheSame() throws Exception {
+        URL url = this.getClass().getResource("/worldpay-6-digits/worldpay-bin-ranges-with-6digit-ranges.csv");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
+        cardInformationStore.initialiseCardInformation();
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("53333699999");
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("visa"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
+        assertThat(cardInformation.get().isCorporate(), is(false));
+    }
+
+    @Test
+    public void shouldFindCardInformationWithRange9digitsWhenRangeMinAndMaxAreTheSame() throws Exception {
+
+        URL url = this.getClass().getResource("/worldpay-9-digits/worldpay-bin-ranges-with-9digit-ranges.csv");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
+        cardInformationStore.initialiseCardInformation();
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("53333333699");
+        assertTrue(cardInformation.isPresent());
+        assertThat(cardInformation.get().getBrand(), is("visa"));
+        assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.get().getLabel(), is("ELECTRON"));
+        assertThat(cardInformation.get().isCorporate(), is(false));
+    }
+
+    @Test
+    public void put_shouldUpdateRangeLengthTo11Digits() {
+
+        BinRangeDataLoader mockBinRangeLoader = mock(BinRangeDataLoader.class);
+        CardInformation cardInformation = mock(CardInformation.class);
+
+        when(cardInformation.getMin()).thenReturn(1L);
+        when(cardInformation.getMax()).thenReturn(19L);
+
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(mockBinRangeLoader));
+        cardInformationStore.put(cardInformation);
+
+        verify(cardInformation).updateRangeLength(11);
+    }
+
+    @Test
+    public void shouldFindCorporateCreditCardType() throws Exception {
+        URL url = this.getClass().getResource("/worldpay/worldpay-bin-ranges.csv");
+        BinRangeDataLoader worldpayBinRangeLoader = BinRangeDataLoaderFactory.worldpay(url);
+
+        cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
+        worldpayBinRangeLoader.loadDataTo(cardInformationStore);
+
+        Optional<CardInformation> cardInformation = cardInformationStore.find("5101180000000007");
+
+        assertThat(cardInformation.isPresent(), is(true));
+        assertThat(cardInformation.orElseThrow().getBrand(), is("master-card"));
+        assertThat(cardInformation.orElseThrow().getCardType(), is(CardType.DEBIT));
+        assertThat(cardInformation.orElseThrow().getLabel(), is("MCI CREDIT"));
+        assertThat(cardInformation.orElseThrow().isCorporate(), is(true));
+    }
+
 }
