@@ -44,7 +44,6 @@ public class RangeSetCardInformationStore implements CardInformationStore {
 
     @Override
     public void put(CardInformation cardInformation) {
-        cardInformation.updateRangeLength(CARD_RANGE_LENGTH);
         Range<Long> range = Range.closed(cardInformation.getMin(), cardInformation.getMax());
         rangeSet.add(range);
         store.put(range, cardInformation);

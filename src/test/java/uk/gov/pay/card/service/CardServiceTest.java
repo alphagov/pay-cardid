@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.model.CardInformation;
+import uk.gov.pay.card.model.CardType;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class CardServiceTest {
 
     @Test
     public void testShortCardNumber() {
-        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", "C", "dummy", 0L, 0L));
+        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", CardType.CREDIT, "dummy", 0L, 0L));
         when(cardInformationStore.find("00")).thenReturn(cardInfo);
 
         assertThat(new CardService(cardInformationStore).getCardInformation("00"), is(cardInfo));
@@ -28,7 +29,7 @@ public class CardServiceTest {
 
     @Test
     public void test11DigitCardNumber() {
-        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", "C", "dummy", 0L, 0L));
+        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", CardType.CREDIT, "dummy", 0L, 0L));
         when(cardInformationStore.find("12345678901")).thenReturn(cardInfo);
 
         assertThat(new CardService(cardInformationStore).getCardInformation("12345678901"), is(cardInfo));
@@ -36,7 +37,7 @@ public class CardServiceTest {
 
     @Test
     public void test12DigitCardNumberIsTruncated() {
-        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", "C", "dummy", 0L, 0L));
+        Optional<CardInformation> cardInfo = Optional.of(new CardInformation("dummy", CardType.CREDIT, "dummy", 0L, 0L));
         when(cardInformationStore.find("12345678901")).thenReturn(cardInfo);
 
         assertThat(new CardService(cardInformationStore).getCardInformation("123456789012"), is(cardInfo));
