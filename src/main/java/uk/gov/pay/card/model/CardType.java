@@ -75,6 +75,7 @@ public enum CardType {
             case "CD":
                 return CREDIT_DEBIT;
             case "D":
+            case "P":
                 return DEBIT;
             case "F":
                 return DEBIT_II;
