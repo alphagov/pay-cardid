@@ -35,7 +35,7 @@ public class BinRangeDataLoader {
     private static final String WORLDPAY_CORPORATE_CARD_MARKER = "CP";
     private static final String TEST_CARD_CORPORATE_CARD_MARKER = "CORPORATE";
 
-    private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> {
+    public static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> {
         String label = entry[4];
         String brand = BinRangeParser.calculateCardBrand(label);
         CardType type = BinRangeParser.calculateCardType(entry[9]);
@@ -44,7 +44,11 @@ public class BinRangeDataLoader {
         PrepaidStatus prepaidStatus = BinRangeParser.calculateWorldpayPrepaidStatus(entry[9]);
         boolean corporate = WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]);
 
-        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit, corporate, prepaidStatus);
+        String issuerName = entry[5];
+        String issuerCountryCode = entry[6];
+        String issuerCountryName = entry[8];
+
+        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit, corporate, prepaidStatus, issuerName, issuerCountryCode, issuerCountryName);
     };
 
     private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> {
@@ -84,7 +88,7 @@ public class BinRangeDataLoader {
         }
     }
 
-    private BinRangeDataLoader(String name, URL source, String delimiter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
+    public BinRangeDataLoader(String name, URL source, String delimiter, String dataRowIdentifier, Function<String[], CardInformation> cardInformationExtractor) {
         this.name = name;
         this.source = source;
         this.delimiter = delimiter;
