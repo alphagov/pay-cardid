@@ -11,8 +11,12 @@ public class CardInformation {
     private Long max;
     private final boolean corporate;
     private final PrepaidStatus prepaidStatus;
+    private final String issuerName;
+    private final String issuerCountryCode;
+    private final String issuerCountryName;
 
-    public CardInformation(String brand, CardType type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus) {
+    public CardInformation(String brand, CardType type, String label, Long min, Long max, boolean corporate, PrepaidStatus prepaidStatus,
+                           String issuerName, String issuerCountryCode, String issuerCountryName) {
         this.cardType = type;
         this.label = label;
         this.min = min;
@@ -20,10 +24,13 @@ public class CardInformation {
         this.corporate = corporate;
         this.brand = brand;
         this.prepaidStatus = prepaidStatus;
+        this.issuerName = issuerName;
+        this.issuerCountryCode = issuerCountryCode;
+        this.issuerCountryName = issuerCountryName;
     }
 
     public CardInformation(String brand, CardType type, String label, Long min, Long max) {
-        this(brand, type, label, min, max, false, PrepaidStatus.NOT_PREPAID);
+        this(brand, type, label, min, max, false, PrepaidStatus.NOT_PREPAID, null, null, null);
     }
 
     public String getBrand() {
@@ -62,6 +69,18 @@ public class CardInformation {
         this.max = max;
     }
 
+    public String getIssuerName() {
+        return issuerName;
+    }
+
+    public String getIssuerCountryCode() {
+        return issuerCountryCode;
+    }
+
+    public String getIssuerCountryName() {
+        return issuerCountryName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,6 +110,9 @@ public class CardInformation {
                 ", min=" + min +
                 ", max=" + max +
                 ", corporate=" + corporate +
+                ", issuerName=" + issuerName +
+                ", issuerCountryCode=" + issuerCountryCode +
+                ", issuerCountryName=" + issuerCountryName +
                 '}';
     }
 }
