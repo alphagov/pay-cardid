@@ -7,7 +7,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dropwizard.version>2.0.25</dropwizard.version>
+        <dropwizard.version>2.0.26</dropwizard.version>
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.33</jmh.version>
         <jackson.version>2.13.0</jackson.version>
