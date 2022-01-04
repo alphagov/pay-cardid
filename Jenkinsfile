@@ -88,10 +88,6 @@ pipeline {
         }
       }
     }
-    stage('Card Payment Smoke Test') {
-      when { branch 'master' }
-      steps { runCardSmokeTest() }
-    }
     stage('Complete') {
       failFast true
       parallel {
@@ -101,14 +97,6 @@ pipeline {
           }
           steps {
             tagDeployment("cardid")
-          }
-        }
-        stage('Trigger Deploy Notification') {
-          when {
-            branch 'master'
-          }
-          steps {
-            triggerGraphiteDeployEvent("cardid")
           }
         }
       }
