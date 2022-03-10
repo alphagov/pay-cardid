@@ -29,7 +29,7 @@ logging:
       environment: ${ENVIRONMENT}
       inAppIncludes: ["uk.gov.pay"]
 
-worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-file:///app/data/worldpay/GENERIC2ISOCPTISSUERPREPAID.CSV}
+worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-file:///app/data/worldpay/WP_341BIN_V03.CSV}
 discoverDataLocation: ${DISCOVER_DATA_LOCATION:-file:///app/data/discover/Merchant_Marketing.csv}
 testCardDataLocation: ${TEST_CARD_DATA_LOCATION:-file:///app/data/test-cards/test-card-bin-ranges.csv}
 

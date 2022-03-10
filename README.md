@@ -13,7 +13,7 @@ The service provides an API that could be accessed to retrieve card information 
   - `METRICS_PORT`: The port on `METRICS_HOST` to send graphite metrics to. Defaults to `8081`.
   - `PORT`: The port number to listen for requests on. Defaults to `8080`.
   - `TEST_CARD_DATA_LOCATION`: The URL to load bin ranges for test cards from. Defaults to `file:///app/data/test-cards/test-card-bin-ranges.csv`.
-  - `WORLDPAY_DATA_LOCATION`: The URL to load the Worldpay bin range data from. Defaults to `file:///app/data/worldpay/GENERIC2ISOCPTISSUERPREPAID.CSV`.
+  - `WORLDPAY_DATA_LOCATION`: The URL to load the Worldpay bin range data from. Defaults to `file:///app/data/worldpay/WP_341BIN_V03.CSV`.
 
 ## Card data
 The data for this service would need to be sourced externally from relevant providers. 
