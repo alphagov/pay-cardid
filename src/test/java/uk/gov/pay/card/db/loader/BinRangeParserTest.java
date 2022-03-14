@@ -102,6 +102,18 @@ class BinRangeParserTest {
     }
 
     @Test
+    void shouldParseTestCardPrepaidStatusWhenPrepaid() {
+        PrepaidStatus prepaidStatus = BinRangeParser.calculateTestCardPrepaidStatus("PREPAID");
+        assertThat(prepaidStatus, is(PrepaidStatus.PREPAID));
+    }
+
+    @Test
+    void shouldParseTestCardPrepaidStatusWhenNotPrepaid() {
+        PrepaidStatus prepaidStatus = BinRangeParser.calculateTestCardPrepaidStatus("NOT_PREPAID");
+        assertThat(prepaidStatus, is(PrepaidStatus.NOT_PREPAID));
+    }
+
+    @Test
     void shouldFindCardClass() {
         CardType cardType = BinRangeParser.calculateCardType("C");
         assertThat(cardType, is(CardType.CREDIT));

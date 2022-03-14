@@ -35,6 +35,10 @@ public class BinRangeParser {
     public static PrepaidStatus calculateWorldpayPrepaidStatus(String entry) {
         return "P".equals(entry) ? PrepaidStatus.PREPAID : PrepaidStatus.NOT_PREPAID;
     }
+    
+    public static PrepaidStatus calculateTestCardPrepaidStatus(String entry) {
+        return "PREPAID".equals(entry) ? PrepaidStatus.PREPAID : PrepaidStatus.NOT_PREPAID;
+    }
 
     public static String calculateCardBrand(String entry) {
         return entry != null ? BRAND_MAPPING.getOrDefault(entry, entry.toLowerCase()) : null;

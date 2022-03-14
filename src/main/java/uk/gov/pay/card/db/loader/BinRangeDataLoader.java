@@ -33,6 +33,7 @@ public class BinRangeDataLoader {
     private static final String DISCOVER_ROW_IDENTIFIER = "02";
     private static final String TEST_CARD_DATA_ROW_IDENTIFIER = "02";
     private static final String WORLDPAY_CORPORATE_CARD_MARKER = "CP";
+    private static final String TEST_CARD_CORPORATE_CARD_MARKER = "CORPORATE";
 
     private static final Function<String[], CardInformation> WORLDPAY_CARD_INFORMATION_EXTRACTOR = entry -> {
         String label = entry[4];
@@ -41,9 +42,9 @@ public class BinRangeDataLoader {
         Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1].substring(0, CARD_RANGE_LENGTH)), CARD_RANGE_LENGTH);
         Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2].substring(0, CARD_RANGE_LENGTH)), CARD_RANGE_LENGTH);
         PrepaidStatus prepaidStatus = BinRangeParser.calculateWorldpayPrepaidStatus(entry[9]);
-        boolean corporateSurcharge = WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]);
+        boolean corporate = WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]);
 
-        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit, corporateSurcharge, prepaidStatus);
+        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit, corporate, prepaidStatus);
     };
 
     private static final Function<String[], CardInformation> DISCOVER_CARD_INFORMATION_EXTRACTOR = entry -> {
@@ -62,8 +63,10 @@ public class BinRangeDataLoader {
         CardType type = BinRangeParser.calculateCardType(entry[3]);
         Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1]), CARD_RANGE_LENGTH);
         Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2]), CARD_RANGE_LENGTH);
+        PrepaidStatus prepaidStatus = BinRangeParser.calculateTestCardPrepaidStatus(entry[5]);
+        boolean corporate = TEST_CARD_CORPORATE_CARD_MARKER.equals(entry[6]);
 
-        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit);
+        return new CardInformation(brand, type, label, minCardDigit, maxCardDigit, corporate, prepaidStatus);
     };
 
     public static class BinRangeDataLoaderFactory {
