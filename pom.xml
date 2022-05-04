@@ -13,6 +13,13 @@
         <jackson.version>2.13.2</jackson.version>
         <mockito.version>4.5.1</mockito.version>
         <pay-java-commons.version>1.0.20220503105713</pay-java-commons.version>
+        <surefire.version>3.0.0-M6</surefire.version>
+        <pact.version>3.6.15</pact.version>
+        <PACT_BROKER_URL/>
+        <PACT_BROKER_USERNAME/>
+        <PACT_BROKER_PASSWORD/>
+        <PACT_CONSUMER_VERSION/>
+        <PACT_CONSUMER_TAG/>
     </properties>
 
     <parent>
@@ -122,6 +129,18 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>au.com.dius.pact.provider</groupId>
+            <artifactId>junit5</artifactId>
+            <version>4.3.6</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -243,6 +262,64 @@
                     </arguments>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>au.com.dius</groupId>
+                <artifactId>pact-jvm-provider-maven_2.12</artifactId>
+                <version>${pact.version}</version>
+                <configuration>
+                    <pactDirectory>target/pacts</pactDirectory>
+                    <pactBrokerUrl>${PACT_BROKER_URL}</pactBrokerUrl>
+                    <pactBrokerUsername>${PACT_BROKER_USERNAME}</pactBrokerUsername>
+                    <pactBrokerPassword>${PACT_BROKER_PASSWORD}</pactBrokerPassword>
+                    <projectVersion>${PACT_CONSUMER_VERSION}</projectVersion>
+                    <tags>
+                        <tag>${PACT_CONSUMER_TAG}</tag>
+                    </tags>
+                    <trimSnapshot>true</trimSnapshot>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <property>
+                    <name>!runContractTests</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${surefire.version}</version>
+                        <configuration>
+                            <!-- exclude tests with Tag "contract" -->
+                            <excludedGroups>contract</excludedGroups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>contract0tests</id>
+            <activation>
+                <property>
+                    <name>runContractTests</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${surefire.version}</version>
+                        <configuration>
+                            <!-- include tests with Tag "contract" -->
+                            <groups>contract</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
