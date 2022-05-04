@@ -26,9 +26,9 @@ import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 @Provider("cardid")
-@PactBroker(url = "${PACT_BROKER_HOST:pact-broker-test.cloudapps.digital}",
+@PactBroker(url = "https://${PACT_BROKER_HOST:pact-broker-test.cloudapps.digital}",
         authentication = @PactBrokerAuth(username = "${PACT_BROKER_USERNAME}", password = "${PACT_BROKER_PASSWORD}"),
-        consumerVersionSelectors = @VersionSelector( consumer = "connector", tag = "${PACT_CONSUMER_TAG}", fallbackTag = "test-fargate"))
+        consumerVersionSelectors = @VersionSelector(consumer = "connector", tag = "${PACT_CONSUMER_TAG:}", fallbackTag = "test-fargate"))
 @IgnoreNoPactsToVerify
 @Tag("contract")
 class ConnectorContractTest {
@@ -44,12 +44,16 @@ class ConnectorContractTest {
 
     @BeforeEach
     void before(PactVerificationContext context) {
-        context.setTarget(new HttpTestTarget("localhost", app.getLocalPort(), "/"));
+        if (context != null) {
+            context.setTarget(new HttpTestTarget("localhost", app.getLocalPort(), "/"));
+        }
     }
-    
+
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
     void pactVerificationTestTemplate(PactVerificationContext context) {
-        context.verifyInteraction();
+        if (context != null) {
+            context.verifyInteraction();
+        }
     }
 }
