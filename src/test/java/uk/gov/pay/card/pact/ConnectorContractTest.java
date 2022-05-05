@@ -44,6 +44,7 @@ class ConnectorContractTest {
 
     @BeforeEach
     void before(PactVerificationContext context) {
+        // change to test PR pipeline
         if (context != null) {
             context.setTarget(new HttpTestTarget("localhost", app.getLocalPort(), "/"));
         }
