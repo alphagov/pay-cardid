@@ -12,7 +12,7 @@
         <jmh.version>1.36</jmh.version>
         <jackson.version>2.14.2</jackson.version>
         <mockito.version>4.8.0</mockito.version>
-        <pay-java-commons.version>1.0.20230203172534</pay-java-commons.version>
+        <pay-java-commons.version>1.0.20230206115732</pay-java-commons.version>
         <surefire.version>3.0.0-M8</surefire.version>
         <pact.version>3.6.15</pact.version>
         <PACT_BROKER_URL/>
