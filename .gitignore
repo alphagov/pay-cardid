@@ -28,6 +28,7 @@ target
 .flooignore
 
 bin
+dependency-reduced-pom.xml
 
 .DS_Store
 
