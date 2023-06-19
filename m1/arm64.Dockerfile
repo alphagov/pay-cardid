@@ -1,4 +1,4 @@
-FROM eclipse-temurin:11-jre@sha256:07f183ac841f489f986fe991b9e21cdf4ebb43c3fb7fe0cc800250ff9a5b4405
+FROM eclipse-temurin:11-jre@sha256:e32bb83cf314fa317f6250d20ef8d659345c02050e72622d451323e3fb573bbb
 
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "tini"]
