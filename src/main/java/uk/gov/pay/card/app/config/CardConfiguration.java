@@ -1,9 +1,12 @@
 package uk.gov.pay.card.app.config;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
 import javax.validation.constraints.NotNull;
+import java.net.URI;
 import java.net.URL;
+import java.util.Optional;
 
 public class CardConfiguration extends Configuration {
 
@@ -21,6 +24,9 @@ public class CardConfiguration extends Configuration {
 
     @NotNull
     private Integer graphitePort;
+
+    @JsonProperty("ecsContainerMetadataUriV4")
+    private URI ecsContainerMetadataUriV4;
 
     public URL getDiscoverDataLocation() {
         return discoverDataLocation;
@@ -40,5 +46,9 @@ public class CardConfiguration extends Configuration {
 
     public Integer getGraphitePort() {
         return graphitePort;
+    }
+
+    public Optional<URI> getEcsContainerMetadataUriV4() {
+        return Optional.ofNullable(ecsContainerMetadataUriV4);
     }
 }

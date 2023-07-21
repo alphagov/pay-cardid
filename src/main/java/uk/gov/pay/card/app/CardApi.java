@@ -9,6 +9,11 @@ import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.dropwizard.DropwizardExports;
+import io.prometheus.client.exporter.MetricsServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.pay.card.app.config.CardConfiguration;
 import uk.gov.pay.card.db.CardInformationStore;
 import uk.gov.pay.card.db.RangeSetCardInformationStore;
@@ -16,10 +21,12 @@ import uk.gov.pay.card.managed.CardInformationStoreManaged;
 import uk.gov.pay.card.resources.CardIdResource;
 import uk.gov.pay.card.resources.HealthCheckResource;
 import uk.gov.pay.card.service.CardService;
+import uk.gov.service.payments.commons.utils.prometheus.PrometheusDefaultLabelSampleBuilder;
 import uk.gov.service.payments.logging.GovUkPayDropwizardRequestJsonLogLayoutFactory;
 import uk.gov.service.payments.logging.LoggingFilter;
 import uk.gov.service.payments.logging.LogstashConsoleAppenderFactory;
 
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +36,8 @@ import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFac
 
 public class CardApi extends Application<CardConfiguration> {
 
+    private static final Logger logger = LoggerFactory.getLogger(CardApi.class);
+    
     private static final String SERVICE_METRICS_NODE = "cardid";
     private static final int GRAPHITE_SENDING_PERIOD_SECONDS = 10;
 
@@ -59,7 +68,8 @@ public class CardApi extends Application<CardConfiguration> {
             }
         });
 
-        initialiseMetrics(configuration, environment);
+        initialiseGraphiteMetrics(configuration, environment);
+        configuration.getEcsContainerMetadataUriV4().ifPresent(uri -> initialisePrometheusMetrics(environment, uri));
 
         environment.jersey().register(new HealthCheckResource(environment));
         environment.lifecycle().manage(new CardInformationStoreManaged(store));
@@ -69,7 +79,17 @@ public class CardApi extends Application<CardConfiguration> {
                 .addMappingForUrlPatterns(of(REQUEST), true, "/v1/api/card");
     }
 
-    private void initialiseMetrics(CardConfiguration configuration, Environment environment) {
+    private void initialisePrometheusMetrics(Environment environment, URI ecsContainerMetadataUri) {
+        logger.info("Initialising prometheus metrics.");
+        CollectorRegistry collectorRegistry = new CollectorRegistry();
+        collectorRegistry.register(new DropwizardExports(environment.metrics(), new PrometheusDefaultLabelSampleBuilder(ecsContainerMetadataUri)));
+        environment.admin().addServlet("prometheusMetrics", new MetricsServlet(collectorRegistry)).addMapping("/metrics");
+    }
+
+    /**
+     * Graphtie metric config to be deleted when we've completely moved to Prometheus
+     */
+    private void initialiseGraphiteMetrics(CardConfiguration configuration, Environment environment) {
         GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), configuration.getGraphitePort());
         GraphiteReporter.forRegistry(environment.metrics())
                 .prefixedWith(SERVICE_METRICS_NODE)
