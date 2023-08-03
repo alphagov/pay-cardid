@@ -26,7 +26,7 @@ import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
 @Provider("cardid")
-@PactBroker(url = "https://${PACT_BROKER_HOST:pact-broker-test.cloudapps.digital}",
+@PactBroker(url = "https://${PACT_BROKER_HOST:pact-broker.deploy.payments.service.gov.uk}",
         authentication = @PactBrokerAuth(username = "${PACT_BROKER_USERNAME}", password = "${PACT_BROKER_PASSWORD}"),
         consumerVersionSelectors = @VersionSelector(consumer = "connector", tag = "${PACT_CONSUMER_TAG:}", fallbackTag = "test-fargate"))
 @IgnoreNoPactsToVerify
