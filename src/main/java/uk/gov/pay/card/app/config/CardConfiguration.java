@@ -19,12 +19,6 @@ public class CardConfiguration extends Configuration {
     @NotNull
     private URL testCardDataLocation;
 
-    @NotNull
-    private String graphiteHost;
-
-    @NotNull
-    private Integer graphitePort;
-
     @JsonProperty("ecsContainerMetadataUriV4")
     private URI ecsContainerMetadataUriV4;
 
@@ -38,14 +32,6 @@ public class CardConfiguration extends Configuration {
 
     public URL getTestCardDataLocation() {
         return testCardDataLocation;
-    }
-
-    public String getGraphiteHost() {
-        return graphiteHost;
-    }
-
-    public Integer getGraphitePort() {
-        return graphitePort;
     }
 
     public Optional<URI> getEcsContainerMetadataUriV4() {

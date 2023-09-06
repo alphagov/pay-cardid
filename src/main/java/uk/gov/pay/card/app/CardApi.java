@@ -1,8 +1,5 @@
 package uk.gov.pay.card.app;
 
-import com.codahale.metrics.graphite.GraphiteReporter;
-import com.codahale.metrics.graphite.GraphiteSender;
-import com.codahale.metrics.graphite.GraphiteUDP;
 import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -39,7 +36,6 @@ public class CardApi extends Application<CardConfiguration> {
     private static final Logger logger = LoggerFactory.getLogger(CardApi.class);
     
     private static final String SERVICE_METRICS_NODE = "cardid";
-    private static final int GRAPHITE_SENDING_PERIOD_SECONDS = 10;
 
     public static void main(String[] args) throws Exception {
         new CardApi().run(args);
@@ -68,7 +64,6 @@ public class CardApi extends Application<CardConfiguration> {
             }
         });
 
-        initialiseGraphiteMetrics(configuration, environment);
         configuration.getEcsContainerMetadataUriV4().ifPresent(uri -> initialisePrometheusMetrics(environment, uri));
 
         environment.jersey().register(new HealthCheckResource(environment));
@@ -84,18 +79,6 @@ public class CardApi extends Application<CardConfiguration> {
         CollectorRegistry collectorRegistry = new CollectorRegistry();
         collectorRegistry.register(new DropwizardExports(environment.metrics(), new PrometheusDefaultLabelSampleBuilder(ecsContainerMetadataUri)));
         environment.admin().addServlet("prometheusMetrics", new MetricsServlet(collectorRegistry)).addMapping("/metrics");
-    }
-
-    /**
-     * Graphtie metric config to be deleted when we've completely moved to Prometheus
-     */
-    private void initialiseGraphiteMetrics(CardConfiguration configuration, Environment environment) {
-        GraphiteSender graphiteUDP = new GraphiteUDP(configuration.getGraphiteHost(), configuration.getGraphitePort());
-        GraphiteReporter.forRegistry(environment.metrics())
-                .prefixedWith(SERVICE_METRICS_NODE)
-                .build(graphiteUDP)
-                .start(GRAPHITE_SENDING_PERIOD_SECONDS, TimeUnit.SECONDS);
-
     }
 
     private CardInformationStore initialiseCardInformationStore(CardConfiguration configuration) {

@@ -33,7 +33,4 @@ worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-file:///app/data/worldpay/WP_341
 discoverDataLocation: ${DISCOVER_DATA_LOCATION:-file:///app/data/discover/Merchant_Marketing.csv}
 testCardDataLocation: ${TEST_CARD_DATA_LOCATION:-file:///app/data/test-cards/test-card-bin-ranges.csv}
 
-graphiteHost: ${METRICS_HOST:-localhost}
-graphitePort: ${METRICS_PORT:-8092}
-
 ecsContainerMetadataUriV4: ${ECS_CONTAINER_METADATA_URI_V4:-}
