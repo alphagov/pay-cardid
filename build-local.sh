@@ -5,4 +5,8 @@ set -e
 cd "$(dirname "$0")"
 
 mvn -DskipTests clean package
-docker build -t govukpay/cardid:local .
+if [ "$(uname -m)" == "arm64" ]; then
+  docker build -t governmentdigitalservice/pay-cardid:local -f m1/arm64.Dockerfile .
+else
+  docker build -t governmentdigitalservice/pay-cardid:local .
+fi
