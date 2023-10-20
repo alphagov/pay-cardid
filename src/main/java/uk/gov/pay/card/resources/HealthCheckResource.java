@@ -2,7 +2,7 @@ package uk.gov.pay.card.resources;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.google.common.collect.ImmutableMap;
-import io.dropwizard.setup.Environment;
+import io.dropwizard.core.setup.Environment;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
