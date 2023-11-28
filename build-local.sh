@@ -4,7 +4,6 @@ set -e
 
 cd "$(dirname "$0")"
 
-mvn -DskipTests clean package
 if [ "$(uname -m)" == "arm64" ]; then
   docker build -t governmentdigitalservice/pay-cardid:local -f m1/arm64.Dockerfile .
 else
