@@ -1,2 +1,6 @@
 *.pdf
 *.md
+.git
+target/
+.idea/
+.github/
