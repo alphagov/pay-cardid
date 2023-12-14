@@ -14,7 +14,7 @@
         <mockito.version>5.8.0</mockito.version>
         <pay-java-commons.version>1.0.20231204114304</pay-java-commons.version>
         <prometheus.version>0.16.0</prometheus.version>
-        <surefire.version>3.2.2</surefire.version>
+        <surefire.version>3.2.3</surefire.version>
         <pact.version>3.6.15</pact.version>
         <PACT_BROKER_URL/>
         <PACT_BROKER_USERNAME/>
