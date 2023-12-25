@@ -10,7 +10,7 @@
         <dropwizard.version>2.1.10</dropwizard.version>
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.37</jmh.version>
-        <jackson.version>2.16.0</jackson.version>
+        <jackson.version>2.16.1</jackson.version>
         <mockito.version>5.8.0</mockito.version>
         <pay-java-commons.version>1.0.20231204114304</pay-java-commons.version>
         <prometheus.version>0.16.0</prometheus.version>
