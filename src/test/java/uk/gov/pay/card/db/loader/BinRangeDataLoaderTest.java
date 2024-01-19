@@ -12,7 +12,6 @@ import uk.gov.pay.card.model.CardType;
 import uk.gov.pay.card.model.PrepaidStatus;
 
 import java.net.URL;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;

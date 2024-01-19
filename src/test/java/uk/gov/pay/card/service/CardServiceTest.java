@@ -10,9 +10,9 @@ import uk.gov.pay.card.model.CardType;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CardServiceTest {
