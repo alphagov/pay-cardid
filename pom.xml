@@ -11,7 +11,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <jmh.version>1.37</jmh.version>
         <jackson.version>2.16.1</jackson.version>
-        <mockito.version>5.8.0</mockito.version>
+        <mockito.version>5.10.0</mockito.version>
         <pay-java-commons.version>1.0.20240109102542</pay-java-commons.version>
         <prometheus.version>0.16.0</prometheus.version>
         <surefire.version>3.2.5</surefire.version>
