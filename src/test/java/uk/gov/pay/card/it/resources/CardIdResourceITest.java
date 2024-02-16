@@ -3,6 +3,7 @@ package uk.gov.pay.card.it.resources;
 import io.dropwizard.testing.junit5.DropwizardAppExtension;
 import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.restassured.response.ValidatableResponse;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.pay.card.app.CardApi;
@@ -13,6 +14,7 @@ import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.core.Is.is;
+import static uk.gov.pay.card.db.CardInformationStore.CARD_RANGE_LENGTH;
 
 /**
  * @deprecated The usefulness of many of these tests is unclear - move them to pay-cardid-data?
@@ -59,6 +61,34 @@ public class CardIdResourceITest {
     @Test
     public void shouldFindTestCardInformation() {
         getCardInformation("2221000000000009")
+                .statusCode(200)
+                .contentType(JSON)
+                .body("brand", is("master-card"))
+                .body("label", is("MC"))
+                .body("type", is("C"))
+                .body("prepaid", is("NOT_PREPAID"))
+                .body("corporate", is(false));
+    }
+
+    @Test
+    public void shouldErrorWhenShortCardNumberProvided() {
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH - 2))
+                .statusCode(422)
+                .contentType(JSON)
+                .body("errors[0]", is(String.format("cardNumber size must be between %s and 19", CARD_RANGE_LENGTH)));
+    }
+
+    @Test
+    public void shouldErrorWhenOneCharTooShortCardNumberProvided() {
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH - 1))
+                .statusCode(422)
+                .contentType(JSON)
+                .body("errors[0]", is(String.format("cardNumber size must be between %s and 19", CARD_RANGE_LENGTH)));
+    }
+
+    @Test
+    public void shouldFindTestCardInformationWithShortestAllowableCardNumber() {
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH))
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -152,6 +182,15 @@ public class CardIdResourceITest {
                 .when()
                 .post("/v1/api/card")
                 .then().statusCode(422);
+    }
+
+    @NotNull
+    private static String buildCardNumberFromPrefixAndLength(String cardStart, int cardLength) {
+        StringBuilder cardNumberBuilder = new StringBuilder(cardStart);
+        while (cardNumberBuilder.length() < cardLength) {
+            cardNumberBuilder.append('0');
+        }
+        return cardNumberBuilder.toString();
     }
 
     private ValidatableResponse getCardInformation(String cardNumber) {
