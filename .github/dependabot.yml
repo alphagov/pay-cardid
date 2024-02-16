@@ -33,6 +33,17 @@ updates:
   - dependency-name: "eclipse-temurin"
     versions:
     - "> 11"
+  - dependency-name: "io.dropwizard:dropwizard-dependencies"
+     # Dropwizard 4.x only works with Jakarta EE and not Java EE
+    versions:
+        - ">= 4"
+  - dependency-name: "org.dhatim:dropwizard-sentry"
+      # We essentially forked Dropwizard Sentry because it did not support
+      # Dropwizard 3.x — there is now a Dropwizard Sentry 4.x, which supports
+      # Dropwizard 4.x (and maybe Dropwizard 3.x), but we’d need to do work
+      # to go back to using an unmodified version
+    versions:
+    - ">= 4"
   open-pull-requests-limit: 10
   labels:
   - dependencies
