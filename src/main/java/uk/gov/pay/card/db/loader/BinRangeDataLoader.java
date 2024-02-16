@@ -116,7 +116,7 @@ public class BinRangeDataLoader {
 
             logger.info("{} records loaded... DONE", count);
         } catch (Exception e) {
-            throw new DataLoaderException(format("Exception loading file at: %s", source.toString()), e);
+            throw new DataLoaderException(format("Exception loading file at: %s", source == null ? "(source is null)" : source.toString()), e);
         }
 
         logger.info("Finished initialising the card information store - {}", cardInformationStore);

@@ -4,37 +4,53 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
 import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Optional;
 
 public class CardConfiguration extends Configuration {
 
-    @NotNull
-    private URL worldpayDataLocation;
-
-    @NotNull
-    private URL discoverDataLocation;
-
-    @NotNull
-    private URL testCardDataLocation;
+    private String worldpayDataLocation = "classpath:/data-sources/worldpay-v3.csv";
+    private String discoverDataLocation = "classpath:/data-sources/discover.csv";
+    private String testCardDataLocation = "classpath:/data-sources/test-cards.csv";
 
     @JsonProperty("ecsContainerMetadataUriV4")
     private URI ecsContainerMetadataUriV4;
 
     public URL getDiscoverDataLocation() {
-        return discoverDataLocation;
+        return getUrlFromString(discoverDataLocation);
     }
 
     public URL getWorldpayDataLocation() {
-        return worldpayDataLocation;
+        return getUrlFromString(worldpayDataLocation);
     }
 
     public URL getTestCardDataLocation() {
-        return testCardDataLocation;
+        return getUrlFromString(testCardDataLocation);
     }
 
     public Optional<URI> getEcsContainerMetadataUriV4() {
         return Optional.ofNullable(ecsContainerMetadataUriV4);
+    }
+
+    private URL getUrlFromString(String input) {
+        String classpathPrefix = "classpath:";
+        String filePrefix = "file://";
+        if (input.startsWith(filePrefix)) {
+            try {
+                String substring = input.substring(filePrefix.length());
+                return new File(substring).toURI().toURL();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            if (input.startsWith(classpathPrefix)) {
+                return getClass().getResource(input.substring(classpathPrefix.length()));
+            } else {
+                throw new RuntimeException(String.format("File configuration needs to start with 'file:' or 'classpath:' %s", input));
+            }
+        }
     }
 }
