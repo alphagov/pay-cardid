@@ -6,6 +6,8 @@ import io.restassured.response.ValidatableResponse;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.pay.card.app.CardApi;
 import uk.gov.pay.card.app.config.CardConfiguration;
 
@@ -70,17 +72,10 @@ public class CardIdResourceITest {
                 .body("corporate", is(false));
     }
 
-    @Test
-    public void shouldErrorWhenShortCardNumberProvided() {
-        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH - 2))
-                .statusCode(422)
-                .contentType(JSON)
-                .body("errors[0]", is(String.format("cardNumber size must be between %s and 19", CARD_RANGE_LENGTH)));
-    }
-
-    @Test
-    public void shouldErrorWhenOneCharTooShortCardNumberProvided() {
-        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH - 1))
+    @ParameterizedTest
+    @ValueSource(ints = {CARD_RANGE_LENGTH - 2, CARD_RANGE_LENGTH - 1})
+    public void shouldErrorWhenShortCardNumberProvided(int length) {
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", length))
                 .statusCode(422)
                 .contentType(JSON)
                 .body("errors[0]", is(String.format("cardNumber size must be between %s and 19", CARD_RANGE_LENGTH)));
