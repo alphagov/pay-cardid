@@ -93,7 +93,7 @@ public class BinRangeDataLoader {
     }
 
     public void loadDataTo(CardInformationStore cardInformationStore) throws DataLoaderException {
-        logger.info("Loading {} data in to card information store", name);
+        logger.info("Loading {} data in to card information store from file {}", name, source);
         final AtomicLong lastPrintedCount = new AtomicLong(System.currentTimeMillis());
         final AtomicLong count = new AtomicLong(0);
 

@@ -45,12 +45,10 @@ public class CardConfiguration extends Configuration {
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
+        } else if (input.startsWith(classpathPrefix)) {
+            return getClass().getResource(input.substring(classpathPrefix.length()));
         } else {
-            if (input.startsWith(classpathPrefix)) {
-                return getClass().getResource(input.substring(classpathPrefix.length()));
-            } else {
-                throw new RuntimeException(String.format("File configuration needs to start with 'file:' or 'classpath:' %s", input));
-            }
+            throw new RuntimeException(String.format("File configuration needs to start with 'file:' or 'classpath:' %s", input));
         }
     }
 }
