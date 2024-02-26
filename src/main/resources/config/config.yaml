@@ -29,4 +29,8 @@ logging:
       environment: ${ENVIRONMENT}
       inAppIncludes: ["uk.gov.pay"]
 
+worldpayDataLocation: ${WORLDPAY_DATA_LOCATION:-classpath:/data-sources/worldpay-v3.csv}
+discoverDataLocation: ${DISCOVER_DATA_LOCATION:-classpath:/data-sources/discover.csv}
+testCardDataLocation: ${TEST_CARD_DATA_LOCATION:-classpath:/data-sources/test-cards.csv}
+
 ecsContainerMetadataUriV4: ${ECS_CONTAINER_METADATA_URI_V4:-}

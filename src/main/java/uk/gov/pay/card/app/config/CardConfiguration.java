@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public class CardConfiguration extends Configuration {
 
-    private String worldpayDataLocation = "classpath:/data-sources/worldpay-v3.csv";
-    private String discoverDataLocation = "classpath:/data-sources/discover.csv";
-    private String testCardDataLocation = "classpath:/data-sources/test-cards.csv";
+    private String worldpayDataLocation;
+    private String discoverDataLocation;
+    private String testCardDataLocation;
 
     @JsonProperty("ecsContainerMetadataUriV4")
     private URI ecsContainerMetadataUriV4;
