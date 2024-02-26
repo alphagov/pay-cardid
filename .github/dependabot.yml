@@ -44,6 +44,10 @@ updates:
       # to go back to using an unmodified version
     versions:
     - ">= 4"
+  - dependency-name: "au.com.dius.pact.provider:junit5"
+    # Pact-JVM 4.6.x requires Java 17
+    versions:
+      - ">= 4.6"
   open-pull-requests-limit: 10
   labels:
   - dependencies
