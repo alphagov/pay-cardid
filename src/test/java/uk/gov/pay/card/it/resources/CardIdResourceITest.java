@@ -89,7 +89,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindTestCardInformationWithShortestAllowableCardNumber() {
-        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH))
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH), appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
