@@ -39,7 +39,7 @@ import static uk.gov.pay.card.db.CardInformationStore.CARD_RANGE_LENGTH;
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class CardIdResourceITest {
 
-    private static final DropwizardAppExtension<CardConfiguration> app = new DropwizardAppExtension<>(
+    private static final DropwizardAppExtension<CardConfiguration> appUsingExternalFiles = new DropwizardAppExtension<>(
             CardApi.class
             , resourceFilePath("config/config.yaml")
             , config("server.applicationConnectors[0].port", "0")
@@ -48,9 +48,15 @@ public class CardIdResourceITest {
             , config("discoverDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/discover-bin-ranges.csv"))
             , config("testCardDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/test-bin-ranges.csv")));
 
+    private static final DropwizardAppExtension<CardConfiguration> appUsingDefaultFiles = new DropwizardAppExtension<>(
+            CardApi.class
+            , resourceFilePath("config/config.yaml")
+            , config("server.applicationConnectors[0].port", "0")
+            , config("server.adminConnectors[0].port", "0"));
+
     @Test
     public void shouldFindDiscoverCardInformation() {
-        getCardInformation("6221267457963485")
+        getCardInformation("6221267457963485", appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("unionpay"))
@@ -62,7 +68,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindTestCardInformation() {
-        getCardInformation("2221000000000009")
+        getCardInformation("2221000000000009", appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -75,7 +81,7 @@ public class CardIdResourceITest {
     @ParameterizedTest
     @ValueSource(ints = {CARD_RANGE_LENGTH - 2, CARD_RANGE_LENGTH - 1})
     public void shouldErrorWhenShortCardNumberProvided(int length) {
-        getCardInformation(buildCardNumberFromPrefixAndLength("2221", length))
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", length), appUsingExternalFiles)
                 .statusCode(422)
                 .contentType(JSON)
                 .body("errors[0]", is(String.format("cardNumber size must be between %s and 19", CARD_RANGE_LENGTH)));
@@ -83,7 +89,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindTestCardInformationWithShortestAllowableCardNumber() {
-        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH))
+        getCardInformation(buildCardNumberFromPrefixAndLength("2221", CARD_RANGE_LENGTH), appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -95,7 +101,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindWorldpayCardInformation() {
-        getCardInformation("2225670000000000")
+        getCardInformation("2225670000000000", appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -107,7 +113,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindAmexCardInformation() {
-        getCardInformation("3714496353984311")
+        getCardInformation("3714496353984311", appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("american-express"))
@@ -119,7 +125,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindMastercardCreditCorporateCardInformation() {
-        getCardInformation("2223451044300001")
+        getCardInformation("2223451044300001", appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("master-card"))
@@ -131,7 +137,7 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldFindPrepaidCard() {
-        getCardInformation("4208933330200001")
+        getCardInformation("4208933330200001", appUsingExternalFiles)
                 .statusCode(200)
                 .contentType(JSON)
                 .body("brand", is("visa"))
@@ -143,25 +149,43 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldReturn404WhenCardInformationNotFound() {
-        getCardInformation("8282382383829393")
+        getCardInformation("8282382383829393", appUsingExternalFiles)
                 .statusCode(404);
     }
 
     @Test
     public void shouldReturn422WhenCardNumberIsTooSmall() {
-        getCardInformation("8")
+        getCardInformation("8", appUsingExternalFiles)
                 .statusCode(422);
     }
 
     @Test
     public void shouldReturn422WhenCardNumberIsTooBig() {
-        getCardInformation("12345678901234567890")
+        getCardInformation("12345678901234567890", appUsingExternalFiles)
                 .statusCode(422);
     }
 
     @Test
+    public void shouldReturnInformationFromBuiltInDefaultBinRangeFiles() {
+        getCardInformation("1234567890000000", appUsingDefaultFiles)
+                .statusCode(200)
+                .contentType(JSON)
+                .body("brand", is("it test example"))
+                .body("label", is("IT Test Example"))
+                .body("type", is("D"))
+                .body("prepaid", is("NOT_PREPAID"))
+                .body("corporate", is(false));
+    }
+
+    @Test
+    public void shouldNotReturnInformationFromBuiltInDefaultBinRangeFilesWhenUsingFiles() {
+        getCardInformation("1234567890000000", appUsingExternalFiles)
+                .statusCode(404);
+    }
+
+    @Test
     public void shouldReturn422WhenJSONIsEmpty() {
-        given().port(app.getLocalPort())
+        given().port(appUsingExternalFiles.getLocalPort())
                 .contentType(JSON)
                 .body("{}")
                 .when()
@@ -171,14 +195,14 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldReturn422WhenJSONIsMissing() {
-        given().port(app.getLocalPort())
+        given().port(appUsingExternalFiles.getLocalPort())
                 .contentType(JSON)
                 .body("")
                 .when()
                 .post("/v1/api/card")
                 .then().statusCode(422);
     }
-
+    
     @NotNull
     private static String buildCardNumberFromPrefixAndLength(String cardStart, int cardLength) {
         StringBuilder cardNumberBuilder = new StringBuilder(cardStart);
@@ -187,9 +211,9 @@ public class CardIdResourceITest {
         }
         return cardNumberBuilder.toString();
     }
-
-    private ValidatableResponse getCardInformation(String cardNumber) {
-        return given().port(app.getLocalPort())
+    
+    private ValidatableResponse getCardInformation(String cardNumber, DropwizardAppExtension<CardConfiguration> appToUse) {
+        return given().port(appToUse.getLocalPort())
                 .contentType(JSON)
                 .body(String.format("{\"cardNumber\":%s}", cardNumber))
                 .when()
