@@ -10,6 +10,7 @@ FROM eclipse-temurin:11-jre@sha256:07b9545e45d6fe8698983364dfe6010e611976f8392ad
 RUN ["apt-get", "update"]
 RUN ["apt-get", "upgrade", "-y"]
 RUN ["apt-get", "install", "-y", "tini"]
+RUN ["apt-get", "clean"]
 
 ARG DNS_TTL=15
 
