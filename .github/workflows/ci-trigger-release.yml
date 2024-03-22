@@ -12,4 +12,6 @@ jobs:
 
   trigger_release:
     needs: authorised_user_check
+    permissions:
+      contents: write
     uses: ./.github/workflows/post-merge.yml
