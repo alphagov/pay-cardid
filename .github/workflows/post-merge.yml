@@ -2,6 +2,11 @@ name: Post Merge
 
 on:
   workflow_call:
+    secrets:
+      pact_broker_username:
+        required: true
+      pact_broker_password:
+        required: true
   push:
     branches:
       - master
