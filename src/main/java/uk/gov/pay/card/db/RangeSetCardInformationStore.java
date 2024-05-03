@@ -50,19 +50,8 @@ public class RangeSetCardInformationStore implements CardInformationStore {
     }
 
     @Override
-    public Optional<CardInformation> find(String prefix) {
-        return validatePrefix(prefix)
-                .map(rangeSet::rangeContaining)
-                .map(store::get);
-    }
-
-    private Optional<Long> validatePrefix(String prefix) {
-        try {
-            return Optional.of(Long.valueOf(prefix));
-        } catch (NumberFormatException e) {
-            LOGGER.info("Received card number that cannot be parsed into long");
-            return Optional.empty();
-        }
+    public Optional<CardInformation> find(Long prefix) {
+        return Optional.ofNullable(rangeSet.rangeContaining(prefix)).map(store::get);
     }
 
     @Override

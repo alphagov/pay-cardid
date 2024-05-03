@@ -5,6 +5,7 @@ import uk.gov.pay.card.model.CardInformation;
 
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static uk.gov.pay.card.db.CardInformationStore.CARD_RANGE_LENGTH;
 
 public class CardService {
@@ -15,10 +16,8 @@ public class CardService {
         this.cardInformationStore = cardInformationStore;
     }
 
-    public Optional<CardInformation> getCardInformation(String cardNumber) {
-        return cardInformationStore.find(cardNumber.length() > CARD_RANGE_LENGTH
-                ? cardNumber.substring(0, CARD_RANGE_LENGTH)
-                : cardNumber);
+    public Optional<CardInformation> getCardInformation(Long cardNumber) {
+        return cardInformationStore.find(Long.valueOf(format("%-" + CARD_RANGE_LENGTH + "d", cardNumber).replace(" ", "0")));
     }
 
 }

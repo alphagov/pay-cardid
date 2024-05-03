@@ -31,8 +31,8 @@ public class RangeSetCardInformationStoreBenchmark {
     private CardInformationStore cardInformationStore;
 
     @Param({
-            "51122666112", "51122666113", "51122666114", "51122666115", "51122666116", "51122666117", "51122666118", "51122666119", "51122666120",
-            "51122666122", "51122666123", "51122666124", "51122666125", "51122666126", "51122666127", "51122666128", "51122666129", "51122666130",
+            "511226661120000000", "511226661130000000", "511226661140000000", "511226661150000000", "511226661160000000", "511226661170000000", "511226661180000000", "511226661190000000", "511226661200000000",
+            "511226661220000000", "511226661230000000", "511226661240000000", "511226661250000000", "511226661260000000", "511226661270000000", "511226661280000000", "511226661290000000", "511226661300000000",
             "511948111", "511948112", "511948113", "511948114", "511948115", "511948116", "511948117", "511948118", "511948119"
     })
     private String cardIdPrefix;
@@ -47,7 +47,7 @@ public class RangeSetCardInformationStoreBenchmark {
 
     @Benchmark
     public void runBenchmark(Blackhole blackhole) {
-        Optional<CardInformation> cardInformation = cardInformationStore.find(cardIdPrefix);
+        Optional<CardInformation> cardInformation = cardInformationStore.find(Long.valueOf(cardIdPrefix));
         cardInformation.orElseThrow(() -> new RuntimeException("card information not found"));
         blackhole.consume(cardInformation);
     }
