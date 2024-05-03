@@ -81,7 +81,7 @@ public class CardIdResourceITest {
         getCardInformation(buildCardNumberFromPrefixAndLength("2221", 7), appUsingExternalFiles)
                 .statusCode(422)
                 .contentType(JSON)
-                .body("errors[0]", is("cardNumber size must be between 8 and 19"));
+                .body("errors[0]", is("cardNumber size must be between 11 and 19"));
     }
 
     @Test
