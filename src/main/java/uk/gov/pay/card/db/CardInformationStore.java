@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CardInformationStore {
 
-    int CARD_RANGE_LENGTH = 11;
+    int CARD_RANGE_LENGTH = 18;
 
     void initialiseCardInformation() throws Exception;
 
@@ -15,7 +15,7 @@ public interface CardInformationStore {
 
     void put(CardInformation cardInformation);
 
-    Optional<CardInformation> find(String prefix);
+    Optional<CardInformation> find(Long prefix);
 
     void destroy();
 }

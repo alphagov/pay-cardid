@@ -47,7 +47,7 @@ public class RangeSetCardInformationStoreBenchmark {
 
     @Benchmark
     public void runBenchmark(Blackhole blackhole) {
-        Optional<CardInformation> cardInformation = cardInformationStore.find(cardIdPrefix);
+        Optional<CardInformation> cardInformation = cardInformationStore.find(Long.valueOf(cardIdPrefix));
         cardInformation.orElseThrow(() -> new RuntimeException("card information not found"));
         blackhole.consume(cardInformation);
     }

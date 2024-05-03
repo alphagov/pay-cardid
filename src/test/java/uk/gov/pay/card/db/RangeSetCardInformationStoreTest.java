@@ -46,7 +46,7 @@ public class RangeSetCardInformationStoreTest {
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        Optional<CardInformation> cardInformation = cardInformationStore.find("22234500001");
+        Optional<CardInformation> cardInformation = cardInformationStore.find(222345000010000000L);
 
         assertThat(cardInformation.isPresent(), is(true));
         assertThat(cardInformation.orElseThrow().getBrand(), is("master-card"));
@@ -62,7 +62,7 @@ public class RangeSetCardInformationStoreTest {
         cardInformationStore = new RangeSetCardInformationStore(Collections.singletonList(worldpayBinRangeLoader));
         cardInformationStore.initialiseCardInformation();
 
-        Optional<CardInformation> cardInformation = cardInformationStore.find("22256712345");
+        Optional<CardInformation> cardInformation = cardInformationStore.find(222567123450000000L);
         assertTrue(cardInformation.isPresent());
         assertThat(cardInformation.get().getBrand(), is("master-card"));
         assertThat(cardInformation.get().getCardType(), is(CardType.DEBIT));

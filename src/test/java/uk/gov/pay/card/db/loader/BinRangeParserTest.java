@@ -135,14 +135,14 @@ class BinRangeParserTest {
 
 
     @Test
-    void shouldCalculateCardInformationMinForCardRangeLengthOf11() {
+    void shouldCalculateCardInformationMinForCardRangeLengthOf18() {
         Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(1L, CARD_RANGE_LENGTH);
-        assertThat(minCardDigit, is(10000000000L));
+        assertThat(minCardDigit, is(100000000000000000L));
     }
 
     @Test
-    void shouldCalculateCardInformationMaxForCardRangeLengthOf11() {
+    void shouldCalculateCardInformationMaxForCardRangeLengthOf18() {
         Long minCardDigit = BinRangeParser.calculateMaxDigitForCardLength(19L, CARD_RANGE_LENGTH);
-        assertThat(minCardDigit, is(19999999999L));
+        assertThat(minCardDigit, is(199999999999999999L));
     }
 }

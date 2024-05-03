@@ -15,6 +15,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import java.util.Optional;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
@@ -34,12 +36,22 @@ public class CardIdResource {
     @Produces(APPLICATION_JSON)
     public Response cardInformation(@NotNull @Valid CardInformationRequest cardInformationRequest) {
         logger.info("Card Information Request - {}", cardInformationRequest);
-
-        return cardService.getCardInformation(cardInformationRequest.getCardNumber())
+        
+        return getCardNumber(cardInformationRequest.getCardNumber())
+                .flatMap(cardService::getCardInformation)
                 .map(CardIdResource::newCardInformationResponse)
                 .map(Response::ok)
                 .orElse(Response.status(NOT_FOUND))
                 .build();
+    }
+
+    private Optional<Long> getCardNumber(String prefix) {
+        try {
+            return Optional.of(Long.valueOf(prefix));
+        } catch (NumberFormatException e) {
+            logger.info("Received card number that cannot be parsed into long");
+            return Optional.empty();
+        }
     }
 
     private static CardInformationResponse newCardInformationResponse(CardInformation cardInformation) {

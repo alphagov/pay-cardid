@@ -65,9 +65,9 @@ public class BinRangeDataLoaderTest {
         verify(cardInformationStore, times(3)).put(cardInformationArgumentCaptor.capture());
         
         assertThat(cardInformationArgumentCaptor.getAllValues(), containsInAnyOrder(
-                new CardInformation("discover", CardType.CREDIT_DEBIT, "DISCOVER", 71221111000L, 71221400999L, true, PrepaidStatus.PREPAID),
-                new CardInformation("american-express", CardType.CREDIT, "AMEX", 37144963500L, 37144963599L, false, PrepaidStatus.NOT_PREPAID),
-                new CardInformation("master-card", CardType.CREDIT, "MC", 22210000000L, 22210000099L, false, PrepaidStatus.NOT_PREPAID)
+                new CardInformation("discover", CardType.CREDIT_DEBIT, "DISCOVER", 712211110000000000L, 712214009999999999L, true, PrepaidStatus.PREPAID),
+                new CardInformation("american-express", CardType.CREDIT, "AMEX", 371449635000000000L, 371449635999999999L, false, PrepaidStatus.NOT_PREPAID),
+                new CardInformation("master-card", CardType.CREDIT, "MC", 222100000000000000L, 222100000999999999L, false, PrepaidStatus.NOT_PREPAID)
         ));
     }
 
@@ -91,7 +91,7 @@ public class BinRangeDataLoaderTest {
         CardInformationStore cardInformationStore = mock(CardInformationStore.class);
         worldpayBinRangeLoader.loadDataTo(cardInformationStore);
 
-        CardInformation expectedCardInformation = new CardInformation("master-card", CardType.DEBIT, "DEBIT MASTERCARD", 22234500000L, 22234500999L, true, PrepaidStatus.NOT_PREPAID);
+        CardInformation expectedCardInformation = new CardInformation("master-card", CardType.DEBIT, "DEBIT MASTERCARD", 222345000000000000L, 222345009999999999L, true, PrepaidStatus.NOT_PREPAID);
         verify(cardInformationStore).put(expectedCardInformation);
     }
 }

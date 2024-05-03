@@ -39,8 +39,8 @@ public class BinRangeDataLoader {
         String label = entry[4];
         String brand = BinRangeParser.calculateCardBrand(label);
         CardType type = BinRangeParser.calculateCardType(entry[9]);
-        Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1].substring(0, CARD_RANGE_LENGTH)), CARD_RANGE_LENGTH);
-        Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2].substring(0, CARD_RANGE_LENGTH)), CARD_RANGE_LENGTH);
+        Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1]), CARD_RANGE_LENGTH);
+        Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2]), CARD_RANGE_LENGTH);
         PrepaidStatus prepaidStatus = BinRangeParser.calculateWorldpayPrepaidStatus(entry[9]);
         boolean corporate = WORLDPAY_CORPORATE_CARD_MARKER.equals(entry[3]);
 
