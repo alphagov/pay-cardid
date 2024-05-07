@@ -45,9 +45,9 @@ public class CardIdResource {
                 .build();
     }
 
-    private Optional<Long> getCardNumber(String prefix) {
+    private Optional<Long> getCardNumber(String cardNumber) {
         try {
-            return Optional.of(Long.valueOf(prefix));
+            return Optional.of(Long.valueOf(cardNumber));
         } catch (NumberFormatException e) {
             logger.info("Received card number that cannot be parsed into long");
             return Optional.empty();
