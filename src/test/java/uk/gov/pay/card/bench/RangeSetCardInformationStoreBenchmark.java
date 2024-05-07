@@ -24,6 +24,18 @@ import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFac
  * - Change the name of the file to load in this benchmark (in the setup()) method.
  * - You would have to replace the existing test card prefixes with some new prefixes.
  * - And then run the benchmark.
+ * 
+ * The Benchmark outputs something like the following:
+ * 
+ * Benchmark                                               (cardIdPrefix)  Mode  Cnt  Score   Error  Units
+ * RangeSetCardInformationStoreBenchmark.runBenchmark  511226661120000000  avgt   20  0.145 ± 0.001  us/op
+ * RangeSetCardInformationStoreBenchmark.runBenchmark  511226661130000000  avgt   20  0.142 ± 0.004  us/op
+ * RangeSetCardInformationStoreBenchmark.runBenchmark  511226661140000000  avgt   20  0.146 ± 0.002  us/op
+ * etc
+ * 
+ * This means the test card 511226661120000000 took 0.145 microseconds to run on average over 20 iterations.
+ * Assuming that the results are normally distributed, one would expect that the "true" execution time for 
+ * that method has a 99.9% probability to be somewhere between 0.145± 0.001 microseconds.
  */
 @State(Scope.Benchmark)
 public class RangeSetCardInformationStoreBenchmark {
