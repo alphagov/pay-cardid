@@ -16,24 +16,6 @@ import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.pay.card.db.CardInformationStore.CARD_RANGE_LENGTH;
 
-/**
- * @deprecated The usefulness of many of these tests is unclear - move them to pay-cardid-data?
- * <p>
- * These tests used to make assertions about data in pay-cardid-data, but that lives in a private repo.
- * <p>
- * We want to be able to test pay-cardid in a CI system that doesn't have access to private repos,
- * so the data needed for the tests to pass has been redacted to reduce its sensitivity and inlined
- * in src/test/resources/card-id-resource-integration-test
- * <p>
- * The overall effect is that a lot of these tests are now just checking that "the tests do what the tests do",
- * whereas they used to make some (fairly loose) assertions that the bin data in pay-cardid-data was correct.
- * <p>
- * If we care about testing pay-cardid-data we should set up CI for that repo separately in a system that
- * has access to private repos and move the tests that use card data there.
- * <p>
- * A test that checks the general success case and the tests for the error conditions without relying on specific
- * card details are probably still valid and should stay.
- */
 @ExtendWith(DropwizardExtensionsSupport.class)
 public class CardIdResourceITest {
 
