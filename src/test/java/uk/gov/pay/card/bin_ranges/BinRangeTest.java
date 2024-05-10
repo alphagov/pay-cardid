@@ -29,6 +29,12 @@ class BinRangeTest {
     private static List<Range<Long>> testCardData;
     private static List<Range<Long>> discoverData;
 
+    private static final Function<String[], Range<Long>> cardRangeExtractor = entry -> {
+        Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1]), CARD_RANGE_LENGTH);
+        Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2]), CARD_RANGE_LENGTH);
+        return Range.closed(minCardDigit, maxCardDigit);
+    };
+
     /**
      * In the cardid CI pipeline, real bin ranges files will be written to the data-sources directory
      */
@@ -110,12 +116,6 @@ class BinRangeTest {
     }
 
     private static List<Range<Long>> loadData(URL source, String dataRowIdentifier) {
-        Function<String[], Range<Long>> cardRangeExtractor = entry -> {
-            Long minCardDigit = BinRangeParser.calculateMinDigitForCardLength(Long.valueOf(entry[1]), CARD_RANGE_LENGTH);
-            Long maxCardDigit = BinRangeParser.calculateMaxDigitForCardLength(Long.valueOf(entry[2]), CARD_RANGE_LENGTH);
-            return Range.closed(minCardDigit, maxCardDigit);
-        };
-        
         List<Range<Long>> listOfRanges = new ArrayList<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(source.openStream()))) {
