@@ -3,7 +3,7 @@ FROM maven:3.9.5-eclipse-temurin-11-alpine@sha256:5b8e35bd58fc6d6d78fa7faa34c0a8
 WORKDIR /home/build
 COPY . .
 
-RUN ["mvn", "clean", "--no-transfer-progress", "package", "-DskipTests"]
+RUN ["mvn", "clean", "--no-transfer-progress", "package"]
 
 FROM eclipse-temurin:11-jre-alpine@sha256:77899ea444d0c219f3a4f500923dcae6b4b28db239b80c5214f26c1167ba74b5 AS final
 
