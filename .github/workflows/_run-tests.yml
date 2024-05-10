@@ -20,6 +20,15 @@ jobs:
       - name: Detect secrets
         uses: alphagov/pay-ci/actions/detect-secrets@master
 
+  test-docker-build:
+    runs-on: ubunutu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
+      - name: Run docker build
+        run: |
+          docker build -t test .
+
   integration-tests:
     name: "Integration tests"
     uses: alphagov/pay-ci/.github/workflows/_run-java-tests-and-publish-pacts.yml@master
