@@ -146,11 +146,11 @@ public class CardIdResourceITest {
 
     @Test
     public void shouldReturnInformationFromBuiltInDefaultBinRangeFiles() {
-        getCardInformation("1234567890000000", appUsingDefaultFiles)
+        getCardInformation("4000056655665556", appUsingDefaultFiles)
                 .statusCode(200)
                 .contentType(JSON)
-                .body("brand", is("it test example"))
-                .body("label", is("IT Test Example"))
+                .body("brand", is("visa"))
+                .body("label", is("VISA DEBIT"))
                 .body("type", is("D"))
                 .body("prepaid", is("NOT_PREPAID"))
                 .body("corporate", is(false));
