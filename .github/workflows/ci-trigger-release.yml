@@ -1,3 +1,4 @@
+# Workflow triggered by Concourse for new BIN ranges
 name: Trigger release
 
 on:
