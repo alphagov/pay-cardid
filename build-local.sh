@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# no op change to trigger PR pipeline
+
 set -e
 
 cd "$(dirname "$0")"
