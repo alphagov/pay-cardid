@@ -26,7 +26,6 @@ EXPOSE 8081
 
 WORKDIR /app
 
-COPY --from=builder /home/build/data/sources /app/data
 COPY --from=builder /home/build/target/*.yaml .
 COPY --from=builder /home/build/target/pay-*-allinone.jar .
 
