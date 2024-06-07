@@ -23,11 +23,23 @@ jobs:
   integration-tests:
     name: "Integration tests"
     uses: alphagov/pay-ci/.github/workflows/_run-java-tests-and-publish-pacts.yml@master
+    with:
+      java_version: 21
 
   provider-contract-tests:
     needs: integration-tests
     name: "App as provider tests"
     uses: alphagov/pay-ci/.github/workflows/_run-app-as-provider-contract-tests.yml@master
+    with:
+      java_version: 21
     secrets:
       pact_broker_username: ${{ secrets.pact_broker_username }}
       pact_broker_password: ${{ secrets.pact_broker_password }}
+
+  check-docker-base-images-are-manifests:
+    uses: alphagov/pay-ci/.github/workflows/_validate_docker_image_is_manifest.yml@master
+
+  check-docker-base-images-for-m1-are-manifests:
+    uses: alphagov/pay-ci/.github/workflows/_validate_docker_image_is_manifest.yml@master
+    with:
+      dockerfile: "m1/arm64.Dockerfile"
