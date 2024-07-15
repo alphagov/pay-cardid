@@ -11,7 +11,7 @@
         <jmh.version>1.37</jmh.version>
         <pay-java-commons.version>1.0.20240711152628</pay-java-commons.version>
         <prometheus.version>0.16.0</prometheus.version>
-        <surefire.version>3.3.0</surefire.version>
+        <surefire.version>3.3.1</surefire.version>
         <pact.version>3.6.15</pact.version>
         <PACT_BROKER_URL/>
         <PACT_BROKER_USERNAME/>
