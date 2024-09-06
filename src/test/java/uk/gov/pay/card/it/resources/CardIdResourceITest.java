@@ -23,7 +23,9 @@ public class CardIdResourceITest {
             CardApi.class
             , resourceFilePath("config/config.yaml")
             , config("server.applicationConnectors[0].port", "0")
+            , config("server.applicationConnectors[0].bindHost", "127.0.0.1")
             , config("server.adminConnectors[0].port", "0")
+            , config("server.adminConnectors[0].bindHost", "127.0.0.1")
             , config("worldpayDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/worldpay-bin-ranges.csv"))
             , config("discoverDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/discover-bin-ranges.csv"))
             , config("testCardDataLocation", "file://" + resourceFilePath("card-id-resource-integration-test/test-bin-ranges.csv")));
@@ -32,7 +34,9 @@ public class CardIdResourceITest {
             CardApi.class
             , resourceFilePath("config/config.yaml")
             , config("server.applicationConnectors[0].port", "0")
-            , config("server.adminConnectors[0].port", "0"));
+            , config("server.applicationConnectors[0].bindHost", "127.0.0.1")
+            , config("server.adminConnectors[0].port", "0")
+            , config("server.adminConnectors[0].bindHost", "127.0.0.1"));
 
     @Test
     public void shouldFindDiscoverCardInformation() {
