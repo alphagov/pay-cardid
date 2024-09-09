@@ -7,6 +7,7 @@ The service provides an API that can be accessed to retrieve card information fo
 ## Environment Variables
 
 - `ADMIN_PORT`: The port number to listen for Dropwizard admin requests on. Defaults to `8081`.
+- `BIND_HOST`: The IP address for the application to bind to. Defaults to `127.0.0.1`
 - `JAVA_OPTS`: Options to pass to the JRE. Defaults to `-Xms1500m -Xmx1500m`.
 - `PORT`: The port number to listen for requests on. Defaults to `8080`.
 - `TEST_CARD_DATA_LOCATION`: The path to load bin ranges for test cards from. Defaults
