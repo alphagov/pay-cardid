@@ -12,7 +12,7 @@
         <pay-java-commons.version>1.0.20240909085259</pay-java-commons.version>
         <prometheus.version>0.16.0</prometheus.version>
         <surefire.version>3.5.0</surefire.version>
-        <pact.version>3.6.15</pact.version>
+        <pact.version>4.6.14</pact.version>
         <PACT_BROKER_URL/>
         <PACT_BROKER_USERNAME/>
         <PACT_BROKER_PASSWORD/>
@@ -277,8 +277,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>au.com.dius</groupId>
-                <artifactId>pact-jvm-provider-maven_2.12</artifactId>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
                 <version>${pact.version}</version>
                 <configuration>
                     <pactDirectory>target/pacts</pactDirectory>
