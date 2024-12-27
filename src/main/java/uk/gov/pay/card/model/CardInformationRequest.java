@@ -3,7 +3,7 @@ package uk.gov.pay.card.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 import static java.lang.String.format;
 

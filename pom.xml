@@ -25,7 +25,7 @@
             <dependency>
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-dependencies</artifactId>
-                <version>3.0.13</version>
+                <version>4.0.13</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -64,7 +64,7 @@
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_servlet</artifactId>
+            <artifactId>simpleclient_servlet_jakarta</artifactId>
             <version>${prometheus.version}</version>
         </dependency>
         <dependency>
@@ -74,12 +74,12 @@
         </dependency>
         <dependency>
             <groupId>uk.gov.service.payments</groupId>
-            <artifactId>logging-dropwizard-3</artifactId>
+            <artifactId>logging-dropwizard-4</artifactId>
             <version>${pay-java-commons.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.service.payments</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>utils-dropwizard-4</artifactId>
             <version>${pay-java-commons.version}</version>
         </dependency>
 
