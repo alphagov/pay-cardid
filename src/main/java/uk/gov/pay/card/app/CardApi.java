@@ -8,7 +8,7 @@ import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
-import io.prometheus.client.exporter.MetricsServlet;
+import io.prometheus.client.servlet.jakarta.exporter.MetricsServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.pay.card.app.config.CardConfiguration;
@@ -26,7 +26,7 @@ import uk.gov.service.payments.logging.SentryAppenderFactory;
 import java.util.List;
 
 import static java.util.EnumSet.of;
-import static javax.servlet.DispatcherType.REQUEST;
+import static jakarta.servlet.DispatcherType.REQUEST;
 import static uk.gov.pay.card.db.loader.BinRangeDataLoader.BinRangeDataLoaderFactory;
 
 public class CardApi extends Application<CardConfiguration> {
