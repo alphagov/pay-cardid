@@ -9,6 +9,7 @@ import io.dropwizard.core.setup.Environment;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.servlet.jakarta.exporter.MetricsServlet;
+import org.dhatim.dropwizard.sentry.logging.SentryAppenderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.pay.card.app.config.CardConfiguration;
@@ -21,7 +22,6 @@ import uk.gov.pay.card.service.CardService;
 import uk.gov.service.payments.logging.GovUkPayDropwizardRequestJsonLogLayoutFactory;
 import uk.gov.service.payments.logging.LoggingFilter;
 import uk.gov.service.payments.logging.LogstashConsoleAppenderFactory;
-import uk.gov.service.payments.logging.SentryAppenderFactory;
 
 import java.util.List;
 
