@@ -6,16 +6,15 @@ The service provides an API that can be accessed to retrieve card information fo
 
 ## Environment Variables
 
-- `ADMIN_PORT`: The port number to listen for Dropwizard admin requests on. Defaults to `8081`.
-- `BIND_HOST`: The IP address for the application to bind to. Defaults to `127.0.0.1`
-- `JAVA_OPTS`: Options to pass to the JRE. Defaults to `-Xms1500m -Xmx1500m`.
-- `PORT`: The port number to listen for requests on. Defaults to `8080`.
-- `TEST_CARD_DATA_LOCATION`: The path to load bin ranges for test cards from. Defaults
-  to `classpath:/data-sources/test-cards.csv`.
-- `WORLDPAY_DATA_LOCATION`: The path to load bin ranges for Worldpay from. Defaults
-  to `classpath:/data-sources/worldpay-v3.csv`.
-- `DISCOVER_DATA_LOCATION`: The path to load bin ranges for Discover cards from. Defaults
-  to `classpath:/data-sources/discover.csv`.
+| Variable                  | Defaut                                    | Purpose                                                     |
+|---------------------------|-------------------------------------------|-------------------------------------------------------------|
+| `ADMIN_PORT`              | `8081`                                    | The port number to listen for Dropwizard admin requests on. |
+| `BIND_HOST`               | `127.0.0.1`                               | The IP address for the application to bind to.              |
+| `JAVA_OPTS`               | `-Xms1500m -Xmx1500m`                     | Options to pass to the JRE.                                 |
+| `PORT`                    | `8080`                                    | The port number to listen for requests on.                  |
+| `TEST_CARD_DATA_LOCATION` | `classpath:/data-sources/test-cards.csv`  | The path to load bin ranges for test cards from.            |
+| `WORLDPAY_DATA_LOCATION`  | `classpath:/data-sources/worldpay-v3.csv` | The path to load bin ranges for Worldpay from.              |
+| `DISCOVER_DATA_LOCATION`  | `classpath:/data-sources/discover.csv`    | The path to load bin ranges for Discover cards from.        |
 
 ## Card data
 
@@ -36,7 +35,9 @@ Format: csv
 The csv file should have the following structure.
 
     00,20240122,611649,,,,,,,,,,,,,,,,,,,,,
-    01,999999999999999998,999999999999999999,CN,MASTERCARD CREDIT,APERTURE SCIENCE INC.,BRA,76,BRAZIL,C,BRL,DCC allowed,AC000,N,N,,16,D,,,,,,
+    01,222567000000000000,222567999999999999,CN,DEBIT MASTERCARD,UNKNOWN,NPL,524,NEPAL,D,USD,DCC allowed,DM000,N,,,,,,,,,,,
+    01,222890000000000000,222895999999999999,CN,AMEX,UNKNOWN,NPL,524,NEPAL,D,USD,DCC allowed,AX000,N,,,,,,,,,,,
+    01,410873333000000000,410873333999999999,CN,VISA DEBIT,UNKNOWN,USA,840,UNITED STATES,D,,DCC allowed,DE000,U,N,,,,,,,,,,
     99,611648,,,,,,,,,,,,,
 
 | Key | Meaning     |
@@ -50,10 +51,12 @@ The csv file should have the following structure.
 Location: `/resources/data-sources/discover.csv`
 Format: csv
 
-Data from Discover is in pdf format and should be converted to csv. The csv file should have the following structure.
+Data from Discover is in PDF format and should be converted to csv. The csv file should have the following structure.
 
     01,START,END,TYPE,BRAND
-    02,12345678,12345679,C,DISCOVER
+    02,71231111,71241100,CD,DISCOVER
+    02,71241111,71251400,CD,DISCOVER
+    02,60110009,60110010,CD,DISCOVER
     09
 
 | Key | Meaning     |
@@ -71,7 +74,9 @@ The data is a manual collection of test cards provided by our API documentation,
 file should have the following structure:
 
     01,START,END,TYPE,BRAND
-    02,123456789,123456789,C,VISA
+    02,22210000000,22210000000,C,MC,NOT_PREPAID,NOT_CORPORATE
+    02,40000000000,40000000000,CD,VISA,NOT_PREPAID,NOT_CORPORATE
+    02,40000025000,40000025000,C,VISA CREDIT,NOT_PREPAID,NOT_CORPORATE
     09
 
 | Key | Meaning     |
@@ -91,7 +96,7 @@ Returns information for a given card number.
     POST /v1/api/card
 
     {
-        "cardNumber": "1234567812345678"
+        "cardNumber": "4242424242424242"
     }
 
 #### Payment response
@@ -101,8 +106,10 @@ Returns information for a given card number.
 
     {
         "brand": "visa",
-        "type": "D",
-        "label": "visa"
+        "type": "C",
+        "label": "VISA CREDIT",
+        "corporate": false,
+        "prepaid": "NOT_PREPAID"
     }
 
 ## Licence
