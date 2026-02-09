@@ -48,12 +48,13 @@ public class FindBinRanges {
             if (column[2] != null && !column[2].isEmpty()) {
                 Long number = Long.valueOf(column[2]);
 
-                Long formatted = Long.valueOf(format("%-" + 11 + "d", number).replace(" ", "0"));
-                Optional<CardInformation> mayBeCardInfo = cardInformationStore.find(formatted.toString());
+                Long formatted = Long.valueOf(format("%-" + 18 + "d", number).replace(" ", "0"));
+
+                Optional<CardInformation> mayBeCardInfo = cardInformationStore.find(formatted);
 
                 if(mayBeCardInfo.isEmpty()){
-                    formatted = Long.valueOf(format("%-" + 11 + "d", number).replace(" ", "9"));
-                    mayBeCardInfo = cardInformationStore.find(formatted.toString());
+                    formatted = Long.valueOf(format("%-" + 18 + "d", number).replace(" ", "9"));
+                    mayBeCardInfo = cardInformationStore.find(formatted);
                 }
 
                 if (mayBeCardInfo.isPresent()) {
